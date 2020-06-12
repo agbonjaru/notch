@@ -1,0 +1,313 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+          <loading-spinner *ngIf="!showSpinner" [spinnerType]="'notch-loader'" [spinnerStyle]="{ top: '25%' }">
+          </loading-spinner>
+          <div *ngIf="showSpinner">
+            <div class="settings-header">
+              <h1>User and Roles access</h1>
+              <div class="text-right" *ngIf="maxUsersExceeded">
+                <button type="button" class="fin-sec-btn" data-toggle="modal" data-target="#inviteUserModal">
+                  Invite User
+                </button>
+              </div>
+            </div>
+
+            <div id="accordion" class="panel-group">
+              <!-- Registered Users Accordion -->
+              <div class="panel">
+                <div class="panel-heading">
+                  <h5 class="panel-title">
+                    <a href="#panelBodyTwo" class="accordion-toggle" data-toggle="collapse"
+                      data-parent="#accordion">Registered Users ({{ usersList?.length }})</a>
+                  </h5>
+                </div>
+                <div id="panelBodyTwo" class="panel-collapse collapse in show">
+                  <div class="panel-body px-2 pb-5">
+                    <div class="settings-label">
+                      <div class="row users-invited">
+                        <div class="col-md-12">
+                          <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+                            [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)"
+                            [bodyrows]="usersList"></app-datatable>
+
+                          <a class="dropdown-item d-none" data-toggle="modal" data-target="#editUserModal">Edit User</a>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink15"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End of Registered Users Accordion -->
+
+              <!-- Unregistered Users Accordion  -->
+              <div class="panel">
+                <div class="panel-heading">
+                  <h5 class="panel-title">
+                    <a href="#panelBodyThree" class="accordion-toggle" data-toggle="collapse"
+                      data-parent="#accordion">Unregistered Users ({{
+                        unRegisteredUsersList?.length
+                      }})</a>
+                  </h5>
+                </div>
+                <div id="panelBodyThree" class="panel-collapse collapse in">
+                  <div class="panel-body px-2 pb-5">
+                    <div class="settings-label">
+                      <div class="row users-invited">
+                        <div class="col-md-12">
+                          <app-datatable *ngIf="unRegisteredUsersList" [dataChanged]="dataTable2.dataChangedObs"
+                            [options]="dataTable2.options" [heads]="dataTable2.heads"
+                            (feedback)="dataFeedBackObsListener2($event)" [bodyrows]="unRegisteredUsersList">
+                          </app-datatable>
+
+                          <loading-spinner *ngIf="!unRegisteredUsersList" [spinnerType]="'jsBin'"
+                            [spinnerStyle]="{ 'margin-top': '5rem' }">
+                          </loading-spinner>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End of Unregistered Users Accordion -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit User Modal -->
+      <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <loading-spinner [spinnerStyle]="" [spinnerType]="'notch-loader'" *ngIf="loadingModal">
+          </loading-spinner>
+          <div class="modal-content" *ngIf="!loadingModal">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editUserModal">Modify User</h5>
+              <button type="button" class="close" id="closeEditUserModal" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="editUserForm" role="form">
+                <div class="form-group">
+                  <label class="col-form-label">Email Address:</label>
+                  <br />
+                  <input type="email" id="email" formControlName="email" name="email" placeholder="Email Address"
+                    class="gen-input2 browser-default" disabled />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">First Name:</label>
+                  <br />
+                  <input type="text" id="firstName" formControlName="firstName" name="firstName"
+                    placeholder="First Name" class="gen-input2 browser-default" />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Last Name</label>
+                  <input type="text" id="lastName" formControlName="lastName" name="lname" placeholder="Last Name"
+                    class="gen-input2 browser-default" />
+                </div>
+                <div class="form-group">
+                  <label for="role" class="col-form-label">Role</label>
+                  <br />
+                  <div *ngIf="rolesName">
+                    <ngx-select-dropdown tabindex="0" formControlName="roleName" [multiple]="false" [config]="config"
+                      [options]="rolesName">
+                    </ngx-select-dropdown>
+                  </div>
+                </div>
+                <div class="form-group mb-3">
+                  <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12 d-flex"
+                    style="padding-top: 3%; padding-right: 0;">
+                    <div class="custom-control custom-checkbox d-flex">
+                      <input type="checkbox" formControlName="salesPerson" class="custom-control-input"
+                        id="defaultChecked02" [attr.checked]="f.agent.value == 'Sales Person'" />
+                      <label class="custom-control-label" for="defaultChecked02">
+                        Sales person
+                      </label>
+                    </div>
+                    <br />
+                    <div class="custom-control custom-checkbox d-flex ml-3">
+                      <input type="checkbox" formControlName="agent" class="custom-control-input" id="defaultChecked01"
+                        [attr.checked]="f.salesPerson.value == 'Sales Person'" />
+                      <label class="custom-control-label" for="defaultChecked01">
+                        Agent
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="fin-sec-btn" data-dismiss="modal" (click)="refreshTable()">
+                Close
+              </button>
+              <button type="button" class="fin-pry-btn" [ladda]="loading" data-style="slide-right"
+                (click)="updateUser()">
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Edit User Modal End -->
+
+      <!-- Edit Password -->
+      <div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="resetPasswordModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <loading-spinner [spinnerStyle]="" [spinnerType]="'notch-loader'" *ngIf="loadingModal">
+          </loading-spinner>
+          <div class="modal-content" *ngIf="!loadingModal">
+            <div class="modal-header">
+              <h5 class="modal-title" id="resetPasswordModal">
+                Reset Password
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="resetPasswordForm" role="form">
+                <div class="form-group">
+                  <label class="col-form-label">Password:</label>
+                  <br />
+                  <input type="password" id="password" formControlName="password" name="password" placeholder="Password"
+                    class="gen-input2 browser-default" disabled />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Confirm:</label>
+                  <br />
+                  <input type="password" id="confirm" formControlName="confirm" name="confirm" placeholder="Confirm"
+                    class="gen-input2 browser-default" />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                Close
+              </button>
+              <button type="button" class="fin-pry-btn" (click)="updatePassword()">
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Edit Password End -->
+
+      <!-- Invite User Modal -->
+      <div class="modal fade" id="inviteUserModal" tabindex="-1" role="dialog" aria-labelledby="inviteUserModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-slideout" role="document">
+          <div class="modal-content">
+            <form [formGroup]="userRolesForm" role="form">
+              <div class="modal-header">
+                <h5 class="modal-title" id="inviteUserModal">Invite User</h5>
+                <button type="button" id="closeInviteUserModal" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="col-lg-12 col-md-12">
+                  <div class="form-group">
+                    <label>User Email <sup class="text-danger">*</sup></label>
+                    <input type="email" id="email" formControlName="email" name="email" placeholder="Email Address"
+                      class="gen-input2 browser-default" />
+                    <div class="mt-2" *ngIf="(u.email.dirty || u.email.touched) && u.email.invalid">
+                      <span class="text-danger" style="font-size: 13px;" *ngIf="u.email.errors.required">
+                        Email is required.
+                      </span>
+                      <span class="text-danger" style="font-size: 13px;" *ngIf="u.email.errors.pattern">
+                        Email is invalid.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>First Name <sup class="text-danger">*</sup></label>
+                    <input type="text" id="name" formControlName="firstName" name="fname" placeholder="First Name"
+                      class="gen-input2 browser-default" />
+                    <div class="mt-2" *ngIf="(u.firstName.dirty || u.firstName.touched) && u.firstName.invalid">
+                      <span class="text-danger" style="font-size: 13px;" *ngIf="u.firstName.errors.required">
+                        First Name is required.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Last Name <sup class="text-danger">*</sup></label>
+                    <input type="text" id="name" formControlName="lastName" name="lname" placeholder="Last Name"
+                      class="gen-input2 browser-default" />
+                    <div class="mt-2" *ngIf="(u.lastName.dirty || u.lastName.touched) && u.lastName.invalid">
+                      <span class="text-danger" style="font-size: 13px;" *ngIf="u.lastName.errors.required">
+                        Last Name is required.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="role">Role</label>
+                    <div *ngIf="rolesName">
+                      <ngx-select-dropdown tabindex="0" formControlName="roleName" [multiple]="false" [config]="config"
+                        [options]="rolesName">
+                      </ngx-select-dropdown>
+                    </div>
+                    <div class="mt-2" *ngIf="(u.roleName.dirty || u.roleName.touched) && u.roleName.invalid">
+                      <span class="text-danger" style="font-size: 13px;" *ngIf="u.roleName.errors.required">
+                        Role Name is required.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row pt-2 form-group">
+                    <div class="col-md-12 col-sm-12 col-lg-12 col-xl-6">
+                      <div class="custom-control custom-checkbox d-flex">
+                        <input type="checkbox" formControlName="salesPerson" class="custom-control-input"
+                          id="defaultChecked200" checked />
+                        <label class="custom-control-label" for="defaultChecked200">
+                          This is a sales person
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-lg-12 col-xl-6">
+                      <div class="custom-control custom-checkbox d-flex">
+                        <input type="checkbox" formControlName="agent" class="custom-control-input"
+                          id="defaultChecked100" checked />
+                        <label class="custom-control-label" for="defaultChecked100">
+                          This is an Agent
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer text-center">
+                <div class="col md-12">
+                  <button class="fin-pry-btn w-100" (click)="inviteUser()"
+                    [disabled]="userRolesForm.invalid || loader.btnInvite" [ladda]="loader.btnInvite"
+                    data-style="slide-left">
+                    SEND INVITE EMAIL
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Invite User Modal End -->
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+    <!--edit to arrow-left or arrow-right -->
+  </blockquote>
+</div>

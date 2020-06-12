@@ -1,0 +1,44 @@
+<form (ngSubmit)="editFilter()" [formGroup]="filterForm">
+  <div class="form-group">
+    <div class="form-group">
+      <p>Filter Name</p>
+      <input formControlName="name" type="text" class="form-control form-control-sm">
+    </div>
+    <div class="form-group">
+      <p>Deal Owner</p>
+      <select formControlName="dealOwnerName" class="form-control form-control-sm">
+        <option value="">Select Deal Owner</option>
+        <option *ngFor="let member of teamMemberList$" [value]="member.id+'+'+member.name">{{member.name}}</option>
+      </select>
+    </div>
+    <div class="form-group" data-role="rangeslider">
+      <p>Deal Value</p>
+      <label for="price-min">From:</label>
+      <input formControlName="dealValueFrom" class="form-control-sm form-control" type="number">
+      <label for="price-max">To:</label>
+      <input formControlName="dealValueTo" class="form-control-sm form-control" type="number">
+    </div>
+    <div class="form-group">
+      <p>Client</p>
+      <div class="form-group">
+        <label>Client Type</label>
+        <select formControlName="clientType" (change)="fetchCreateClient()" class="form-control form-control-sm">
+          <option value="">Select Client Type</option>
+          <option value="Contact">Contact</option>
+          <option value="Company">Company</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Client</label>
+        <select formControlName="clientName" class="form-control form-control-sm">
+          <option value="">Select Client</option>
+          <option *ngFor="let client of createClientList" [value]="client.id+'+'+client.name">{{client.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <button (click)="cancel()" type="button" class="btn btn-danger btn-filter">Cancel</button>
+      <button type="submit" class="ml-1 btn btn-primary btn-filter">Submit</button>
+    </div>
+  </div>
+</form>

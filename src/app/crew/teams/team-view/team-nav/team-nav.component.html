@@ -1,0 +1,325 @@
+<div class="br-pagebody ml-0 mr-0">
+    <div class="row row-sm my-4" *ngIf="teamdeals;">
+
+        <div class="col-sm-3">
+            <div class="rounded overflow-hidden pb-3"
+                style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+                <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+                    <!-- <i class="fa fa-credit-card" aria-hidden="true"></i> -->
+                    <div class="mg-l-20">
+                        <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10" style="font-size: 18px">
+                            Total Deals
+                        </p>
+                        <p class="tx-24 mg-b-0 lh-1" style="font-size: 25px">
+                            {{ teamdeals.noOfDeals }}
+                        </p>
+                    </div>
+                </div>
+                <i class="fa fa-signal float-right mr-4" style="font-size: 30px"></i>
+            </div>
+        </div>
+
+        <div class="col-sm-3 ">
+            <div class=" rounded overflow-hidden pb-3"
+                style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+                <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+                    <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+                    <div class="mg-l-20">
+                        <p class="tx-10 tx-spacing-1 tx-semibold tx-teal mg-b-10" style="font-size: 18px">
+                            Deals Won
+                        </p>
+                        <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+                            {{ teamdeals.noOfDealsWon }}
+                        </p>
+                    </div>
+                </div>
+                <i class="fa fa-signal float-right mr-4 tx-teal" style="font-size: 30px"></i>
+                <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+            </div>
+        </div>
+
+        <div class="col-sm-3 ">
+            <div class="rounded overflow-hidden pb-3"
+                style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+                <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+                    <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+                    <div class="mg-l-20">
+                        <p class="tx-10 tx-spacing-1  tx-semibold tx-danger  mg-b-10" style="font-size: 18px">
+                            Deals Lost
+                        </p>
+                        <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+                            {{ teamdeals.noOfDealsLost }}
+                        </p>
+                    </div>
+                </div>
+                <i class="fa fa-signal float-right mr-4 tx-danger" style="font-size: 30px"></i>
+            </div>
+        </div>
+
+        <div class="col-sm-3 ">
+            <div class="rounded overflow-hidden pb-3"
+                style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+                <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+                    <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+                    <div class="mg-l-20">
+                        <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10" style="font-size: 18px">
+                            Invoices
+                        </p>
+                        <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+                            {{ invoiceList.length }}
+                        </p>
+                    </div>
+                </div>
+                <i class="fa fa-signal float-right mr-4" style="font-size: 30px"></i>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="content-body-header">
+    <div class="content-body-nav col-md-12">
+        <ul>
+            <li>
+                <span><img src="/assets/img/ribbon-blue.svg" alt="" /></span>
+                <a (click)="toggleClass('team-member', 'aboutDp')" class="team-members-toggler about-within">
+                    Team Members
+                    <span class="aboutDp dp-icon" style="padding-left: 10px;">
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-down d-none"></i>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <span><img src="/assets/img/ribbon-dark.svg" alt="#!" class="deals-within" /></span><a
+                    (click)="toggleClass('deal-list', 'dealDp')">Deals
+                    <span class="dealDp dp-icon" style="padding-left: 10px;">
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-down d-none"></i>
+                    </span>
+                </a>
+            </li>
+            <li class="hide-on-med-and-down">
+                <span><img src="/assets/img/ribbon-pink.svg" alt="" /></span>
+                <a (click)="toggleClass('pipeline-list', 'pipeline')">Pipeline
+                    <span class="pipeline dp-icon" style="padding-left: 10px;">
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-down d-none"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li class="hide-on-med-and-down">
+                <span><img src="/assets/img/ribbon-red.svg" alt="" /></span>
+                <a (click)="toggleClass('target-list', 'target')">Target
+                    <span class="target documents dp-icon" style="padding-left: 10px;">
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-down d-none"></i>
+                    </span>
+                </a>
+            </li>
+
+            <li id="dropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#!">More
+                    <span style="padding-left: 10px;">
+                        <i class="fa fa-angle-right"></i>
+                        <i class="fa fa-angle-down d-none"></i> </span></a>
+            </li>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink5">
+                <a class="dropdown-item" (click)="openContent('Leads')">Assigned Leads</a>
+                <a class="dropdown-item" (click)="openContent('Contacts')">Assigned Contacts</a>
+                <a class="dropdown-item" (click)="openContent('Companies')">Assigned Companies</a>
+                <a class="dropdown-item" (click)="openContent('quotes')">Quotes</a>
+                <a class="dropdown-item" (click)="openContent('invoices')">Invoices</a>
+                <a class="dropdown-item" (click)="openContent('sales-orders')">Sales Orders</a>
+            </div>
+        </ul>
+    </div>
+</div>
+
+<section class="dropdown-list">
+    <!--Team Member List-->
+    <div class="about-contact team-member d-none dp-item d-block">
+        <ng-container *ngIf="teamMemberList$ | async as teamMember; else loadingMembers">
+            <ng-container *ngIf="teamMember.length">
+                <ng-container
+                    *ngFor="let member of teamMember | paginate: { itemsPerPage: 5, currentPage: p, id:'member' }">
+                    <div class="about-contact-row">
+                        <div class="col-md-1">
+                            <div>
+                                <img [src]="member.img || 'https://test.notchcx.com/assets/img/default.png'"
+                                    class="target-user-avatar rounded-circle" width="40px" alt="" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="contact-detail-top">Name</span>
+                            <br />
+                            <span class="contact-detail">{{ member.memberName}}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="contact-detail-top">Email</span>
+                            <br />
+                            <span class="contact-detail">{{ member.email }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="contact-detail-top">Mobile</span>
+                            <br />
+                            <span class="contact-detail">{{ member.mobile }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="contact-detail">
+                                <button [routerLink]="['/teams/salesperson/', member.salesPerson]" title="View"
+                                    class="btn btn-primary btn-sm" style="padding: 0 14px!important;">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" style="padding: 0 14px!important;"
+                                    title="Delete" (click)="onDeleteMember(member)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="center">
+                    <pagination-controls *ngIf="teamMember.length > 5" (pageChange)="p = $event" id="member">
+                    </pagination-controls>
+                </div>
+            </ng-container>
+            <div *ngIf="!teamMember.length" class="about-contact-row ">
+                <h6 class="text-center">No Team Members</h6>
+            </div>
+        </ng-container>
+        <ng-template #loadingMembers>
+            <div class="about-contact team-member d-block">
+                <h6>Loading Members...</h6>
+            </div>
+        </ng-template>
+    </div>
+
+    <!--Deal List-->
+    <div class="about-contact deal-list d-none dp-item">       
+        <ng-container *ngIf="assignedDeals; else loadingDeals">
+            <ng-container *ngIf="assignedDeals.length">
+                <div class="about-contact-row"
+                    *ngFor="let deal of assignedDeals | paginate: { itemsPerPage: 5, currentPage: p, id:'deal'}">
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">DEAL CODE</span>
+                        <br />
+                        <span class="contact-detail">{{ deal.displayCode }}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">DEAL NAME</span>
+                        <br />
+                        <span class="contact-detail">{{ deal.name }}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">AMOUNT</span>
+                        <br />
+                        <span class="contact-detail">{{ deal.currency + " "+ deal.amount  }}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">CURRENT STAGE</span>
+                        <br />
+                        <span class="contact-detail">{{ deal.currStage }}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">WORKFLOW NAME</span>
+                        <br />
+                        <span class="contact-detail">{{ deal.salesProcessName }}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="contact-detail">
+                            <button [routerLink]="['/sales/deals-view', deal.code]" class="btn btn-primary btn-sm"
+                                style="padding: 0 14px!important;" title="View">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="center">
+                    <pagination-controls *ngIf="assignedDeals.length  > 5;" (pageChange)="d = $event" id="deal">
+                    </pagination-controls>
+                </div>
+            </ng-container>
+            <div *ngIf="!assignedDeals.length" class="about-contact-row ">
+                <h6 class="text-center">No Deals</h6>
+            </div>
+        </ng-container>
+        <ng-template #loadingDeals>
+            <div class="about-contact team-member d-block">
+                <h6>Loading Deals...</h6>
+            </div>
+        </ng-template>
+    </div>
+
+    <!--Target List-->
+    <div class="about-contact target-list d-none dp-item">
+        <ng-container *ngIf="targetList$ | async as targetList; else loadingTargets">
+            <ng-container *ngIf="teamsTarget.length">
+                <div class="about-contact-row"
+                    *ngFor="let target of teamsTarget | paginate: { itemsPerPage: 5, currentPage: p, id:'target' }">
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">TARGET DESCRIPTION</span>
+                        <br />
+                        <span class="contact-detail">{{ target.target }}</span>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <span class="contact-detail-top">TARGET TYPE</span>
+                        <br />
+                        <span class="contact-detail">{{ target.type }}</span>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <span class="contact-detail-top">TARGET VALUE</span>
+                        <br />
+                        <span *ngIf=" target.currency != null"
+                            class="contact-detail">{{ target.currency + " " + target.value }}</span>
+                        <span *ngIf="target.currency === null" class="contact-detail">{{ target.value }}</span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">TARGET PERIOD</span>
+                        <br />
+                        <span class="contact-detail">{{ target.period }}</span>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <span class="contact-detail-top">TARGET COUNT</span>
+                        <br />
+                        <span class="contact-detail">{{ target.stage || " NONE " }}</span>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <span class="contact-detail">
+                            <button [routerLink]="['/target/dashboard', target.id,'assigned']"
+                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;" title="View">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </span>
+                    </div>
+
+                </div>
+            </ng-container>
+            <div class="center">
+                <pagination-controls *ngIf="teamsTarget.length > 5" (pageChange)="p = $event" id="deal">
+                </pagination-controls>
+            </div>
+            <div *ngIf="!teamsTarget.length" class="about-contact-row">
+                <h6 class="text-center">No Target</h6>
+            </div>
+        </ng-container>
+        <ng-template #loadingTargets>
+            <div class="about-contact team-member d-block">
+                <h6>Loading Target...</h6>
+            </div>
+        </ng-template>
+    </div>
+
+    <!--Pipeline List-->
+    <div class="about-contact pipeline-list d-none dp-item">
+        <app-pipeline *ngIf="teamID" [teamID]="teamID"></app-pipeline>
+    </div>
+
+</section>

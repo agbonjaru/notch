@@ -1,0 +1,21 @@
+@media (min-width: 576px) {
+  .modal-dialog.merge {
+    max-width: 920px !important;
+    margin: 1.75rem auto;
+  }
+}
+
+.company-header-nav {
+  font-weight: 300;
+}
+
+.company-header-nav a,
+.company-header-nav a:hover,
+.company-header-nav a:active {
+  color: rgb(1, 141, 216)
+}
+
+.content-body-contact {
+  margin-top: 0px !important;
+  padding-bottom: 0px !important;
+}

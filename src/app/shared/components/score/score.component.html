@@ -1,0 +1,66 @@
+<!--Score begins-->
+<div style="margin-bottom: 5rem;">
+  <div class="row">
+    <div class="col-12">
+      <div class="">
+        <div class="row score-card-head">
+          <div class="col-6">
+            <div class=" h-100 card pt-4">
+              <h6 class="m-0 text-center text-info">Profile Score: {{item_score}} </h6>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class=" h-100 card pt-4">
+              <h6 class="m-0 text-center text-info">Winning Probability: 40%</h6>
+            </div>
+          </div>
+        </div>
+        <div class="card score-factor-list">
+          <div *ngIf="alert_message" [class]="alert_class">{{alert_message}}</div>
+          <table>
+            <thead>
+              <tr>
+                <td>Factor</td>
+                <td>Value</td>
+                <td>Base Score</td>
+                <td>Analyzed Score</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let default_factor of factor_list">
+                <td class="text-dark">{{org_fitness[default_factor].name}}</td>
+                <td>
+                  <select class="w-100" name={{default_factor}} [(ngModel)]="user_form_selections[default_factor]"
+                    (change)="set_user_selection(default_factor, $event.target.value)">
+                    <option value="">Select {{org_fitness[default_factor].name}}</option>
+                    <option *ngFor="let factor_value of flatten_keys_into_list(org_fitness[default_factor].values)"
+                      value={{factor_value}}>
+                      {{org_fitness[default_factor].values[factor_value].name}}
+                    </option>
+                  </select>
+                </td>
+                <td [class]="user_selection_scores[default_factor]?.score_class">
+                  {{user_selection_scores[default_factor]?.rating}}
+                  ({{user_selection_scores[default_factor]?.score}})
+                </td>
+                <td [class]="recommended_scores[default_factor]?.score_class">
+                  {{recommended_scores[default_factor]?.rating}}
+                  ({{recommended_scores[default_factor]?.score}})
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button type="button" class="w-25 btn m-0 mt-4 p-2 btn border border-info mr-2 fin-sec-btn float-right" data-dismiss="modal">CLOSE</button>
+    <button type="button" class="w-25 btn m-0 mr-3 mt-4 p-2 btn-primary float-right" (click)="submit()"
+      [disabled]="loading">
+      UPDATE
+      <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+  </div>
+</div>
+<!--Score ends-->

@@ -1,0 +1,178 @@
+<!-- <app-sales-subnav></app-sales-subnav> -->
+
+<div class="conten" >
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 col-xl-12 col-lg-12 content-list">
+
+      <div class="row content-list-header">
+
+        <div class="col-md-6 text-left filter-actions-top">
+          <ng-container *ngIf="showWorkflowList" [formGroup]="processForm"> 
+            <!-- <select formControlName="processId" (change)="getPipelineDeals()" class="gen-input browser-default form-control content-list-search m-0">
+              <option value="" disabled="" >Select Deal Process</option>
+            <ng-container *ngIf="processList && processList.length">
+              <option *ngFor="let process of processList" [value]="process.id">{{process.name}}</option>
+            </ng-container>
+            </select>  -->
+
+
+            <ng-container *ngIf="processList; else loadingworkflow">
+              <div class="w-50">
+                <ngx-select-dropdown (change)="changeProcess()"  formControlName="processId"  [options]="processList" 
+                [config]="config" ></ngx-select-dropdown>
+              </div>
+            </ng-container>
+            <ng-template #loadingworkflow>
+              <p>Loading Workflows...</p>
+            </ng-template>
+          </ng-container>
+          <!-- <div class="list-actions">
+            <button class="fin-sec-btn" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+              <a class="dropdown-item" href="deals-workflow.html">Edit deal stages</a>
+              <a class="dropdown-item" href="#">Sort deals</a>
+              <a class="dropdown-item" href="#">Add another pipeline</a>
+              <a class="dropdown-item" href="#">Restore deals</a>
+            </div>
+          </div> -->
+        </div>
+
+        <div *ngIf="!loading" class="col-md-6 content-list-buttons">
+          <!-- <a href="#"><img src="assets/img/table-view.svg" class="mr-2" alt=""></a>
+          <a href="#"><img src="assets/img/pipeline-view-active.svg" class="mr-2" alt=""></a>
+          <a href="#"><img src="assets/img/table-view.svg" class="mr-2" alt=""></a> -->
+          <input (input)="filterDeal($event)" type="text" class="w-50 gen-input2 browser-default" style="margin-right: 5px;"
+            placeholder="Search"> 
+          <!-- <a routerLink="/sales/create-deals">
+            <button class="fin-pry-btn">ADD DEAL</button>
+          </a> -->
+        </div>
+
+      </div> 
+      <div *ngIf="!showPipelineDeal"  class="text-center pt-3">
+        <h5>Select Deal Process To View Pipeline</h5>
+      </div>
+      <div  *ngIf="showPipelineDeal" class="d-flex pipeline-col-row pt-3" id="sortable">
+        <ng-container *ngIf="!loading">
+          <ng-container *ngFor="let pipeline of pipelineList">
+            <div *ngIf="pipeline.stageName !== 'Won' && pipeline.stageName !== 'Lost'" class="col-md-3  pipeline-container" >
+              <div  class="pipeline-columns">
+    
+                <div class="pipe-col-header">
+                  <h5 class="m-0">{{pipeline.stageName}}</h5> 
+                  <span class="pipe-count">Deals: {{pipeline.deals.length}}</span><br>
+                  <span class="pipe-count">Value: {{getSum(pipeline.deals) | currency:baseCurrency:'symbol-narrow'}}</span>
+                  <span class="img"></span>
+                </div>
+    
+                <hr>
+    
+                <!-- <div class="pipe-total">
+                  Total: <b>{{pipeline.totalAmount}}</b>
+                </div> -->
+    
+                <hr> 
+                <div class="pipe-body item-list" 
+                          cdkDropList 
+                          id="{{toStr(pipeline.stageID)}}"
+                          [cdkDropListData]="pipeline.deals" 
+                          [cdkDropListConnectedTo]="connectedTo" 
+                          (cdkDropListEntered)="onEntered($event)"
+                       > 
+    
+                  <div *ngFor="let deal of pipeline.deals" 
+                        class="pipe-card ui-state-default pos-relative p-0" 
+                        [cdkDragDisabled]="disableDeal(deal.currStage)" 
+                        cdkDrag
+                        [id]="toStringify(deal)">
+                    <div  class="p-2"> 
+                        <div class="pipe-card-header">
+                          <a [routerLink]="['/sales/deals-view', deal.code]"><h6 class="m-0 d-inline">{{deal.name}}</h6></a>
+                          <span *ngIf="moveDeal" class="pipe-client-avatar float-right" cdkDragHandle>
+                              <i class="fa fa-arrows-alt " title="move deal"></i>
+                            </span>
+                        </div>
+                        <div class="pipe-deal-val m-0 ">
+                          <h5 class="m-0">{{deal.amount | currency:deal.currency:'symbol-narrow'}}</h5>
+                        </div>
+                        <div class="pipe-card-footer">
+                          <p class="m-0 text-elips">Client: <b>{{deal.clientName}}</b></p>
+                          <p class="m-0">Close date: <b>{{deal.closeDate | date:'mediumDate'}}</b></p>
+                        </div>
+                    </div>
+                </div>
+    
+              
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngFor="let pipeline of pipelineList">
+            <div *ngIf="pipeline.stageName === 'Won' || pipeline.stageName === 'Lost'" class="ml-3 col-md-3  pipeline-container" > 
+              <div [style.background]="pipeline.stageName === 'Won' ? 'lightgreen' : 'lightpink'" 
+                  class="pipeline-columns">
+    
+                <div class="pipe-col-header">
+                  <h5 class="m-0">{{pipeline.stageName}}</h5> 
+                  <span class="pipe-count">Deals: {{pipeline.deals.length}}</span><br>
+                  <span class="pipe-count">Value: {{getSum(pipeline.deals) | currency:baseCurrency:'symbol-narrow'}}</span>
+                  <span class="img"></span>
+                </div>
+    
+                <hr>
+    
+                <!-- <div class="pipe-total">
+                  Total: <b>{{pipeline.totalAmount}}</b>
+                </div> -->
+    
+                <hr> 
+                <div class="pipe-body item-list" > 
+    
+                  <div *ngFor="let deal of pipeline.deals" 
+                        class="pipe-card ui-state-default pos-relative p-0" 
+                        [cdkDragDisabled]="disableDeal(deal.currStage)" 
+                        cdkDrag
+                        [id]="toStringify(deal)">
+                    <div  class="p-2"> 
+                        <div class="pipe-card-header">
+                          <a [routerLink]="['/sales/deals-view', deal.code]"><h6 class="m-0 d-inline">{{deal.name}}</h6></a>
+                        </div>
+                        <div class="pipe-deal-val m-0 ">
+                          <h5 class="m-0">{{deal.amount | currency:deal.currency:'symbol-narrow'}}</h5>
+                        </div>
+                        <div class="pipe-card-footer">
+                          <p class="m-0 text-elips">Client: <b>{{deal.clientName}}</b></p>
+                          <p class="m-0">Close date: <b>{{deal.closeDate | date:'mediumDate'}}</b></p>
+                        </div>
+                    </div>
+                </div>
+    
+              
+                </div>
+              </div>
+            </div>      
+          </ng-container>
+    
+      </ng-container>
+        <div class=" d-flex mx-auto " *ngIf="loading" >
+         <div>
+          <loading-spinner (reloadSpinner)="reloadPipelineDeals($event)" [spinnerType]="spinnerType"></loading-spinner>
+         </div>
+        </div>
+
+      </div> 
+    </div>
+
+  </div>
+  <button id="showModal" class="d-none btn" data-toggle="modal" data-target="#exampleModalCenter"></button>
+<!-- Modal -->
+<app-deal-modal *ngIf="!(teamID && salepersonID)" (submitData)="changeDealStage($event)" ></app-deal-modal>
+  <div class="ai-blockquote" style="display: none;">
+    <blockquote> 
+      <div class="arrow-left"></div>
+    </blockquote>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+.stepwizard-step button{
+  border: 1px solid !important;
+  border-radius: 0px !important;
+}
+.stage-notactive{
+  background: white !important;
+  color: black !important;
+}
+.stepwizard-row .stepwizard-step button.stage-active:disabled{
+  background: #168DED !important;
+  color: white !important;
+}
+.scroll-container::-webkit-scrollbar {
+  height:  3px;
+  background-color: #F5F5F5;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: grey;
+}
+.scroll-container::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  background-color: #F5F5F5;
+}
+.file-container{
+  margin-left: 30%
+}
+.modal-footer button{
+  box-shadow: none
+}

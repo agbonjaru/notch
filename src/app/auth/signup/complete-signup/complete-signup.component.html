@@ -1,0 +1,171 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 left-div">
+      <div class="login-header">
+        <a href="" id="logo-container"><img src="/assets/img/finultimate-logo.svg" width="240" alt=""></a>
+        <div class="login-alternate d-flex float-right hidden-md hidden-sm hidden-xs">
+          <!-- <p>Already a member?</p>
+          <a routerLink="/login" style="font-weight: bold; margin-left: 10px;">Login</a> -->
+        </div>
+      </div>
+
+
+      <div class="content" style="min-height: 50vh;">
+        <!-- Loader -->
+        <loading-spinner [spinnerStatus]="setSpinnerStatus" [spinnerType]="spinnerType" *ngIf="showSpinner">
+        </loading-spinner>
+
+        <!-- Update View -->
+        <ng-template [ngIf]="setView == 'showEditForm'">
+          <form [formGroup]="completeSignUpForm" class="form">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="fname">First Name</label>
+                <br>
+                <input type="text" id="fname" name="fname" formControlName="firstName" class="gen-input browser-default"
+                  required>
+                <div class="mt-2" *ngIf="(f.firstName.dirty || f.firstName.touched) && f.firstName.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.firstName.errors.required">
+                    First Name is required.
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="lname">Last Name</label>
+                <br>
+                <input type="text" id="lname" name="lname" formControlName="lastName" class="gen-input browser-default"
+                  required>
+                <div class="mt-2" *ngIf="(f.lastName.dirty || f.lastName.touched) && f.lastName.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.lastName.errors.required">
+                    Last Name is required.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-12">
+                <label for="email">Email</label>
+                <br>
+                <input type="email" id="email" name="email" [attr.disabled]="true" formControlName="email"
+                  class="gen-input browser-default" style="width: 88%;">
+                <div class="mt-2" *ngIf="(f.email.dirty || f.email.touched) && f.email.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.email.errors.required">
+                    Email is required.
+                  </span>
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.email.errors.pattern">
+                    Email is invalid.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="password">Password</label>
+                <br>
+                <input type="password" name="password" formControlName="password" class="gen-input browser-default"
+                  required>
+                <div class="mt-2" *ngIf="(f.password.dirty || f.password.touched) && f.password.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.password.errors.required">
+                    Password is required.
+                  </span>
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.password.errors.minlength">
+                    Password must be at least 6 characters.
+                  </span>
+                </div>
+
+                <!-- <div *ngIf="f.password.invalid && (f.password.dirty || f.password.touched)" class="alert alert-danger">
+                  <div *ngIf="name.errors.minlength">
+                    Name must be at least 4 characters long.
+                  </div>
+                  <div *ngIf="name.errors.maxlength">
+                    Name must be at most 100 characters long.
+                  </div>
+                  <div *ngIf="name.errors.forbiddenName">
+                    Name cannot be Bob.
+                  </div>
+                </div> -->
+
+              </div>
+              <div class="col-md-6">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="lname">Confirm Password</label>
+                <br>
+                <input type="password" name="confirmPassword" formControlName="confirmPassword"
+                  class="gen-input browser-default" required>
+                <div class="mt-2"
+                  *ngIf="(f.confirmPassword.dirty || f.confirmPassword.touched) && f.confirmPassword.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.confirmPassword.errors.required">
+                    Confirm Password is required.
+                  </span>
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.confirmPassword.errors.mustMatch">
+                    Passwords must match.
+                  </span>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <div class="d-flex fgt-pswrd">
+              <button type="button" (click)="onSubmit()" class="fin-pry-btn"
+                [disabled]="(completeSignUpForm.invalid || isLoading)" [ladda]="isLoading" data-style="slide-right">Save
+              </button>
+            </div>
+          </form>
+        </ng-template>
+
+        <!-- Account Updated View -->
+        <ng-template [ngIf]="setView == 'showSuccess'">
+          <div id="forgotPassword">
+            <div class="pt-4">
+              <div class="row align-items-center h-100">
+                <div class="col-md-8">
+                  <h5 class="mb-lg-3">Success! </h5>
+                  <div class="pt-2 pb-3">
+                    <p class="text-muted" style="font-size: 16px; line-height: 26px;">Hey {{getUser.firstName}},</p>
+                    <p class="text-muted" style="font-size: 16px; line-height: 26px;">Your account has been
+                      verified.
+                      <br>
+                      Proceed to login to confirm or contact your server admininstrator.
+                    </p>
+                  </div>
+                  <a routerLink="/login" class="fin-pry-btn"
+                    style="padding-left: 3.5rem!important;padding-right: 3.5rem!important">Login</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <!-- Failed View -->
+        <ng-template [ngIf]="setView == 'showFail'">
+          <div class="pt-4">
+            <div class="row align-items-center h-100">
+              <div class="col-md-8">
+                <h5 class="mb-lg-3">Something went wrong</h5>
+                <div class="pt-2 pb-3">
+                  <p class="text-muted" style="font-size: 16px; line-height: 26px;">We couldn't verify your account.
+                    This link is either inactive or not valid.
+                    <br>
+                    Please follow the instructions sent to your mail regarding account verification to try again.
+                  </p>
+                </div>
+                <a routerLink="/login" class="fin-pry-btn"
+                  style="padding-left: 3.5rem!important;padding-right: 3.5rem!important">Okay</a>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+    </div>
+    <div class="col-sm-4 login-bg signup-bg">
+      <h3>Complete Signup</h3>
+      <!-- <h3>Account Verification</h3> -->
+    </div>
+  </div>
+</div>

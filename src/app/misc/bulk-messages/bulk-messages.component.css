@@ -1,0 +1,11 @@
+.selected-recipient {
+    border: 1px solid #cccccc;
+    border-radius: 50px !important;
+
+    padding: 2.5px 15px !important;
+    margin-right: 5px !important;
+}
+
+.settings-header h1 {
+    margin: 0;
+}

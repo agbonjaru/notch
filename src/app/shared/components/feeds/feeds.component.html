@@ -1,0 +1,398 @@
+<!-- <div class="suggestion">
+  <div class="feed-header text-center" style="font-weight: 600;height: 46px;font-size: 12px;color: #474847">
+    Suggestions
+  </div>
+  <hr class="divider">
+  <div class="suggestion-content" style="overflow-y: auto;height: 60%;overflow-x: hidden;">
+    <div class="feed-body-content">
+      <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+      <div class="row">
+        <span class="col-md-2" style="padding-right: 0"><i class="icon-contact-phone"></i></span>
+        <span class="col-md-12" style="padding-left: 20px;font-size: 14px"> Rawdenim youprobably haven't heard
+          of them jean shorts Austin.
+          <span class="feed-response">
+            <p class="bg-danger">Unanswered Call</p>
+            <p class="bg-amber">Response Expected</p>
+          </span>
+          <span class="feed-response">
+            <p>Reply</p>
+            <p>Ignore</p>
+            <p class="bg-green">Call back request</p>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="feed-body-content">
+      <p class="feed-body-header" style="margin-top: 10px">Today</p>
+      <div class="row">
+        <span class="col-md-2" style="padding-right: 0"><i class="icon-contact-phone"></i></span>
+        <span class="col-md-12" style="padding-left: 20px;font-size: 14px">
+          Rawdenim youprobably haven't heard of them jean shorts Austin.
+          <span class="feed-response">
+            <p class="bg-danger">Unanswered Call</p>
+            <p class="bg-amber">Response Expected</p>
+          </span>
+          <span class="feed-response">
+            <p>Reply</p>
+            <p>Ignore</p>
+            <p class="bg-green">Call back request</p>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="feeds mt-2">
+  <div class="feed-header">
+    <ul class="nav nav-tabs text-center d-inline-flex w-100 feeder-header-icons" id="myTab" role="tablist">
+      <!-- <li class="nav-item">
+                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="home"
+                    aria-selected="false">All</a>
+            </li> -->
+      <li class="nav-item">
+        <a class="nav-link active" id="emails-tab" data-toggle="tab" href="#emails" role="tab" aria-controls="profile"
+          aria-selected="true"><i class="fas fa-envelope"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="calls-tab" data-toggle="tab" href="#calls" role="tab" aria-controls="contact"
+          aria-selected="false"><i class="fas fa-phone-volume"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="notes-tab" data-toggle="tab" href="#notes" role="tab" aria-controls="contact"
+          aria-selected="false"><i class="fas fa-edit"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="activity-tab" data-toggle="tab" href="#activityLogged" role="tab"
+          aria-controls="contact" aria-selected="false"><i class="fas fa-plus"></i></a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="contact"
+          aria-selected="false"><i class="fas fa-tasks"></i></a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" id="schedules-tab" data-toggle="tab" href="#schedules" role="tab" aria-controls="contact"
+          aria-selected="false"><i class="fas fa-calendar-alt"></i></a>
+      </li>
+      <!-- <li class="nav-item">
+                <a class="nav-link" id="facebook-tab" data-toggle="tab" href="#facebook" role="tab"
+                    aria-controls="contact" aria-selected="false"><i class="fab fa-facebook-f"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="twitter-tab" data-toggle="tab" href="#twitter" role="tab"
+                    aria-controls="contact" aria-selected="false"><i class="fab fa-twitter"></i></a>
+            </li> -->
+      <li class="nav-item">
+        <a class="nav-link" id="whatsapps-tab" data-toggle="tab" href="#whatsapps" role="tab" aria-controls="contact"
+          aria-selected="false"><i class="fab fa-whatsapp"></i></a>
+      </li>
+      <!-- <li class="nav-item">
+                <a class="nav-link" id="smss-tab" data-toggle="tab" href="#smss" role="tab" aria-controls="contact"
+                    aria-selected="false"><i class="fas fa-sms"></i></a>
+            </li> -->
+      <!--<li class="nav-item">-->
+      <!--<a class="nav-link" id="linkedinsms-tab" data-toggle="tab" href="#sms" role="tab"-->
+      <!--aria-controls="contact"-->
+      <!--aria-selected="false"><i class="fab fa-linkedin"></i></a>-->
+      <!--</li>-->
+    </ul>
+  </div>
+  <!-- <hr class="divider"> -->
+  <div class="tab-content " id="myTabContent"
+    style="overflow-y: auto;height: 80%;overflow-x: hidden; padding: 10px 15px;">
+
+    <!--All feeds-->
+
+    <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-phone-volume"></i>
+          </span>
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p class="bg-amber">New contact detected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-tasks"></i></span>
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-envelope"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-edit"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-plus"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--email feeds-->
+    <div class="tab-pane fade  show active" id="emails" role="tabpanel" aria-labelledby="emails-tab">
+      <app-email-feeds></app-email-feeds>
+    </div>
+
+
+    <!--call feeds-->
+
+    <div class="tab-pane fade" id="calls" role="tabpanel" aria-labelledby="calls-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-phone-volume"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Just Now</p>
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-phone-volume"></i></span>
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--Note feeds-->
+
+    <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+      <app-note-feeds></app-note-feeds>
+    </div>
+
+    <!--Task feeds-->
+    <!-- <div class="tab-pane fade" id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+      <app-task-feeds></app-task-feeds>
+    </div> -->
+
+    <!--schedule feeds-->
+
+    <div class="tab-pane fade" id="schedules" role="tabpanel" aria-labelledby="schedules-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Today</p>
+
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-calendar-alt"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">Schedule
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--Activity Feeds-->
+    <div class="tab-pane fade" id="activityLogged" role="tabpanel" aria-labelledby="activity-tab">
+      <app-logactivity-feeds></app-logactivity-feeds>
+    </div>
+
+    <!--Facebook Feeds-->
+    <div class="tab-pane fade" id="facebook" role="tabpanel" aria-labelledby="facebook-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Today</p>
+
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fab fa-facebook"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">Facebook
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--Twitter Feeds-->
+    <div class="tab-pane fade" id="twitter" role="tabpanel" aria-labelledby="twitter-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Today</p>
+
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fab fa-twitter"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">Twitter
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!--Whatsapp Feeds-->
+    <div class="tab-pane fade" id="whatsapps" role="tabpanel" aria-labelledby="whatsapps-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Today</p>
+
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-tasks"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--SMS Feeds-->
+    <div class="tab-pane fade" id="smss" role="tabpanel" aria-labelledby="smss-tab">
+      <div class="feed-body-content">
+        <p class="feed-body-header" style="margin-top: 10px">Today</p>
+
+        <div class="row">
+          <span class="col-md-2" style="padding-right: 0"><i class="fas fa-sms"></i></span>
+
+          <span class="col-md-10" style="padding-left: 0;font-size: 14px">SMS
+            Rawdenim youprobably haven't heard of them jean shorts Austin.
+            <span class="feed-response">
+              <p class="bg-danger">Unanswered Call</p>
+              <p class="bg-amber">Response Expected</p>
+            </span>
+            <span class="feed-response">
+              <p>Reply</p>
+              <p>Ignore</p>
+              <p class="bg-green">Call back request</p>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

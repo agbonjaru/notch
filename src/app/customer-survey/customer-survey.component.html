@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <div class="row">
+      <div class="col-sm-8 left-div">
+          <div class="login-header">
+              <a href="" id="logo-container"><img src="/assets/img/notch-logo.svg" width="60" alt=""></a>
+          </div>
+
+      </div>
+      <div class="container text-center mt-5">
+          <h4>Customer Satisfaction survey</h4>
+          <p>We value your feeback, rate our support services</p>
+          <div class="ticket-card-blw p-5" style="width: auto;height: auto">
+              <ng-container *ngIf="!submitted">
+              <div *ngIf="!message" class="row text-center " style="display: inline-flex">
+                  <div>
+                      <img class=" is-clickable" (click)="choseRate('100')" src="/assets/img/great-emoji.svg" width="40%">
+                      <P class="">Great</P>
+                  </div>
+                  <div>
+                     <img class=" is-clickable" (click)="choseRate('75')" src="/assets/img/good-emoji.svg" width="40%">
+                      <p>Good</p>
+                  </div>
+                  <div>
+                      <img class=" is-clickable" (click)="choseRate('50')" src="/assets/img/okay-emoji.svg" width="40%">
+                      <p>Okay</p>
+                  </div>
+                  <div>
+                      <img class=" is-clickable" (click)="choseRate('25')" src="/assets/img/not-good-emoji.svg" width="40%">
+                      <p>Not Okay</p>
+                  </div>
+                  <div>
+                      <img class=" is-clickable" (click)="choseRate('0')" src="/assets/img/terrible-emoji.svg" width="40%">
+                      <p>Terrible</p>
+                  </div>
+              </div>
+              <div *ngIf="message" class="row">
+                <div class="col-12">
+                  <h6 class="mb-3">{{message}}</h6>
+                  <textarea [(ngModel)]="feedback" name="feedback" class="form-control"  cols="30" rows="8"></textarea>
+                  <button [disabled]="loading" (click)="submit()" class=" fin-pry-btn mt-3">
+                    Submit <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+            <div class="row" *ngIf="submitted" >
+              <div class="col-12">
+                <div>
+                  <img  src="/assets/img/great-emoji.svg" width="10%">
+                </div>
+                <h5 class="mt-3">Thank you for your time</h5>
+              </div>
+            </div>
+          </div>
+
+      </div>
+
+  </div>
+</div>

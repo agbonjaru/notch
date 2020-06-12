@@ -1,0 +1,69 @@
+<div class="list-filter deals-filter mt-0 pt-0">
+  <div class="accordion pt-3" id="accordionExample">
+    <div class="card-body create-filter">
+      <form (ngSubmit)="filterX.valid&&editFilter()" #filterX="ngForm">
+        <div class="form-group">
+          <div class="form-group">
+            <p>Filter Name</p>
+            <input name="name" [(ngModel)]="filterForm.name" type="text" class="form-control form-control-sm" required>
+          </div>
+
+          <div class="form-group">
+            <p>Owner</p>
+            <ng-container *ngIf="(teamMemberList$ | async) as teamMemberList; else loadingteamMember">
+              <div class="form-group">
+                <ngx-select-dropdown [options]="formatOwner(teamMemberList)" [config]="ownerCnfig" name="owner"
+                  [(ngModel)]="filterForm.creator" required></ngx-select-dropdown>
+              </div>
+
+            </ng-container>
+            <ng-template #loadingteamMember>
+              <small>Loading Sales Persons</small>
+            </ng-template>
+            <div class="form-group" data-role="rangeslider">
+              <p>Value</p>
+              <label for="price-min">From:</label>
+              <input name="fromAmount" [(ngModel)]="filterForm.fromAmount" id="price-mi"
+                class="form-control-sm form-control" type="number" required>
+              <label for="price-max">To:</label>
+              <input name="toAmount" [(ngModel)]="filterForm.toAmount" class="form-control-sm form-control"
+                type="number" required>
+            </div>
+            <div class="form-group">
+              <p>Status</p>
+              <select name="status" class="form-control form-control-sm" id="" [(ngModel)]="filterForm.status">
+                <option value="" disabled>Select Status</option>
+                <option value="OPEN">Open</option>
+                <option value="APPROVE">Approved</option>
+                <option value="DECLINE">Declined</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <p>Client</p>
+              <div class="form-group">
+                <ng-container *ngIf="(clientList$ | async) as clientList; else loadingCLient">
+                  <div class="form-group">
+                    <ngx-select-dropdown [options]="formatClient(clientList)" [config]="clientConfig" name="client"
+                      [(ngModel)]="filterForm.client" required></ngx-select-dropdown>
+                  </div>
+
+                </ng-container>
+                <ng-template #loadingCLient>
+                  <p>Loading Clients</p>
+                </ng-template>
+              </div>
+            </div>
+            <div class="form-group">
+              <button (click)="cancel()" type="button" class="fin-pry-btn btn-danger btn-filter mr-2">Cancel</button>
+              <button [disabled]="filterX.invalid || editLoading || !teamMemberList" type="submit"
+                class="fin-pry-btn btn-filter">
+                Submit <span *ngIf="editLoading"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

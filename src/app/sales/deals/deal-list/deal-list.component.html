@@ -1,0 +1,112 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div *ngIf="sidebarState === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%"
+      (click)="toggleSidebar('open')">
+      <div class="card">
+        <div class="card-body">
+          <span class="fa fa-solar-panel"></span>
+        </div>
+      </div>
+    </div>
+
+    <div  class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <app-sidebar #sidebar [teamId]="selectedTeamId" (toggleSidebar)="toggleSidebar($event)" (getDateFilter)="getDateFilter(sidebar.dateForm)"
+        (getDealOwnerFilter)="getDealOwnerFilter(sidebar.dealOwnerForm)"
+        (getCreatedOnFilter)="getCreatedOnFilter(sidebar.createdOnForm)"
+        (getClientFilter)="getClientFilter(sidebar.clientForm)"
+        (getDealValueFilter)="getDealValueFilter(sidebar.dealValueForm)"
+        (getwinProbFilter)="getwinProbFilter(sidebar.winProbForm)"
+        (getProfileScoreFilter)="getProfileScoreFilter(sidebar.scoreForm)"
+        (getDealStatusFilter)="getDealStatusFilter($event)" 
+        (getClearFilter)="clearFilter()"
+        (TeamsDeal)="getTeamsdeal($event)"
+        (getCustomFilter)="getFilteredDeals($event)">
+      </app-sidebar>
+
+    </div>
+
+    <div class="{{mainStyle}} content-list">
+      <div *ngIf="dealList$" class="list">
+        <div class="row">
+          <div class="col-md-6">
+            <ng-container *ngIf="(teamList$ | async) as teamList;else loadingTeams">
+              <label style="font-size: 15px;" for="">Teams</label><br>
+            <select (change)="getDeals(teamId.value)" #teamId="ngModel" [(ngModel)]="selectedTeamId" class="gen-input browser-default form-control content-list-search">
+                          <option value="" disabled="" selected="">Select Team</option>
+                          <option *ngFor="let team of teamList" [value]="team.teamID">
+                            {{team.teamName}}
+                          </option>
+                        </select>
+                  </ng-container>
+                  <ng-template #loadingTeams>
+                      <p>Loading Teams...</p>
+                  </ng-template>
+          </div>
+        </div>
+        <div class="row mt-3 mb-2">
+          <div class="col-md-6">
+            <h4 class=" m-auto fs-15">
+              <span class="fin-green">SWITCH VIEW : </span>
+              <a [ngClass]="{'fin-blue' : ViewSwitch !== 'Dashboard'}"
+                (click)="handleViewSwitch('Dashboard')">DASHBOARD</a> | <a
+                [ngClass]="{'fin-blue' : ViewSwitch !== 'List'}" (click)="handleViewSwitch('List')">LIST</a>
+            </h4>
+
+          </div>
+          <div class="col-md-6 content-list-buttons">
+            <button *ngIf="dealList$.length" (click)="exportTable('deals')" class="fin-sec-btn">EXPORT</button>
+            <ng-container *ngIf="gs.isAuthorized('CREATE_SALES')">
+              <button (click)="addDeal()" class="fin-pry-btn">ADD DEAL</button>
+
+            </ng-container>
+          </div>
+
+
+
+          <!-- <div class="col-12 text-center">
+                        <ng-container [ngSwitch]="filterMeta.value">
+                            <h6 *ngSwitchCase="'owner'">Deals Owned By: {{filterMeta.ownBy}}</h6>
+                            <h6 *ngSwitchCase="'client'">Client Deals: {{filterMeta.client}}</h6>
+                            <h6 *ngSwitchCase="'customFilter'">Custom Filter Deals: {{filterMeta.name}}</h6>
+                            <h6 *ngSwitchCase="'workflow'">Deals on: {{filterMeta.name}}</h6>
+                            <h6 *ngSwitchCase="'value'">Deals Value From: {{filterMeta.range.from}} - {{filterMeta.range.to}}</h6>
+                            <h6 *ngSwitchCase="'winProb'">Deals With Winning Probabilty From: {{filterMeta.range.from}} - {{filterMeta.range.to}}</h6>
+                            <h6 *ngSwitchCase="'profileScore'">Deals With Profile  Score From: {{filterMeta.range.from}} - {{filterMeta.range.to}}</h6>
+                            <h6 *ngSwitchCase="'closeDate'">Deals Closed From: {{filterMeta.date.startDate| date}} - {{filterMeta.date.endDate | date}}</h6>
+                            <h6 *ngSwitchDefault>Deals Created From: {{filterMeta.date.startDate| date}} - {{filterMeta.date.endDate | date}}</h6>
+                        </ng-container>
+                    </div> -->
+
+
+        </div>
+        <div class="row">
+          <div class="col-12" [style.display]="ViewSwitch==='List'? 'block':'none'" >
+            <app-deals-list-table [dealList]="dealList$">
+            </app-deals-list-table>
+          </div>
+          <div class="br-pagebody col-12" [style.display]="ViewSwitch==='Dashboard'? 'block':'none'"   >
+            <app-dash-stats [dataSource]="dataSource" ></app-dash-stats>
+            <br>
+            <div class="eng-prediction p-1 h-auto dp-item"  style="box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.12);border: none">
+              <app-pipeline (updateDashboard)="updateProcess($event)" [teamID]="selectedTeamId" [moveDeal]="true" ></app-pipeline>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <ng-container *ngIf="!dealList$">
+        <loading-spinner (reloadSpinner)="reloadGetDeals()" [spinnerType]="spinnerType"></loading-spinner>
+      </ng-container>
+    </div>
+
+  </div>
+
+</div>

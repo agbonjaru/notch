@@ -1,0 +1,158 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+
+          <div class="settings-header d-flex">
+            <h1 id="role-name-edit" *ngIf="name">{{name}}</h1>
+            <!-- <span class="pl-3 pt-1" id="edit-role-name"><i class="far fa-edit"></i></span>
+            <span class="pl-2 pt-1" id="save-role-name"><i class="far fa-save"></i></span> -->
+          </div>
+
+          <div class="settings-label">
+
+            <form >
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 role-creation-tab border-left-0"
+                  style="padding-top: 20px;">
+                  <h4>Action Based permissions</h4>
+                  <br>
+
+                  <div class="form-group">
+                    <label class="col-form-label">Select module</label>
+                    <br>
+
+                    <ngx-select-dropdown (change)="changeActModule()" name="action" [(ngModel)]="selectedActModule" [multiple]="false" [config]="config" [options]="allActionMoule">
+                    </ngx-select-dropdown>
+                  </div>
+                  <h6 class="text-center pt-4" *ngIf="loading && !actionPrives">Loading Actions...</h6>
+
+                  <div class="pt-4" *ngIf="actionPrives">
+                    <p class="mb-0">Select permissions for the above selected module</p>
+                    <div class="cont">
+                      <table class="table" >
+
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="border-top: none;">Actions</th>
+  
+                            <th style="border-top: none;">Permission</th>
+                            <th style="border-top: none;">Mark All
+                              <!-- <div class="custom-control custom-checkbox"> 
+                                <input  (click)="markAllPages('action')" type="checkbox" class="custom-control-input">
+                              </div> -->
+                              <!-- <div class="is-clickable mark-btn-action" (click)="markAllPages('action')" > 
+                                <i   class="far fa-square"></i>
+                              </div> -->
+                              <div class="custom-control custom-checkbox">
+                                <input (click)="markAllPages('action', $event)" type="checkbox" class="custom-control-input text-center checkbox-all actionMarkAll"
+                                  id="markAllAction">
+                                <label class="custom-control-label" for="markAllAction"></label>
+                              </div>
+                            </th>
+                          </tr>
+                          <tr *ngFor="let priv of actionPrives" id="action">
+                            
+                            <td scope="row">{{priv.name}}</td>
+                            <td class="">
+                              <div class="custom-control custom-checkbox"> 
+                                <input [checked]="allPerimssion.indexOf(priv.name) >= 0" (click)="addPermission(priv.name, 'actionMarkAll')" type="checkbox" class="custom-control-input text-center checkbox-all action"
+                                  [id]="priv.name">
+                                <label class="custom-control-label" [for]="priv.name"></label>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 role-creation-tab" style="padding-top: 20px;">
+                  <h4>Page view Permisions</h4>
+                  <br>
+                  <div class="form-group">
+                    <label class="col-form-label">Select module</label>
+                    <br>
+
+                    <ngx-select-dropdown (change)="changePageModule()" name="page" [(ngModel)]="selectedPageModule"
+                      [multiple]="false" [config]="config" [options]="allPageModule">
+                    </ngx-select-dropdown> 
+
+                  </div>
+                  <h6 class="text-center pt-4" *ngIf="loadingPages && !pagePrives">Loading Pages...</h6>
+
+                  <div class="pt-4" *ngIf="pagePrives">
+                    <p class="mb-0">Select permissions for the above selected module</p>
+                    <div class="cont">
+                      <table class="table" >
+
+                        <tbody>
+                          <tr>
+                            <th scope="row" style="border-top: none;">Pages</th>
+                            <th style="border-top: none;">Permission</th>
+                            <th style="border-top: none;">Mark All
+                              <div class="custom-control custom-checkbox">
+                                <input (click)="markAllPages('pages', $event)"  type="checkbox" class="custom-control-input text-center checkbox-all pageMarkAll"
+                                  id="markAllpage">
+                                <label class="custom-control-label" for="markAllpage"></label>
+                              </div>
+                            </th>
+                            
+                          </tr>
+                          <tr *ngFor="let priv of pagePrives" id="pages">
+                            <td scope="row">{{priv.name}}</td>
+                            <td class="">
+                              <div class="custom-control custom-checkbox">
+                                <input [checked]="allPerimssion.indexOf(priv.name) >= 0" (click)="addPermission(priv.name, 'pageMarkAll')" type="checkbox" class="custom-control-input text-center checkbox-all action"
+                                  [id]="priv.name">
+                                <label class="custom-control-label" [for]="priv.name"></label>
+                              </div>
+                            </td>
+                      
+                          </tr>
+                        </tbody>
+                      </table> 
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="col-md-12">
+                  <a [routerLink]="['/settings/Roles']" class="left" style="margin-top: 13px;">
+                    Back
+                  </a>
+                  <p *ngIf="disBtn" class=" text-right mr-2">Updating role, This process will take a while...</p>
+                  <ng-container *ngIf="gs.isAuthorized('ADMIN_USER_ACTIONS')">
+                    <button (click)="updateRole()" [disabled]="disBtn || !allPerimssion.length" class="fin-pry-btn mt-2 right" style="margin-top: -13px;">
+                      save <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                  </ng-container>
+
+                </div>
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

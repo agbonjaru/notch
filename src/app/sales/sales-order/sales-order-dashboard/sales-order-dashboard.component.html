@@ -1,0 +1,110 @@
+<div class="br-pagebody" *ngIf="salesOrderList && salesOrderStats">
+  <div class="row row-sm">
+    <div class="col-sm-3">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <!-- <i class="fa fa-credit-card" aria-hidden="true"></i> -->
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10 text-elips text-secondary" style="font-size: 18px">
+              Total Sales Order
+            </p>
+            <p class="tx-24 mg-b-0 lh-1" style="font-size: 25px">
+              {{salesOrderStats?.totalNumber}}
+            </p>
+            <!-- <span class="tx-11 mt-5" style="font-size: 16px">{{0}}
+            </span> -->
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 text-secondary" style="font-size: 30px"></i>
+        <!-- <div id="ch1" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div><!-- col-3 -->
+
+    <div class="col-sm-3 ">
+      <div class=" rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center" (click)="handleDashboardFiltertoList('APPROVE')"
+          style="cursor: pointer;">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold tx-teal mg-b-10 text-elips" style="font-size: 18px">
+              Sales Order Approved
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{salesOrderStats?.approved}}
+            </p>
+
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-teal" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center" (click)="handleDashboardFiltertoList('DECLINE')"
+          style="cursor: pointer;">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1  tx-semibold tx-danger  mg-b-10 text-elips" style="font-size: 18px">
+              Sales Order Declined
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{salesOrderStats?.declined}}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-danger" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-primary tx-semibold  mg-b-10 text-elips" style="font-size: 18px">
+              Sales Order Value
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              <span [innerHTML]="salesOrderStats?.totalAmount |  currency:'code':currencySymbol"></span>
+            </p>
+
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-primary" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+
+  </div>
+  <br>
+  <div class="eng-prediction p-1 h-auto dp-item" style="box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);border: none">
+    <div class="row py-3" *ngIf="showGraph">
+      <div class="col-md-8 offset-md-2 text-center">
+        <h6 class="my-3">Chart Overview For {{selectedYear}}</h6>
+        <div class="mr-5">
+          <form class="form-inline" style="justify-content: center;">
+            <div class="form-group mx-sm-3 mb-2">
+              <input #year="ngModel" type="number" name="year" [(ngModel)]="selectedYear" placeholder="Year"
+                style="width: 240px" class="gen-input browser-default" required />
+            </div>
+            <button [disabled]="year.invalid" type="button" class="fin-pry-btn" style="margin-top: 0px;"
+              (click)="year.valid && submitYear()">Submit</button>
+          </form>
+
+
+        </div>
+        <app-chart [title]="''" [data]="chartData" [label]="chartLabel" [chartType]="'bar'" [chartLegend]="chartLegend"
+          [chartOptions]="options">
+        </app-chart>
+      </div>
+    </div>
+    <div *ngIf="!showGraph">
+      <loading-spinner [spinnerType]="'wave'" [spinnerStatus]="'Loading Graph'"></loading-spinner>
+    </div>
+  </div>
+</div>

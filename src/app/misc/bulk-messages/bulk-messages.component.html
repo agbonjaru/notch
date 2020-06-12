@@ -1,0 +1,83 @@
+<div class="content settings-content">
+    <div class="row" style="width: 100%; margin: 0;">
+        <div class="col-md-12 settings-wrapper">
+            <header class="settings-header">
+                <h1 class="">Send Bulk Messages</h1> <br>
+            </header>
+            <div class="row">
+                <div class="col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                    <div class="alert {{alertClass}}">{{alertMessage}}</div>
+                    <div *ngIf="flattenSelectedRecipientsIntoArray().length > 0" class="text-primary mb-2">Selected
+                        Recipients:</div>
+                    <div *ngFor="let recipient of flattenSelectedRecipientsIntoArray()" class="d-inline-block">
+                        <span class="selected-recipient">
+                            {{recipient}}
+                            <span (click)="removeRecipient(recipient)" class="d-inline-block ml-2 text-">&times;</span>
+                        </span>
+                    </div>
+                    <div class="mail-compose w-75" style="border: none;">
+                        <div class="form-row">
+                            <div class="col-2">
+                                <div class="mail-compose-input form-group">
+                                    <label>Zip *:</label>
+                                    <input type="text" class="browser-default text-left left" [(ngModel)]="form_zip">
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <div class="mail-compose-input form-group">
+                                    <label>Recipients:</label>
+                                    <!-- <small class="text-secondary">[ ** press comma to add** ]</small> -->
+                                    <input type="text" class="browser-default text-left left" [disabled]="!form_zip"
+                                        [(ngModel)]="form_recipient"
+                                        (input)="addRecipient( $event, $event.target.value)"
+                                        (keydown)="addRecipient( $event, $event.target.value)">
+                                    <small class="text-secondary"> (comma-separated.)</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mail-compose-input form-group">
+                            <label>Sender *:</label>
+                            <input type="text" class="browser-default text-left left" [disabled]="!form_recipient"
+                                [(ngModel)]="form_sender"> <br>
+                            <small class="text-secondary">** must be less than 11 characters**</small>
+                        </div>
+                        <div class="mail-compose-input form-group">
+                            <label>Message *:</label>
+                            <textarea name="" class="emoji1" id="txtEditor" placeholder="Enter text here..." cols="30"
+                                rows="10" [(ngModel)]="form_message"></textarea>
+                        </div>
+                        <br>
+                        <button [disabled]="loading || !is_activated" class="left fin-pry-btn" style="margin-top: 7px;"
+                            (click)="sendMessage()">
+                            SEND <span *ngIf="loading"><span class="fa fa-spin"></span></span>
+                        </button>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-4 col-md-4 col-lg-3 col-xl-2 h-100">
+                    <div class="left-nav-grp">
+                        <div class="mt-5" style="vertical-align: middle;">
+                            <div class="switch text-center">
+                                <span class="mb-2">
+                                    <b>Send</b>
+                                </span>
+                                <br>
+                                <label>
+                                    SMS
+                                    <input type="checkbox" checked class="browser-default">
+                                    <span class="lever"></span> Emails
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+        <!--<form>-->
+        <!--<input type="email" id="email" name="email" class="gen-input2 browser-default" style="width: 400px">-->
+        <!--</form>-->
+    </div>
+</div>

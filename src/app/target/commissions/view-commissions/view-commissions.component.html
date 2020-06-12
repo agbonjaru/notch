@@ -1,0 +1,206 @@
+<div class="content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-sm-12">
+        <div class="m-auto text-center">
+            <a href="/target/commissions" class="text-center left"> < Commissions List</a>
+        </div>
+    </div>
+    <div class="col-md-12 settings-wrapper" style="margin-top: 0;">
+        <header class="settings-header" style="border-bottom: 1px solid #E4E4E4;margin-bottom: 20px">
+            <h1>Commission Details</h1>
+        </header>
+        <div>
+        <div *ngIf="!loadingView; else activateSpinner" class="row " style="margin: auto">
+          <div class="col-md-4">
+            <div class="card total-card ">
+                <span class="text-success" style="font-weight: 600;font-size: 30px">
+                  {{commission['currency']? 
+                    (earnings | currency : commission['currency']:'symbol-narrow'): 
+                    (earnings | number)}}
+                </span>
+                <span>Total Earned</span>
+              <span><i class="fa fa-money-bill right fs-35 text-success"></i> </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class=" card total-card">
+                <span class="text-success"  style="font-weight: 600;font-size: 30px">
+                  {{commission['currency']? 
+                    (processed_commission | currency : commission['currency']:'symbol-narrow'): 
+                    (processed_commission | number)}}
+                </span>
+                <span>Total Processed</span>
+              <span><i class="fa fa-money-bill right fs-35 text-success"></i> </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card total-card ">
+              <span class="text-success"  style="font-weight: 600;font-size: 30px">
+                {{commission['currency']? 
+                  (amount_paid | currency : commission['currency']:'symbol-narrow'): 
+                  (amount_paid | number)}}
+              </span>
+                <span>Total Paid</span>
+              <span><i class="fa fa-money-bill right fs-35 text-success"></i> </span>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="text-center"   data-toggle="modal" data-target="#ModalCenter4" style="margin: 20px;cursor: pointer;color: #158DED">
+          <h4>Click here to process commission</h4>
+        </div>
+        <header class="settings-header" style="border-top: 1px solid #E4E4E4;margin-top: 20px">
+            <h1>Amount Paid <span style="color: red;"> *</span></h1>
+            <input type="text" id="amount" name="cname" class="gen-input browser-default" style="width: 250px;margin-top: 10px;margin-left: 10px">
+            <button class="fin-pry-btn ml-2" (click)="addPayment()"> Add Payment</button>
+        </header>
+
+
+
+        <!-- Total processed Modal -->
+        <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle">Commission Process</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="processForm">
+                            <div class="form-group">
+                                <label class="col-form-label">Title <span style="color: red;"> *</span></label>
+                                <br>
+                                <input type="text"  name="cname" class="gen-input browser-default"
+                                 formControlName="title" style="width: 100%">
+                            </div>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="col-form-label" style="color: #7E7F9A">Type <span style="color: red;"> *</span></label>
+                                <br>
+                                <select class="gen-input browser-default form-control" formControlName="type"
+                                    style="width: 100%" (change)="setProcessType()">
+                                  <option value="none">No Addition/Deduction</option>
+                                  <option value="addition">Addition</option>
+                                  <option value="deduction">Deduction</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="col-form-label">Amount</label>
+                                <br>
+                                <input type="text" id="cname" name="cname" formControlName="amount"
+                                    class="gen-input browser-default" style="width: 100%">
+                                <small><em>Kindly note that this input only accepts a valid number.</em></small>
+                                <br>
+                              </div>
+                            </div>
+                          </div>
+                            <div class="form-group mt-3">
+                              <button type="button" class="fin-pry-btn" (click)="processCommission()"
+                                [disabled]="processForm.invalid">Save</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <table *ngIf="!loadingView2; else activateSpinner2"
+                            class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="th-sm">Title</th>
+                                <th class="th-sm">Type</th>
+                                <th class="th-sm">Amount</th>
+                                <th class="th-sm">Date</th>
+                                <th class="th-sm">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="table-row" *ngFor="let process of processes; let i = index">
+                                <td>{{process['title']}}</td>
+                                <td>{{process['type']}}</td>
+                                <td>
+                                  {{commission['currency']? 
+                                    (process['amount'] | currency : commission['currency']:'symbol-narrow'): 
+                                    (process['amount'] | number)}}
+                                </td>
+                                <td>{{process['date_created'] | date}}</td>
+                                <td>
+                                  <span class="table-remove">
+                                    <button type="button"  (click)="reverseProcess(process['id'])"
+                                    class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
+                                  </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <ng-template #activateSpinner2>
+                              <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+                        </ng-template>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Total processed Modal End-->
+
+
+        <div class="text-center" style="border-top: 1px solid #E4E4E4;margin-top: 20px">
+            <!-- table -->
+            <div class="text-center" style="margin: 0">
+                <div class="target-type" style="margin-top: 30px;padding: 0;">
+                    <div class="card-body">
+                        <div id="table" class="table-editable">
+                            <div class="row">
+                                <div class="col-sm-4" style="margin-bottom: 15px">
+                                  <span class="table-add mb-3 mr-2"> </span>
+                                </div>
+                            </div>
+
+                            <table *ngIf="!loadingView; else activateSpinner" 
+                                class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="th-sm">Amount</th>
+                                    <th class="th-sm">Date</th>
+                                    <th class="th-sm">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-row" *ngFor="let payment of payments; let i = index">
+                                    <td>
+                                      {{commission['currency']? 
+                                        (payment['amount'] | currency : commission['currency']:'symbol-narrow') : 
+                                        (payment['amount'] | number)}}
+                                    </td>
+                                    <td>{{payment['date_created'] | date}}</td>
+                                    <td>
+                                      <span class="table-remove">
+                                        <button type="button"  (click)="reversePayment(payment['id'])"
+                                        class="btn btn-danger btn-rounded btn-sm my-0">Remove</button>
+                                      </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <ng-template #activateSpinner>
+                                  <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <!-- Editable table -->
+
+            </div>
+
+        </div>
+        <!-- table -->
+    </div>
+  </div>
+
+</div>

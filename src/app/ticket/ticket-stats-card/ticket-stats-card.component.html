@@ -1,0 +1,41 @@
+<div *ngIf="ticketStat; else loadingStats" class="row d-flex justify-content-center">
+  <div *ngIf="data.type===3" class="ticket-card col-xl-2 col-md-3 col-sm-12">
+    <h3>
+     <a [routerLink]="['/ticket/ticket-list', 7, data.id, data.type]">Assigned to me</a> 
+    </h3>
+    <p>{{ticketStat.totalAssignedToMe}}</p>
+  </div>
+  <div class="ticket-card col-xl-2 col-md-3 col-sm-12">
+    <h3>
+      <a [routerLink]="['/ticket/ticket-list', 1, data.id, data.type]">Unresolved</a>
+    </h3>
+    <p>{{ticketStat.totalUnresolved}}</p>
+  </div>
+  <div class="ticket-card col-xl-2 col-md-3 col-sm-12">
+    <h3>
+      <a [routerLink]="['/ticket/ticket-list', 2, data.id, data.type]">Overdue</a>
+    </h3>
+    <p>{{ticketStat.totalOverdue}}</p>
+  </div>
+  <div class="ticket-card col-xl-2 col-md-3 col-sm-122">
+    <h3>
+      <a [routerLink]="['/ticket/ticket-list', 4, data.id, data.type]">Open</a>
+    </h3>
+    <p>{{ticketStat.totalOpen}}</p>
+  </div>
+  <div class="ticket-card col-xl-2 col-md-3 col-sm-12">
+    <h3>
+      <a [routerLink]="['/ticket/ticket-list', 5, data.id, data.type]">On Hold</a>
+    </h3>
+    <p>{{ticketStat.totalOnHold}}</p>
+  </div>
+  <div *ngIf="data.type===3" class="ticket-card col-xl-2 col-md-3 col-sm-12">
+    <h3>
+      <a [routerLink]="['/ticket/ticket-list', 6, data.id, data.type]">Unassigned</a>
+    </h3>
+    <p>{{ticketStat.totalUnassigned}}</p>
+  </div>
+</div>
+<ng-template #loadingStats>
+  <loading-spinner [spinnerType]="'wave'"></loading-spinner>
+</ng-template>

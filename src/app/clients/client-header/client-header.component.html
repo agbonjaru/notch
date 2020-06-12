@@ -1,0 +1,14 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+  <nav class="sub-nav">
+    <ul class="sub-nav-items text-center d-flex justify-content-start text-center">
+      <li *ngIf="gs.isAuthorized('LEADS')"><a routerLink="/clients/leads" [ngClass]="{'active': this.router.url.includes('leads') }">Leads</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('COMPANIES')"><a routerLink="/clients/companies-list"
+          [ngClass]="{'active': this.router.url.includes('companies') }">Companies</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('CONTACTS')"><a routerLink="/clients/contacts-list"
+          [ngClass]="{'active': this.router.url.includes('contacts') }">Contacts</a>
+      </li>
+    </ul>
+  </nav>
+</div>

@@ -1,0 +1,101 @@
+<div class="content settings-content" style="padding-top: 130px !important;">
+  <div class="col-sm-12 content-list-title">
+    <div class="m-auto text-center">
+      <!--<a href="credit-management-list.html" class="text-center left"> < Credit Profile</a>-->
+      <h5 class="text-center fin-pry-color">Bank Payment</h5>
+    </div>
+  </div>
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <div class="list-filter">
+        <div class="accordion" id="accordionExample">
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                  aria-expanded="true" aria-controls="collapseOne">
+                  Amount
+                </button>
+              </h2>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked11">
+                  <label class="custom-control-label" for="defaultUnchecked11">Yes</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked13">
+                  <label class="custom-control-label" for="defaultUnchecked13">No</label>
+                </div>
+                <br>
+                <label for="filter1">Profile Score</label>
+                <div class="d-flex">
+                  <select class="gen-input browser-default form-control" id="filter1" style="">
+                    <option value="" disabled="" selected="">=</option>
+                    <option value="1">
+                      << /option>
+                    <option value="2">></option>
+                    <option value="3">=</option>
+                  </select>
+                  <input type="text" placeholder="Enter figure" class="browser-default gen-input">
+                  <!--<p style="margin: 0" class="input-label-perc">%</p>-->
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header" id="heading8">
+              <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse8"
+                  aria-expanded="false" aria-controls="collapse8">
+                  Created on
+                </button>
+              </h2>
+            </div>
+            <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionExample">
+              <div class="card-body">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked27">
+                  <label class="custom-control-label" for="defaultUnchecked27">Stage Progress</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked28">
+                  <label class="custom-control-label" for="defaultUnchecked28">Stage Progress</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked29">
+                  <label class="custom-control-label" for="defaultUnchecked29">Stage Progress</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-4 text-left filter-actions-top">
+            <select [(ngModel)]="selected_account" name="selected_account" class="gen-input browser-default">
+              <option value=""> Select an account</option>
+              <option *ngFor="let account of bank_accounts" value="{{account.id}}">
+                {{account.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <!-- PAYMENTS TABLE -->
+        <!-- <ng-template> -->
+          <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+            [heads]="dataTable.heads" (feedback)="datatable_event_handler($event)" [bodyrows]="payment_records">
+          </app-datatable>
+        <!-- </ng-template> -->
+      </div>
+    </div>
+  </div>
+</div>

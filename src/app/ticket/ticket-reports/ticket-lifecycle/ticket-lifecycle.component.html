@@ -1,0 +1,94 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <a routerLink="/ticket/ticket-reports">
+        < back
+    </a>
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list " style="padding: 70px;height: 90vh">
+      <div >
+        <div class="helpdesk-right-header" >
+          <h3 style="font-size: 16px;font-weight: 600">Ticket Lifecycle</h3>
+          <data-range #dateRange (getFilter)="changeDate($event)"></data-range>
+        </div>
+        <ng-container *ngIf="groupList && lifeCyleList; else loading">
+        <div class="sheet-header" style="margin-top: 50px;border-top: 1px #E4E4E4 solid;">
+          <div class="row" style="margin-top: 30px">
+            <div class="col-xl-8 col-md-12 d-flex">
+              <p style="font-size: 16px;color: #000000">Total time spent by resolved tickets split by</p>
+              <select (change)="update(dateRange)" [(ngModel)]="filterType" class="gen-input browser-default form-control content-list-search"
+                style="border: none;border-bottom: 1px #c4c4c4 solid;border-radius: 0">
+                <option value="1" >Type</option>
+                <option value="2">Priority</option>
+                <option value="3">Status</option>
+                <option value="4">Source</option>
+              </select>
+              <p style="font-size: 16px;color: #000000">in each group</p>
+              <select (change)="update(dateRange)" [(ngModel)]="selectedGroup" class="gen-input browser-default form-control content-list-search"
+              style="border: none;border-bottom: 1px #c4c4c4 solid;border-radius: 0">
+              <option *ngFor="let group of groupList" [value]="group.id" >{{group.name}}</option>
+            </select>
+            </div>
+            <!-- <div class="col-xl-6 col-md-12 d-flex" style="padding-left: 30%">
+              <p style="color: #000000">Show:</p>
+
+              <div class="custom-control custom-radio" style="margin-top: 5px">
+                <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+                <label class="custom-control-label" style="font-size: 16px;color: #000000;margin: 10px;"
+                  for="defaultUnchecked">Total time</label>
+              </div>
+              <div class="custom-control custom-radio" style="margin-top: 5px">
+                <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios2">
+                <label class="custom-control-label" style="font-size: 16px;color: #000000;margin: 10px;"
+                  for="defaultUnchecked2">Average time</label>
+              </div>
+
+            </div> -->
+
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div *ngFor="let cycle of lifeCyleList" class="col-md-12">
+            <div class="ticket-lifecycle-card">
+              <div class="row" style="padding: 0">
+                <div class="col-md-3" style="padding: 0">
+                  <div class="graph-header2 ml-5" style="border: none;background: #FAFCFE;height: 200px;margin: 0">
+                    <h6>{{cycle.name}}</h6>
+                  </div>
+                </div>
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="col-md-6 col-xl-3" >
+                      <div class="text-center" style="border-right: 1px #c4c4c4 solid;height: 100px;margin: 47px 0">
+                        <p style="padding: 40px 0;font-weight: 600">Total Time: {{cycle.totalTime}}</p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-xl-6" >
+                      <div class="text-center" style="height: 100px;margin: 47px 0">
+                        <p style="padding: 40px 0;font-weight: 600">Average Time: {{cycle.avgTime}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+    </div>
+    <ng-template #loading>
+      <loading-spinner [spinnerType]="'wave'" ></loading-spinner>
+    </ng-template>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

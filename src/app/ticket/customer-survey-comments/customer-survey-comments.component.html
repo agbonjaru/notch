@@ -1,0 +1,61 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+</div>
+<div class="content ">
+<div class="ml-2">
+  <a routerLink="/ticket/ticket-dashboard">
+    < back
+  </a>
+</div>
+  <div class="create-deal-wrapper" style="margin-top: -45px">
+      <div class="row sub-creation">
+          <div class="col-md-12" style="border-right: none;">
+              <div class="container" *ngIf="commentList; else loading">
+                  <div style="margin-bottom: 30px"><h1>{{value}} Comment</h1></div>
+
+                  <div class="card">
+                      <div class="card-body" *ngIf="commentList.length">
+                        <ng-container *ngFor="let comment of commentList">
+                          <div class="row">
+                            <!-- <div class="col-md-2  text-center m-auto">
+                                <img src="https://image.ibb.co/jw55Ex/def_face.jpg" width="75%" class="img img-rounded img-fluid"/>
+                            </div> -->
+                            <div routerLink="/ticket/ticket-view/{{comment.ticketID}}" class="col-md-10 is-clickable">
+                                <p class="fin-blue">
+                                  <strong>{{comment.createdTime | date}}</strong>
+
+                                   <!-- <strong>John Doe</strong> <span class="fin-sec-color">15 minutes ago</span> -->
+                                    <!-- <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span>
+                                    <span class="float-right"><i class="text-warning fa fa-star"></i></span> -->
+
+                                </p>
+                                <div class="clearfix"></div>
+                                <p> <i class="fa fa-comment mr-2"></i> {{comment.satisfactionResponse}}</p>
+                                <!--<p>-->
+                                    <!--<a class="float-right btn btn-outline-primary ml-2"> <i class="fa fa-reply"></i> Reply</a>-->
+                                    <!--<a class="float-right btn text-white btn-danger"> <i class="fa fa-heart"></i> Like</a>-->
+                                <!--</p>-->
+                            </div>
+                        </div>
+                        <hr>
+                        </ng-container>
+                      </div>
+                      <div class="card-body" *ngIf="!commentList.length">
+                          <div class="my-3 text-center">
+                            <h4><i class="fa fa-comment fa-3x"></i></h4>
+                            <h6>No comments</h6>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <ng-template #loading>
+                <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+              </ng-template>
+      </div>
+
+  </div>
+
+
+</div>
+</div>

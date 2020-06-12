@@ -1,0 +1,8 @@
+.mark-btn-page:visited .fa-circle{
+    color: rgb(16, 74, 207);
+}
+.cont{
+    overflow: auto;
+    height: 300px !important;
+    margin-top: 20px;
+}

@@ -1,0 +1,10 @@
+.file-container{
+    margin-left: 30%
+  }
+  .modal-footer button{
+    box-shadow: none
+  }
+  .btn:disabled{
+      background: #4285f4;
+      opacity: 0.7;
+  }

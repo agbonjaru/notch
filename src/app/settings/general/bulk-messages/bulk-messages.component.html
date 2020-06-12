@@ -1,0 +1,108 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <!-- Loader -->
+        <loading-spinner [spinnerStyle]="spinnerStyle" [spinnerType]="spinnerType" (reloadSpinner)="retry($event)"
+          *ngIf="showSpinner">
+        </loading-spinner>
+
+        <!-- Main -->
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10" *ngIf="!showSpinner">
+          <div class="settings-header">
+            <h1>Enable bulk SMS and Email</h1>
+            <p>Set up bulk messages, purchase SMS units</p>
+          </div>
+          <div class="settings-label">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 20px;">
+                <form [formGroup]="bulkMessageForm" role="form">
+                  <div class="col-sm-12 pb-2">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="custom-control custom-checkbox">
+                          <input  type="checkbox" formControlName="bulkSMS"
+                            class="custom-control-input text-center checkbox-all" id="bulkSMS">
+                          <label class="custom-control-label" for="bulkSMS">
+                            Enable bulk SMS
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" *ngIf="this.bulkMessageForm.controls?.bulkSMS.value">
+                        <div>
+                          <button (click)="showTopup = !showTopup" class="fin-sec-btn btn-sm"
+                            style="font-size: 11px; padding: 3px; float: right;">Purchase New
+                            Units?</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 pb-2 pt-2">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="bulkEmail"
+                        class="custom-control-input text-center checkbox-all" id="bulkEmail">
+                      <label class="custom-control-label" for="bulkEmail">Enable bulk email</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <button type="button" (click)="onSubmit()" class="fin-pry-btn mt-3"
+                      [disabled]="(bulkMessageForm.invalid || isLoading)" [ladda]="isLoading"
+                      data-style="slide-right">Save
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5"
+                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+
+                <div *ngIf="showTopup && this.bulkMessageForm.controls?.bulkSMS.value">
+                  <div class="col-md-12">
+                    <p class="fin-pry-color"><strong>Purchase bulk SMS units</strong></p>
+                  </div>
+
+                  <div>
+                    <div class="col-md-12">
+                      <p *ngIf="smsDetails">SMS Units Available: <span
+                          class="font-weight-bold fin-mild">{{smsDetails?.units}}
+                          units</span></p>
+                    </div>
+                    <form [formGroup]="topUpForm">
+                      <div class="col-md-6">
+
+                        <div class="form-group">
+                          <input type="number" formControlName="topUpUnits" class="gen-input2 browser-default"
+                            style="width:205px;" placeholder="Enter Units">
+                        </div>
+
+                      </div>
+                      <div class="col-md-12">
+                        <button class="fin-sec-btn mt-2" (click)="topUp()" [disabled]="topUpForm.invalid">Top
+                          Up</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

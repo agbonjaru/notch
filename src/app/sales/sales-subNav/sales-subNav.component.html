@@ -1,0 +1,14 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+  <nav class="sub-nav">
+    <ul class="sub-nav-items-sales text-center d-flex justify-content-start text-center">
+      <li *ngIf="gs.isAuthorized('DEALS')"><a routerLink="/sales/deals-list" routerLinkActive="active">Deals</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('INVOICE')"><a routerLink="/sales/invoice-list" routerLinkActive="active" >Invoice</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('SALES_ORDER')"><a routerLink="/sales/sales-order-list" routerLinkActive="active" >Sales
+          Order</a></li>
+      <li *ngIf="gs.isAuthorized('QUOTATION')"><a routerLink="/sales/quotation-list" routerLinkActive="active">Quotation</a></li>
+      <li *ngIf="gs.isAuthorized('SUBSCRIPTION')"><a routerLink="/sales/Subscriptions-list" routerLinkActive="active">Subscriptions</a></li>
+    </ul>
+  </nav>
+</div>

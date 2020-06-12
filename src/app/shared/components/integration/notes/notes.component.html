@@ -1,0 +1,23 @@
+<div class="text-left contact-welcome" aria-labelledby="note-tab" >
+  <ng-container [formGroup]="addNoteForm">
+    <div class="text-editor-grp">
+      <div style="font-weight: 100">
+        <div class="row" >
+          <div class="col-12">
+            <div class="editor-wrapper">
+              <fate-ui uiId="foo"></fate-ui>
+              <fate-input  placeholder="Enter your NOTE here" formControlName="content" uiId="foo"></fate-input>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="left mt-2 ml-3 mb-3">
+        <button class="fin-pry-btn" [disabled]="(addNoteForm.invalid || showLoading)" (click)="onAddNote()">
+          ADD NOTE(s)
+          <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

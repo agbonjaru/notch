@@ -1,0 +1,135 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>Integrations</h1>
+            <p>Set up all forms of third party integrations here. Simply click to integrate.</p>
+          </div>
+          <div class="settings-label pt-3">
+            <div class="row" style="text-align: center;">
+              <div class="col-md-12">
+                <h4>Social media integrations</h4>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="">
+                  <i class="fab fa-facebook-f"></i>
+                  <p>Facebook</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group" data-toggle="modal" data-target="#twitterSettingModal">
+                <a class="active">
+                  <i class="fab fa-twitter"></i>
+                  <p>Twitter</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="">
+                  <i class="fab fa-linkedin"></i>
+                  <p>LinkedIn</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="" class="active">
+                  <i class="fab fa-whatsapp"></i>
+                  <p>WhatsApp</p>
+                </a>
+              </div>
+            </div>
+            <div class="row pt-4" style="text-align: center;">
+              <div class="col-md-12">
+                <h4>Other integrations</h4>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="">
+                  <i class="fab fa-dropbox"></i>
+                  <p>DropBox</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="" class="">
+                  <i class="fab fa-google-drive"></i>
+                  <p>Google Drive</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="">
+                  <i class="fab fa-google"></i>
+                  <p>Google</p>
+                </a>
+              </div>
+              <div class="col-md-3 integration-group">
+                <a href="" class="active">
+                  <img src="assets/img/xero_logo_grey.png" alt="xero icon">
+                  <p>xero</p>
+                </a>
+              </div>
+            </div>
+            <div class="row pt-4" style="text-align: center;">
+              <div class="col-md-12">
+                <h4>Email integrations</h4>
+              </div>
+              <div class="col-md-3 integration-group" data-toggle="modal" data-target="#imapSettingModal">
+                <a>
+                  <i class="fa fa-envelope"></i>
+                  <p>Imap</p>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>
+
+<!-- IMAP MODAL -->
+<div class="modal fade" id="imapSettingModal" tabindex="-1" role="dialog" aria-labelledby="imapSettingModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imapSettingModalTitle">Imap Setup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <!-- <span aria-hidden="true">&times;</span> -->
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-imap-integration></app-imap-integration>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- IMAP MODAL -->
+
+<!-- TWITTER MODAL -->
+<div class="modal fade" id="twitterSettingModal" tabindex="-1" role="dialog" aria-labelledby="twitterSettingModalTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="twitterSettingModalTitle">Twitter Setup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-twitter-integration></app-twitter-integration>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- TWITTER MODAL -->

@@ -1,0 +1,234 @@
+<div class="list-filter mt-0 pt-0">
+    <!-- Loader -->
+    <loading-spinner [spinnerStatus]="setSpinnerStatus" [spinnerStyle]="{ top: '20%', height: '40px', width: '40px' }"
+        [spinnerType]="spinnerType" *ngIf="sideBarSpinner">
+    </loading-spinner>
+
+    <!-- Default View -->
+    <div *ngIf="!sideBarSpinner">
+
+        <div (click)="toggle('close')" class="is-clickable">
+            <span class="fa fa-times"></span>
+        </div>
+
+        <div class="accordion pt-3" id="accordionExample">
+
+            <!-- Total Deals Number -->
+            <div class="card">
+                <div class="card-header" id="heading1">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#deals"
+                            aria-expanded="false" aria-controls="deals">
+                            Total Deals
+                        </button>
+                    </h2>
+                </div>
+                <div id="deals" class="collapse" aria-labelledby="heading1" data-parent="#accordionExample">
+                    <div class="card-body create-filter">
+                        <form role="form" [formGroup]="dealsForm">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <input type="number" name="dealsFrom" formControlName="from"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <input type="number" name="dealsTo" formControlName="to"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="createLoading" type="button" (click)="dealsFilter()"
+                                        class="fin-pry-btn btn-filter">
+                                        Filter <span *ngIf="createLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deals Won Number -->
+            <div class="card">
+                <div class="card-header" id="heading1">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#won"
+                            aria-expanded="false" aria-controls="won">
+                            Deals Won
+                        </button>
+                    </h2>
+                </div>
+                <div id="won" class="collapse" aria-labelledby="heading1" data-parent="#accordionExample">
+                    <div class="card-body create-filter">
+                        <form role="form" [formGroup]="dealWonForm">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <input type="number" name="dealsFrom" formControlName="from"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <input type="number" name="dealsTo" formControlName="to"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="createLoading" type="button" (click)="dealWonFilter()"
+                                        class="fin-pry-btn btn-filter">
+                                        Filter <span *ngIf="createLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deals Lost Number -->
+            <div class="card">
+                <div class="card-header" id="heading1">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#lost"
+                            aria-expanded="false" aria-controls="lost">
+                            Deals Lost
+                        </button>
+                    </h2>
+                </div>
+                <div id="lost" class="collapse" aria-labelledby="heading1" data-parent="#accordionExample">
+                    <div class="card-body create-filter">
+                        <form role="form" [formGroup]="dealLostForm">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <label>From</label>
+                                    <input type="number" name="dealsFrom" formControlName="from"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <input type="number" name="dealsTo" formControlName="to"
+                                        class="form-control form-control-sm" required>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="createLoading" type="button" (click)="dealLostFilter()"
+                                        class="fin-pry-btn btn-filter">
+                                        Filter <span *ngIf="createLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter List -->
+            <div class="card">
+                <div class="card-header" id="heading6">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button">
+                            Custom Filters
+                        </button>
+                    </h2>
+                </div>
+                <div>
+                    <div style="padding: 0.25rem !important;">
+                        <div class="custom-control custom-radio"
+                            *ngFor="let filter of (filterList$); let index = index">
+                            <div [id]="'headingfilter'+ index">
+                                <button [id]="'collapseHead-'+ index" class="d-none btn btn-link collapsed"
+                                    type="button" data-toggle="collapse" [attr.data-target]="'#collapsefilter' + index"
+                                    aria-expanded="false" aria-controls="collapse">
+                                    {{filter.filterName}}
+                                </button>
+                                <input type="radio" id="{{filter.id}}" [checked]="isSelected(filter.id)"
+                                    name="customRadio" class="custom-control-input" (change)="customFilter(filter.id)">
+                                <label style="color: blue;" class="custom-control-label" for="{{filter.id}}">{{filter.filterName}}</label>
+                                <span (click)="activateEdit(index)" class="float-right edit-icon my-auto"><i
+                                        class="fa fa-eye"
+                                        style="font-size: 22px !important; vertical-align: 5px; padding-right: 7px;"></i></span>
+                                <hr />
+                            </div>
+
+                            <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading9"
+                                data-parent="#accordionExample">
+                                <div style="padding: 0.25rem !important;">
+                                    <form *ngIf="!(showFilter === index)" (ngSubmit)="customFilter(filter)">
+                                        <div class="form-group">
+                                            <label><b> TOTAL DEALS </b><br> {{filter.noOfDeals}}</label><br>
+                                            <label><b> DEALS WON </b> <br>{{filter.noOfDealsWon}}</label><br>
+                                            <label><b> DEALS LOST </b> <br>{{filter.noOfDealsLost}}</label><br>
+                                            <!-- <label><b> INVOICE </b> <br>{{filter.noOfInvoices}}</label> -->
+                                        </div>
+                                        <div class="form-group center">
+                                            <button (click)="editFilter(index)" type="button"
+                                                class="btn btn-info btn-filter">Edit</button>
+                                            <button (click)="deleteFilter(filter)" type="button"
+                                                class="ml-1 btn btn-danger btn-filter">Delete</button>
+                                        </div>
+                                    </form>
+                                    <ng-container *ngIf="showFilter === index">
+                                        <app-team-filter [filterData]="filter" [filterIndex]="index"
+                                            (getEditFilter)="getEditFilter($event)" (cancelFiter)="cancelFiter($event)">
+                                        </app-team-filter>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4 pr-1 pl-1" style="margin-right: auto !important; margin-bottom: 20px !important;">
+                <div class="col">
+                    <button class="btn btn-warning w-100 rounded-0" (click)="clearFilter()">Clear Fliters</button>
+                </div>
+            </div>
+
+            <div class="row mt-4 pr-1 pl-1" style="margin-right: auto !important; margin-bottom: 20px !important;">
+                <div class="col">
+
+                    <button style="color: white !important;" class="btn btn-primary w-100 rounded-0 shadow"
+                        data-toggle="collapse" data-target="#collapse10" aria-expanded="false"
+                        aria-controls="collapse10">Create Filter
+                    </button>
+                    <div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+                        <div class="card-body create-filter">
+                            <form role="form" [formGroup]="createFilterForm">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label>Filter Name<small style="color: red;">*</small></label>
+                                        <input type="text" name="filterName" formControlName="filterName"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deals</label>
+                                        <input type="number" minlength="0" name="noOfDeals" formControlName="noOfDeals"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deals Lost</label>
+                                        <input type="number" name="noOfDealsLost" formControlName="noOfDealsLost"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Deals Won</label>
+                                        <input type="number" name="noOfDealsWon" formControlName="noOfDealsWon"
+                                            class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <button [disabled]="createLoading" type="button" (click)="createFilter()"
+                                            class="fin-pry-btn">
+                                            Add Filter <span *ngIf="createLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

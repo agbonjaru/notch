@@ -1,0 +1,93 @@
+<div class="col-12">
+    <div class="license-card m-0" style="min-height: 400px">
+        <div class="license-card-header">
+            <h3 class="text-left">Payment Details</h3>
+            <span *ngIf="billingService.billingLoading$ | async" class="float-right"><span
+                    class="fa fa-spinner fa-spin"></span></span>
+        </div>
+        <div class="">
+            <div class="license-body-card text-left" style="margin: 30px;font-size: 14px;cursor: pointer;">
+
+                <div class="col-12">
+                    <h5>{{dialogData.license.name}}</h5>
+
+                    <hr>
+
+                    <p>Your plan will start immediately, Your subscription will auto renew until cancelled from your
+                        settings.</p>
+
+                    <div class="">
+                        <div class="row" style="line-height: 40px">
+                            <div class="col-md-3 font-weight-bold">
+                                {{dialogData.license.name}}:
+                            </div>
+                            <div class="col-md-9">
+                                {{currentBilling.currency}} {{dialogData.licenseToggled === true
+                                ? dialogData.license.monthlyPrice
+                                : dialogData.license.annuallyPrice}}
+                            </div>
+                        </div>
+                        <div class="row" style="line-height: 40px">
+                            <div class="col-md-3 font-weight-bold">
+                                {{'Prepaid Balance'}}:
+                            </div>
+                            <div class="col-md-9">
+                                {{currentBilling.currency}} {{currentBilling.prepaidBalance}}
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="outstandingBalance > 0" style="line-height: 40px">
+                            <div class="col-md-3 font-weight-bold">
+                                {{'Outstanding'}}:
+                            </div>
+                            <div class="col-md-9">
+                                {{currentBilling.currency}} {{outstandingBalance.toLocaleString('en-US')}}
+                            </div>
+                        </div>
+                        <div class="row" style="line-height: 40px">
+                            <div class="col-md-3 font-weight-bold">
+                                {{'License Tenure'}}:
+                            </div>
+                            <div class="col-md-9">
+                                {{prepaidTenure}} {{dialogData.licenseToggled === true ? 'Months' : 'Years'}}
+                                <span *ngIf="prepaidTenureDays > 0">{{prepaidTenureDays}} days</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 float-right">
+                                <button *ngIf="outstandingBalance === 0" class="btn btn-success float-right"
+                                    (click)="upgradeLicesense()">Proceed</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <hr>
+
+                <div class="contianer-fluid" *ngIf="outstandingBalance > 0">
+                    <p>Select your preferred card to proceed</p>
+
+                    <div class="row debit-cards pb-3" (click)="makePayment(card)" *ngFor="let card of dialogData.cards">
+
+                        <div class="col-md-3">xxxx xxxx xxxx {{card.lastFour}}<br><span style="font-size: 12px"
+                                class="text-info">{{card.expMonth}}/{{card.expYear}}</span></div>
+                        <div class="col-md-9 text-left font-weight-bold">{{card.brand}}</div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- <div class="fin-blue text-center" style="border-top: 1px #C4C4C4 solid;padding-top: 10px">
+            <p style="cursor: pointer" (click)="addCardDialog()">
+                {{billingService.billingLoadingValue === false ? 'Add Card' : 'loading'}}
+                <span *ngIf="billingService.billingLoading$ | async"><span class="fa fa-spinner fa-spin"></span></span>
+            </p>
+        </div> -->
+    </div>
+</div>

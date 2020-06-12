@@ -1,0 +1,69 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar> </app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+          <div class="mb-4">
+            <a routerLink="/settings/supervisor"> &laquo; Back </a>
+          </div>
+
+          <div class="settings-header">
+            <h1>{{supervisor.name}}</h1>
+            <!--<p>This where you invite and administer roles to Users</p>-->
+          </div>
+          <div class="settings-label">
+            <div class="row" *ngIf="(usersList$ | async) as usersList; else loading">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 20px;">
+                <form>
+                  <div class="form-group">
+                    <label class="col-form-label">Add Subordinates</label>
+                    <br>
+                    <ng-container *ngIf="filteredUsers(usersList)">
+                      <ngx-select-dropdown *ngIf="filteredUserList" [(ngModel)]="selectedUser" name="users"
+                        [multiple]="true" [options]="usersList" [config]="config"></ngx-select-dropdown>
+                    </ng-container>
+                  </div>
+                  <button (click)="addSubordinate()" [disabled]="!selectedUser.length || (disBtn)" class=" fin-pry-btn">
+                    Save <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </form>
+
+              </div>
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 role-creation-tab" style="padding-top: 20px;">
+                <div class="settings-header">
+                  <h1>All Subordinate</h1>
+                </div>
+                <div class="list-card">
+                  <table class="table" *ngIf="subordinateList && subordinateList.length; else noSub">
+                    <tbody>
+                      <tr *ngFor="let sub of  subordinateList">
+                        <th scope="row" style="border-top: none;">{{sub.firstName+' '+sub.lastName}}
+                        </th>
+                        <td style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                          <span (click)="deleteSub(sub)" title="delete">
+                            <i class="text-danger fa fa-trash"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <ng-template #noSub>
+                    <h6>No Subordinate</h6>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+            <ng-template #loading>
+              <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

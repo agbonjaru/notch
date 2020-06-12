@@ -1,0 +1,75 @@
+<div class="content" style="margin-top: 90px;">
+    <div class="row" style="width: 100%; margin: 0;">
+        <div *ngIf="sidebarState === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%" (click)="toggleSidebar('open')">
+            <div class="card">
+                <div class="card-body">
+                    <span class="fa fa-solar-panel"></span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="sidebarState === 'open'" class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+            style="border-right: 4px solid #ECF2FB; width: 80%;">
+            <app-target-sidebar 
+                (getFilter)='getTargets($event)'
+                (getClearFilter)="clearFilter()"
+                (toggleSidebar)="toggleSidebar($event)"
+            ></app-target-sidebar>
+        </div>
+        <div class="{{mainStyle}} content-list">
+          <div class="list">
+              <div class="row content-list-header">
+                  <div class="col-md-6 offset-md-6 content-list-buttons">
+                    <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+                  </div>
+
+                  <!-- View my commission Modal -->
+                  <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalCenterTitle2">My Commission</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <div class="row text-center" style="margin: auto">
+
+                                      <div class="col-sm-5 card processed-card text-left">
+                                          <p>N50,000.00</p>
+                                          <p>Total Processed</p>
+                                      </div>
+                                      <div class="col-sm-5 card processed-card text-left">
+                                          <p>N20,000.00</p>
+                                          <p>Total Paid</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Add commission Modal End-->
+
+              </div>
+              <app-datatable
+              [dataChanged]="dataTable.dataChangedObs"
+              [options]="dataTable.options"
+              [heads]="dataTable.heads"
+              (feedback)="dataFeedBackObsListener($event)"
+              [bodyrows]="targets"
+            ></app-datatable>
+              
+       
+              <ng-template #activateSpinner>
+                    <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+              </ng-template>
+          </div>
+      </div>
+  </div>
+
+</div>

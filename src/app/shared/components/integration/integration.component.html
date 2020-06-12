@@ -1,0 +1,294 @@
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <ul class="nav nav-pills" style="border-bottom: 1px solid #a9acb0" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="pills-email-tab" data-toggle="pill" href="#pills-email" role="tab"
+          aria-controls="pills-email" aria-selected="true">
+          <i class="fas fa-envelope"></i> Email</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-call-tab" data-toggle="pill" href="#pills-call" role="tab"
+          aria-controls="pills-call" aria-selected="false">
+          <i class="fas fa-phone-volume"></i> Call</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-new-note-tab" data-toggle="pill" href="#pills-new-note" role="tab"
+          aria-controls="pills-new-note" aria-selected="false">
+          <i class="fas fa-edit"></i> New note</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-log-act-tab" data-toggle="pill" href="#pills-log-act" role="tab"
+          aria-controls="pills-log-act" aria-selected="false">
+          <i class="fas fa-plus"></i> Log activity</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-create-task-tab" data-toggle="pill" href="#pills-all-tasks" role="tab"
+          aria-controls="pills-all-tasks" aria-selected="false">
+          <i class="fas fa-tasks"></i> All task</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-schedule-tab" data-toggle="pill" href="#pills-schedule" role="tab"
+          aria-controls="pills-schedule" aria-selected="false">
+          <i class="fas fa-calendar-alt"></i> Schedule</a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" id="pills-sms-tab" data-toggle="pill" href="#pills-sms" role="tab" aria-controls="pills-sms"
+          aria-selected="false">
+          <i class="fas fa-sms"></i> SMS</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-whatsapp-tab" data-toggle="pill" href="#pills-whatsapp" role="tab"
+          aria-controls="pills-whatsapp" aria-selected="false">
+          <i class="fab fa-whatsapp"></i> Whatsapp</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="pills-social-media-tab" data-toggle="pill" href="#pills-social-media" role="tab"
+          aria-controls="pills-social-media" aria-selected="false">
+          <i class="fas fa-comments"></i> Social-media</a>
+      </li> -->
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
+      <div class="tab-pane fade show active" id="pills-email" role="tabpanel" aria-labelledby="pills-email-tab">
+       <app-email [component_id]='email_component_id'></app-email>
+      </div>
+      <div class="tab-pane fade" id="pills-call" role="tabpanel" aria-labelledby="pills-call-tab">
+        <div class="tab-content company-within-inter">
+          <div class="text-center contact-welcome " aria-labelledby="call-tab">
+            <div>
+              <i class="fas fa-phone-volume"></i>
+            </div>
+
+
+            <div *ngIf="numberAdded; else showAdd">
+              <p>Make calls easily with Finultimate Sales.
+                <br>
+                Every call, Every
+                conversation, Every contact are automatically logged</p>
+              <div class="row m-auto">
+                <div class="col-sm-12 text-center">
+
+                  <button class="fin-pry-btn mr-1" (click)="handleUpdateCall()">
+                    UPDATE NUMBER
+                  </button>
+
+                  <button class="fin-sec-btn mr-1" (click)="handleMakeCall()">
+                    MAKE A CALL
+                  </button>
+
+                  <button class="fin-pry-btn mr-1" style="background-color: #f13154;" (click)="deleteNumber()">
+                    DELETE NUMBER
+                  </button>
+
+
+
+                  <!-- <i class="Phone is-animating"></i> -->
+                </div>
+              </div>
+
+            </div>
+
+            <ng-template #showAdd>
+              <p>Make calls easily with Finultimate Sales.
+                <br>
+                Every call, Every
+                conversation, Every contact are automatically logged</p>
+              <div class="row m-auto">
+                <div class="col-sm-12 text-center">
+                  <button class="fin-sec-btn" (click)="handleAddCall()">
+                    ADD NUMBER
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="tab-pane fade" id="pills-new-note" role="tabpanel" aria-labelledby="pills-new-note-tab">
+        <app-notes></app-notes>
+      </div>
+      <div class="tab-pane fade" id="pills-log-act" role="tabpanel" aria-labelledby="pills-log-act-tab">
+        <app-log-activity></app-log-activity>
+      </div>
+      <div class="tab-pane fade text-center" id="pills-all-tasks" role="tabpanel" aria-labelledby="pills-all-tasks-tab">
+        <app-client-tasks></app-client-tasks>
+      </div>
+      
+      <div class="tab-pane fade" id="pills-schedule" role="tabpanel" aria-labelledby="pills-schedule-tab">
+        <div class="text-center contact-welcome ">
+
+          <!--calendar-->
+          <div class="calendar">
+            <app-calendar></app-calendar>
+          </div>
+          <div class="add-meeting d-none">
+            <div class="">
+              <div class="left add-meeting-header">
+                <input type="text" class="meeting-input browser-default left" placeholder="What are you meeting about?">
+              </div>
+              <div class="meeting-text-area">
+                <div class="text-arEnter text here....kjhhhhhhhea">
+                  <textarea name="" class="emoji1" id="txtEditor4" cols="30" rows="10">
+                                     Enter note here...
+                  </textarea>
+                </div>
+                <div class="add-clients-meeting">
+                  <label>Clients involved</label>
+                  <br>
+                  <select id="mselect3" multiple="" data-placeholder="Add Clients" style="width: 100%;">
+                    <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                    <!--Add select all-->
+                    <!--<option value="" disabled selected>Choose your option</option>-->
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">England</option>
+                    <option value="3">Option 4</option>
+                    <option value="3">Tokyo</option>
+                  </select>
+                  <br>
+                  <label style="margin-top: 20px;">Who else will be attending?</label>
+                  <br>
+                  <select id="mselect4" multiple="" data-placeholder="Add attendees" style="width: 100% !important;">
+                    <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                    <!--Add select all-->
+                    <!--<option value="" disabled selected>Choose your option</option>-->
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                    <option value="3">Option 4</option>
+                    <option value="3">Option 5</option>
+                  </select>
+                </div>
+              </div>
+              <div class="meeting-features-row row text-left">
+                <div class="col-md-4">
+                  <label>Start time</label>
+                  <div class="form-group">
+                    <div class='input-group date' id='datetimepicker2'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class='input-group date' id='datetimepicker3'>
+                      <input type='text' class="form-control" />
+                      <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <label>Duration</label>
+                  <br>
+                  <select id="mselect6" class="chosen-single" style="width: 100% !important;">
+                    <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                    <!--Add select all-->
+                    <!--<option value="" disabled selected>Choose your option</option>-->
+                    <option value="1">10mins</option>
+                    <option value="2">20 mins</option>
+                    <option value="3">30 mins</option>
+                    <option value="3">1hr</option>
+                    <option value="3">1hr 30mins</option>
+                  </select>
+                  <br>
+                  <br>
+                  <br>
+
+                  <button class="fin-pry-btn text-right right">ADD</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="tab-pane fade text-center" id="pills-sms" role="tabpanel" aria-labelledby="pills-sms-tab">
+        <div class="add-meeting">
+          <div class="">
+            <div class="left add-meeting-header">
+              <input type="text" class="meeting-input browser-default left" placeholder="Enter phone number">
+              <button class="fin-sec-btn left">IMPORT NUMBERS</button>
+
+            </div>
+            <div class="meeting-text-area">
+              <div class="text-area">
+                <div id='txtEditor5'>
+
+                </div>
+              </div>
+              <div class="add-clients-meeting">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked14">
+                  <label class="custom-control-label" for="defaultUnchecked14">Enable two-way
+                    SMS</label>
+                </div>
+                <br>
+                <div>
+                  <p style="margin: 0;">Two way SMS allows you to see your SMS here and on
+                    your mobile phone
+                    <br>
+                    Download according to your platform</p>
+                  <p></p>
+                  <div class="d-flex">
+                    <a href="#!">
+                      <img src="/assets/img/appstore.svg" class="" width="110px" style="margin-right: 10px;" alt="">
+                    </a>
+                    <a href="#!">
+                      <img src="/assets/img/playstore.svg" class="" width="110px" alt="">
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="left fin-pry-btn" style="margin-top: 7px;">
+            SEND
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade text-center" id="pills-whatsapp" role="tabpanel" aria-labelledby="pills-whatsapp-tab">
+        <div class="whatsapp-integration">
+          <div>
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <p>Make calls easily with Finultimate Sales.
+            <br>
+            Every call, Every
+            conversation, Every contact are automatically logged</p>
+          <div class="row m-auto">
+            <div class="col-sm-12 text-center">
+              <button class="fin-sec-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                INTEGRATE Whatsapp
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade text-center" id="pills-social-media" role="tabpanel"
+        aria-labelledby="pills-social-media-tab">
+        <div class="whatsapp-integration">
+          <div>
+            <i class="fas fa-comments"></i>
+          </div>
+          <p>
+            Click the button below to integrate your social media accounts
+            <br>
+            Very easy!
+          </p>
+          <div class="row m-auto">
+            <div class="col-sm-12 text-center">
+              <a class="fin-sec-btn" href="settings.html">
+                INTEGRATE your Social media accounts
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

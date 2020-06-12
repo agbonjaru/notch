@@ -1,0 +1,664 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+
+</div>
+
+<div class="content" style="margin-top: 90px;">
+
+    <div class="col-sm-12 content-list-title">
+        <div class="m-auto text-center">
+            <h5 class="text-center fin-pry-color font-weight-bold">All My Task</h5>
+        </div>
+    </div>
+
+    <div class="row" style="width: 100%; margin: 0;">
+
+        <div *ngIf="sidebarState === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%"
+            (click)="toggleSidebar('open')">
+            <div class="card">
+                <div class="card-body">
+                    <span class="fa fa-solar-panel"></span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="sidebarState === 'open'" class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+            style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+            <div (click)="toggleSidebar('close')" class="is-clickable">
+                <span class="fa fa-times"></span>
+            </div>
+
+            <div class="list-filter">
+                <div class="accordion" id="accordionExample1">
+                    <div class="card">
+                        <div class="card-header" id="headingTop">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#personal" aria-expanded="true" aria-controls="personal">
+                                    Personal Filter
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="personal" class="collapse" aria-labelledby="headingTop"
+                            data-parent="#accordionExample1">
+                            <select class="gen-input browser-default form-control content-list-search"
+                                [(ngModel)]="personalFilter" (change)="onMyTaskFilter($event)"
+                                style="width: 100% !important;">
+                                <option value="all">All My Tasks</option>
+                                <option value="pending">All Pending Tasks</option>
+                                <option value="completed">All Completed Tasks</option>
+                                <option value="overdue">All Overdue Tasks</option>
+                                <option value="voided">All Voided Tasks</option>
+                                <option value="created">Created By Me</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-filter">
+                <div class="accordion" id="accordionExample2">
+                    <div class="card">
+                        <div class="card-header" id="headingTop">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#users"
+                                    aria-expanded="true" aria-controls="users">
+                                    User(s) Filter
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="users" class="collapse" aria-labelledby="headingTop" data-parent="#accordionExample2">
+                            <select class="gen-input browser-default form-control content-list-search"
+                                [(ngModel)]="userFilter" (change)="onUserFilter($event)"
+                                style="width: 100% !important;">
+                                <option value="all">All Users</option>
+                                <option *ngFor="let user of supervisorAttachedUsers" value={{user.id}}>
+                                    {{ user.firstName }} {{ user.lastName }}
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-filter">
+                <div class="accordion" id="accordionExample3">
+                    <div class="card">
+                        <div class="card-header" id="headingTop">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#client"
+                                    aria-expanded="true" aria-controls="client">
+                                    Client Filter
+                                </button>
+                            </h2>
+                        </div>
+                        <form [formGroup]="clientFilterForm">
+                            <div id="client" class="collapse" aria-labelledby="headingTop"
+                                data-parent="#accordionExample3">
+                                <input type="text" name="clientFilterText" formControlName="clientFilterText"
+                                    class="gen-input browser-default form-control search-btn"
+                                    placeholder="Search clients" (click)="onGetClientSuggestions($event)"
+                                    [(ngModel)]="clientFilterText" autocomplete="off" style="width: 100% !important;">
+
+                                <div *ngIf="clientList.length > 0" class="card shadow email-search-result-list">
+                                    <div *ngFor="let client of clientList"
+                                        class="p-2 is-clickable text-left email-search-result-list-item"
+                                        (click)="addClient(client)">
+                                        {{ client.name || client.firstName + " " + client.surName }}
+                                        <small *ngIf="client.sourceValue">
+                                            <b> [ {{client.id}} ] </b>
+                                        </small>
+                                        <small *ngIf="!client.sourceValue  && client.firstName">
+                                            <b> [ CONTACT ] </b>
+                                        </small>
+                                        <small *ngIf="!client.firstName">
+                                            <b> [ COMPANY ] </b>
+                                        </small>
+                                        <span *ngIf="!client.id" class="text-danger">
+                                            <small>
+                                                **No Client ID
+                                            </small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="list-filter">
+                <div class="accordion" id="accordionExample4">
+                    <div class="card">
+                        <div class="card-header" id="headingTop">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#deal"
+                                    aria-expanded="true" aria-controls="deal">
+                                    Deals Filter
+                                </button>
+                            </h2>
+                        </div>
+                        <ng-container [formGroup]="dealFilterForm">
+                            <div id="deal" class="collapse" aria-labelledby="headingTop"
+                                data-parent="#accordionExample4">
+                                <input type="text" name="inputText"
+                                    class="gen-input browser-default form-control search-btn"
+                                    formControlName="inputText" [(ngModel)]="inputText2" placeholder="Search deals"
+                                    (input)="onGetDealSuggestions2()" autocomplete="off"
+                                    style="width: 100% !important;">
+
+                                <div *ngIf="suggestedDeals2.length > 0" class="card shadow email-search-result-list">
+                                    <div *ngFor="let deal of suggestedDeals2"
+                                        class="p-2 is-clickable text-left email-search-result-list-item"
+                                        (click)="addDealFilter(deal, 'inputText')">
+                                        {{deal.name}}
+                                        <span *ngIf="!deal.code" class="text-danger">
+                                            <small> **No deal </small>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span *ngIf="isLoadingDeals">
+                                    <small class="text-center">Loading Deal... <i
+                                            class="fa fa-spinner fa-spin"></i></small>
+                                </span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4 pr-1 pl-1">
+                <div class="col">
+                    <button (click)="onClearFilters()" class="btn btn-warning w-100 rounded-0">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="{{mainStyle}} content-list">
+
+            <div class="list">
+                <ng-template [ngIf]="!loader.showSpinner">
+                    <div class="row content-list-header">
+                        <div class="col-md-6 text-left filter-actions-top">
+
+                            <!-- Add Client -->
+
+                            <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle3"> Add Client & Deal
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <ng-container [formGroup]="assignClientForm">
+                                                    <div class="form-group">
+                                                        <label style="font-size: 14px">Add Client </label>
+                                                        <br>
+                                                        <select id="mselect3" (change)="onClientSelected($event)"
+                                                            formControlName="associatedClientID"
+                                                            data-placeholder="Assign task to"
+                                                            style="width: 100% !important;">
+                                                            <option>Select a client</option>
+                                                            <option *ngFor="let client of clients"
+                                                                value="{{client.id}} {{client.name}} {{client.firstName}} {{client.surName}}">
+                                                                {{ client.name || client.firstName + " " + client.surName }}
+                                                                <small *ngIf="client.sourceValue">
+                                                                    <b> [ {{client.id}} ] </b>
+                                                                </small>
+                                                                <small *ngIf="!client.sourceValue  && client.firstName">
+                                                                    <b> [ CONTACT ] </b>
+                                                                </small>
+                                                                <small *ngIf="!client.firstName">
+                                                                    <b> [ COMPANY ] </b>
+                                                                </small>
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label style="font-size: 14px">Add Deals</label>
+                                                        <br>
+                                                        <input type="text" name="inputText"
+                                                            class="form-control pl-2 pr-2 search-btn"
+                                                            formControlName="inputText" [(ngModel)]="inputText1"
+                                                            placeholder="Search deals" (input)="onGetDealSuggestions()"
+                                                            autocomplete="off">
+                                                        <div *ngIf="suggestedDeals.length > 0"
+                                                            class="card shadow email-search-result-list">
+                                                            <div *ngFor="let deal of suggestedDeals"
+                                                                class="p-2 is-clickable text-left email-search-result-list-item"
+                                                                (click)="addDeal(deal)">
+                                                                {{deal.name}} <span *ngIf="!deal.code"
+                                                                    class="text-danger">
+                                                                    <small> **No deal code</small></span>
+                                                            </div>
+                                                        </div>
+                                                        <span *ngIf="isLoadingDeals2">
+                                                            <small class="text-center">Loading Deal... <i
+                                                                    class="fa fa-spinner fa-spin"></i></small>
+                                                        </span>
+                                                    </div>
+                                                </ng-container>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="closeAssignModal" class="fin-sec-btn"
+                                                data-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" class="fin-pry-btn" (click)="onAssignClientDeal()"
+                                                [disabled]="(isLoading)" data-style="slide-right">
+                                                Assign Client<span *ngIf="isLoading"><i
+                                                        class="fa fa-spinner fa-spin"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add Client Modal End-->
+
+                        </div>
+
+                        <!-- Add Task Modal -->
+
+                        <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ModalCenterTitle4">Add Task</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form [formGroup]="addTaskForm">
+                                        <div class="modal-body">
+                                            <ng-container>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">What's The Task About<small
+                                                            style="color: red;">*</small></label>
+                                                    <input type="text" class="gen-input2 browser-default"
+                                                        formControlName="taskName">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-md-12">
+                                                        <label class="col-form-label">Due Date<small
+                                                                style="color: red;">*</small></label>
+                                                        <input type="text" [minDate]="restricDateTYP" name="unknown"
+                                                            formControlName="remindDate"
+                                                            class="gen-input2 browser-default" placeholder="mm-dd-yyyy"
+                                                            bsDatepicker autocomplete="off"
+                                                            [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY', selectFromOtherMonth: true }">
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label class="col-form-label">Due Time<small
+                                                                style="color: red;">*</small></label>
+                                                        <span class='time-picker-parent '>
+                                                            <input #timeAsInput class=' t ' [value]='mytime'>
+                                                            <div id='displayTimePicker'
+                                                                class='time-picker bg-white d-inline-block p-2 border rounded '>
+                                                                <timepicker name="mytime" [(ngModel)]="mytime"
+                                                                    formControlName="remindTime" minuteStep="15"
+                                                                    showMeridian="ismeridian" required></timepicker>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Assign to<small
+                                                            style="color: red;">*</small></label>
+                                                    <br>
+                                                    <select class="gen-input2 browser-default form-control"
+                                                        style="width: 100%;border-color: #c4c4c4"
+                                                        formControlName="assignedUserID">
+                                                        <option *ngFor="let user of supervisorAttachedUsers"
+                                                            value={{user.id}}>
+                                                            {{ user.firstName }} {{ user.lastName }}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Description<small
+                                                            style="color: red;">*</small></label>
+                                                    <textarea class="gen-input2 browser-default" style="height: 100px"
+                                                        formControlName="taskDescription"></textarea>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="closeAddTaskModal" class="fin-sec-btn"
+                                                data-dismiss="modal">Close
+                                            </button>
+                                            <button type="button" (click)="onAddTask()" class="fin-pry-btn"
+                                                [disabled]="(addTaskForm.invalid || isLoading)"
+                                                data-style="slide-right">
+                                                Add<span *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Add Task Modal End-->
+
+                        <!-- Edit Task Modal -->
+
+                        <div class="modal fade" id="ModalCenter5" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ModalCenterTitle4">Edit Task</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <span *ngIf="isLoading" class="text-center"><small> Loading Task... </small> <i
+                                                class="fa fa-spinner fa-spin"></i></span>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form [formGroup]="editTaskForm">
+                                            <div class="form-group">
+                                                <label class="col-form-label">What's The Task About<small
+                                                        style="color: red;">*</small></label>
+                                                <input type="text" class="gen-input2 browser-default"
+                                                    formControlName="taskName">
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-12">
+                                                    <label class="col-form-label">Due Date<small
+                                                            style="color: red;">*</small></label>
+                                                    <small class="text-danger" style="display: block;">FOLLOW THE FORMAT
+                                                        BELOW TO EDIT DATE (mm-dd-yyyy)</small>
+                                                    <input type="date" class="gen-input2 browser-default"
+                                                        formControlName="remindDate" placeholder="mm-dd-yyyy">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label class="col-form-label">Due Time<small
+                                                            style="color: red;">*</small></label>
+                                                    <small class="text-danger" style="display: block;">FOLLOW THE FORMAT
+                                                        BELOW TO EDIT TIME (HR:Mins:Secs PM)</small>
+                                                    <input type="time" class="gen-input2 browser-default"
+                                                        formControlName="remindTime">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">Assign to<small
+                                                        style="color: red;">*</small></label>
+                                                <br>
+                                                <select class="gen-input browser-default form-control"
+                                                    style="width: 100%;border-color: #c4c4c4"
+                                                    formControlName="assignedUserID">
+                                                    <option *ngFor="let user of supervisorAttachedUsers"
+                                                        value={{user.id}}>
+                                                        {{ user.firstName }} {{ user.lastName }}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-form-label">Description<small
+                                                        style="color: red;">*</small></label>
+                                                <textarea type="text" class="gen-input2 browser-default"
+                                                    style="height: 100px" formControlName="taskDescription"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="closeEditTaskModal" class="fin-sec-btn"
+                                            data-dismiss="modal">Close
+                                        </button>
+                                        <button type="button" (click)="onUpdateTask(task.taskID)" class="fin-pry-btn"
+                                            [disabled]="(editTaskForm.invalid || isLoading)" data-style="slide-right">
+                                            Update<span *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Task Modal End-->
+
+                        <!-- View Task Modal -->
+
+                        <div class="modal fade" id="ModalCenter6" tabindex="-1" role="dialog"
+                            aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="ModalCenterTitle4"><small>TASK NAME :
+                                                {{task?.name}}</small></h5>
+                                        <span class="contact-detail badge-warning pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'PENDING' || task.status === 'pending'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'COMPLETED' || task.status === 'completed'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-info pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'OVERDUE' || task.status === 'overdue'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-danger pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'VOIDED' || task.status === 'voided'">{{ task.status }}</span>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="lead-info">
+                                            <div class="about-contact-row">
+                                                <div class="col-sm-12">
+                                                    <span class="contact-detail-top">DESCRIPTION</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.description}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="about-contact-row">
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top">DEAL</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.dealName}}</span>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top">CLIENT</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.clientName}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="about-contact-row">
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top">CREATOR</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.creatorUsername}}</span>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top">ASSIGNED USER</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.assignedUsername}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="about-contact-row">
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top"> DUE DATE TIME</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{task?.endDate}}
+                                                        {{task?.dueTime}}</span>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <span class="contact-detail-top"> COMPLETED / VOIDED DATE</span>
+                                                    <br>
+                                                    <span
+                                                        class="contact-detail">{{task?.dateCompleted  || task?.dateVoided | date: 'medium' }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <span *ngIf="isLoading" class="text-center"><small> Loading Task... </small> <i
+                                                class="fa fa-spinner fa-spin"></i></span>
+                                        <div class="float-right col-4">
+                                            <button type="button" data-dismiss="modal" aria-label="Close"
+                                                class="fin-sec-btn float-right m-2 ng-star-inserted">
+                                                CLOSE
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- View Task Modal End-->
+
+                        <!-- Whatsapp Task Modal -->
+
+                        <div class="modal fade" id="whatsapp" tabindex="-1" role="dialog" aria-labelledby="whatsapp"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="whatsapp">INTEGRATE WHATSAPP WITH TASK</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form [formGroup]="whatsAppForm">
+                                        <div class="modal-body">
+                                            <ng-container>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">WHATSAPP NUMBER</label><br />
+                                                    <small style="color:red;">Please Insert Your Number in International
+                                                        Format</small>
+                                                    <input type="text" placeholder="+2347056321478"
+                                                        class="gen-input2 browser-default"
+                                                        formControlName="whatsappNumber">
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" (click)="integrateWhatsApp()"
+                                                [disabled]="(whatsAppForm.invalid || isLoading)"
+                                                class="btn border border-info mr-2 fin-sec-btn float-right">
+                                                <span class="fab fa-whatsapp"></span> Connect<span *ngIf="isLoading"><i
+                                                        class="fa fa-spinner fa-spin"></i></span>
+                                            </button>
+                                            <button type="button" id="closeWhatsapp" data-dismiss="modal"
+                                                aria-label="Close" class="fin-pry-btn" data-style="slide-right">
+                                                close
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Whatsapp Task Modal End-->
+
+                        <div class="col-md-6 content-list-buttons">
+                            <button class="fin-sec-btn mt-2" data-toggle="modal" data-target=" #whatsapp">Integrate
+                                WhatsApp</button>
+                            <button class="fin-pry-btn" data-toggle="modal" data-target=" #ModalCenter4">
+                                Create Task
+                            </button>
+                        </div>
+                    </div>
+
+                    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+                        width="100%">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th class="th-sm">
+                                    Due Date
+                                </th>
+                                <th class="th-sm">
+                                    Name
+                                </th>
+                                <th class="th-sm">
+                                    Assigned By
+                                </th>
+                                <th class="th-sm">
+                                    Status
+                                </th>
+                                <th class="th-sm">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-template #showTable>
+                                <tr class="table-row" *ngFor="let task of allGeneralTasks">
+                                    <td>{{ task.dueDate | date: 'medium' }}</td>
+                                    <td>{{ task.taskName }}</td>
+                                    <td>{{ task.creatorFullName }}</td>
+                                    <td style="text-align: center;">
+                                        <span class="contact-detail badge-warning pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'PENDING' || task.status === 'pending'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'COMPLETED' || task.status === 'completed'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-info pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'OVERDUE' || task.status === 'overdue'">{{ task.status }}</span>
+                                        <span class="contact-detail badge-danger pl-2 pr-2 text-uppercase"
+                                            style="border-radius: 10px;font-size: 12px"
+                                            *ngIf="task.status === 'VOIDED' || task.status === 'voided'">{{ task.status }}</span>
+                                    </td>
+                                    <td style="font-weight: bold !important; cursor: pointer; text-align: center;">
+                                        <div id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <span>.</span>
+                                            <span>.</span>
+                                            <span>.</span>
+                                        </div>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" (click)="fetchTaskByID(task.taskID)"
+                                                data-toggle="modal" data-target="#ModalCenter6">View Task</a>
+                                            <a class="dropdown-item"
+                                                *ngIf="(task.status === 'PENDING' || task.status === 'pending' ) && task.creatorUserID == userID"
+                                                (click)="onEditTask(task.taskID)" data-toggle="modal"
+                                                data-target="#ModalCenter5">Edit Task</a>
+                                            <a class="dropdown-item"
+                                                *ngIf="(task.status === 'PENDING' || task.status === 'pending' ) && task.creatorUserID == userID"
+                                                (click)="onOpenAssignClientModal(task.taskID)" data-toggle="modal"
+                                                data-target="#ModalCenter3">Assign Client / Deal </a>
+                                            <a class="dropdown-item"
+                                                *ngIf="(task.status === 'PENDING' || task.status === 'pending') &&  (task.creatorUserID == userID || task.assignedUserID == userID)"
+                                                (click)="onMarkTaskAsCompleted(task.taskID)">Mark as completed</a>
+                                            <a class="dropdown-item"
+                                                *ngIf="(task.status === 'PENDING' || task.status === 'pending') &&  (task.creatorUserID == userID || task.assignedUserID == userID) "
+                                                (click)="onMarkTaskAsVoid(task.taskID)">Mark as Void</a>
+                                            <span class="dropdown-item"
+                                                *ngIf="task.status === 'COMPLETED' || task.status === 'completed'">Task
+                                                Completed</span>
+                                            <span class="dropdown-item"
+                                                *ngIf="task.status === 'VOIDED' || task.status === 'voided'">Task
+                                                Terminated</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <tr *ngIf="allGeneralTasks.length === 0; else showTable">
+                                <td colspan="5" style="text-align: center;"> No Data Available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </ng-template>
+            </div>
+
+            <!-- Loader -->
+            <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless"
+                (actionState)="onActionState()" *ngIf="loader.showSpinner">
+            </loading-spinner>
+            <!-- Loader Ends -->
+
+        </div>
+    </div>
+
+</div>

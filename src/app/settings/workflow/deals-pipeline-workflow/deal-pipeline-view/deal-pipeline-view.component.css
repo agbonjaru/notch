@@ -1,0 +1,23 @@
+#save-role-name svg {
+  font-size: 23px !important;
+  font-weight: 400;
+}
+
+#edit-role-name svg {
+  font-size: 19px !important;
+  font-weight: 400;
+}
+.w-90{
+  width: 90 !important;
+}
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: relative;
+  opacity: 1 !important;
+  pointer-events: none;
+  width: 30px;
+  height: 15px;
+}
+.btn-secondary{
+  background: gray !important;
+}

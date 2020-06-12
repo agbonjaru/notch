@@ -1,0 +1,175 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list pt-3">
+
+      <div class="mt-3 mb-4">
+        <span><a routerLink="/ticket/ticket-agents" class="mr-2">Agents</a> <i
+            class="fa fa-angle-right text-muted mr-2"></i>
+          <strong *ngIf="agentDetail">{{agentDetail?.firstName + ' ' + agentDetail?.lastName}}</strong></span>
+      </div>
+
+
+      <app-ticket-stats-card [data]="statData"></app-ticket-stats-card>
+
+      <div class="col-lg-12 col-xl-12 col-md-12 content-body">
+
+        <div class="content-body-header m-t-60" style="background-color: #ECF2FB">
+          <div class="content-body-nav col-md-12">
+            <ul>
+              <li>
+                <span><img src="/assets/img/ribbon-blue.svg" alt=""></span>
+                <a (click)="toggleClass('about-agent', 'aboutDp')" class="about-contact-toggler about-within"> About
+                  Agent
+                  <span class="aboutDp" style="padding-left: 10px;">
+                    <i class="fa fa-angle-down"></i>
+                    <i class="fa fa-angle-right d-none"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <span><img src="/assets/img/ribbon-dark.svg" alt="i" class="deals-within"></span><a
+                  (click)="toggleClass('ticket-list', 'tkDP')" class="deals-toggler deal-within">Tickets
+                  <span class="tkDP" style="padding-left: 10px;">
+                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-down d-none"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dropdown-list">
+          <!--About Agent-->
+          <div class="about-contact d-none d-block dp-item about-agent">
+            <ng-container *ngIf="agentDetail">
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">Name</span>
+                  <br>
+                  <span class="contact-detail">{{agentDetail?.firstName + ' ' + agentDetail?.lastName}}</span>
+                </div>
+                <!--<div class="col-sm-4 text-right">-->
+                <!--<button class="fin-sec-btn">-->
+                <!--ENRICH-->
+                <!--</button>-->
+                <!--</div>-->
+              </div>
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">Email Address</span>
+                  <br>
+                  <span class="contact-detail">{{agentDetail?.email}}</span>
+                </div>
+                <div class="col-sm-4 text-right">
+
+                </div>
+              </div>
+
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">Phone number</span>
+                  <br>
+                  <span class="contact-detail">{{agentDetail?.phoneNo}}</span>
+                </div>
+                <div class="col-sm-4 text-right">
+
+                </div>
+              </div>
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">Address</span>
+                  <br>
+                  <span class="contact-detail"
+                    *ngIf="agentDetail.street !== null">{{agentDetail?.street + ', ' + agentDetail?.city}}</span>
+                </div>
+                <div class="col-sm-4 text-right">
+
+                </div>
+              </div>
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">State</span>
+                  <br>
+                  <span class="contact-detail">{{agentDetail?.state}}</span>
+                </div>
+                <div class="col-sm-4 text-right">
+
+                </div>
+              </div>
+              <div class="about-contact-row">
+                <div class="col-sm-8">
+                  <span class="contact-detail-top">Country</span>
+                  <br>
+                  <span class="contact-detail">{{agentDetail?.country}}</span>
+                </div>
+                <div class="col-sm-4 text-right">
+
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <!--About Agent ends-->
+
+          <!--Tickets-->
+          <div class="deal-view-within d-none dp-item p-2 ticket-list">
+            <ng-container *ngIf="!ticketList">
+              <h6>Loading Tickets...</h6>
+            </ng-container>
+            <ng-container *ngIf="ticketList">
+              <ng-container *ngIf="ticketList.length">
+                <div *ngFor="let ticket of ticketList" class="ticket-content row">
+                  <div class="col-xl-6 d-flex card-view">
+                    <div class="chat_people">
+                      <!-- <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" width="70%" alt="sunil" style="cursor: default;"> </div> -->
+                      <div class="ml-4 chat_ib">
+                        <h5>{{ticket.clientName}}</h5>
+                        <p>{{ticket.subject}}</p>
+                        <p>{{ticket.createdDate | date}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="right" style="margin-right: 80px;">
+                      <p>{{ticket.priority}}</p>
+                      <p>{{ticket.stat}}</p>
+                      <!-- <select  class="gen-input browser-default form-control content-list-search" style="border: none;border-radius: 0;width: 100px!important;cursor: pointer">
+                                        <option value="1">High</option>
+                                        <option value="2">Medium</option>
+                                        <option value="3">Low</option>
+                                        <option value="3">Urgent</option>
+                                    </select> -->
+                      <!-- <select disabled class="gen-input browser-default form-control content-list-search" style="border: none;border-radius: 0;width: 100px!important;cursor: pointer">
+                                        <option value="1">Closed</option>
+                                        <option value="2">Pending</option>
+                                        <option value="3">Resolve</option>
+                                        <option value="3">Waiting for customer</option>
+                                    </select> -->
+                      <div id="dropdownMenuLink19" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        style="margin-left: 20%;cursor: pointer">
+                        <span>.</span>
+                        <span>.</span>
+                        <span>.</span>
+                      </div>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink19">
+                        <a class="dropdown-item" [routerLink]="['/ticket/ticket-view', ticket.code]">chat</a>
+                        <!-- <a class="dropdown-item" href="#">Close</a> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <div *ngIf="!ticketList.length">
+                <h6>No Tickets</h6>
+              </div>
+            </ng-container>
+          </div>
+          <!--Tickets end-->
+        </div>
+        <!-- <app-integration></app-integration> -->
+      </div>
+    </div>
+  </div>
+</div>

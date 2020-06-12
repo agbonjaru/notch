@@ -1,0 +1,513 @@
+<app-ticket-subnav></app-ticket-subnav>
+<div  class="messaging"  style="margin-top: 120px">
+  <div *ngIf="loadingPage" class="inbox_msg">
+
+      <div class="inbox_people border-right border-top  pl-2" style="overflow: hidden;">
+          <div class="headind_srch browser-default">
+            <div class="mt-2 ml-3">
+              <a routerLink="/ticket/all-ticket">< Tickets</a>
+            </div>
+              <!-- <div class="recent_heading d-flex">
+                  <select class="gen-input browser-default form-control" style="width: 97% !important;">
+                      <option value="" disabled="" selected="">All chats</option>
+                      <option value="1">Recent</option>
+                      <option value="2">Active</option>
+                  </select>
+                  <span class="ml-3 mr-3" title="New message"><i class="fas fa-edit"></i></span>
+              </div> -->
+              <div class="srch_bar">
+                  <div class="stylish-input-group">
+                      <input type="text" class="write_msg mt-2 pl-2" (input)="searchTicket($event)"
+                      style="border: none !important; border-radius: 3px;" placeholder="Search chat">
+                      <!-- <span class="input-group-addon">
+                          <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                          </span> -->
+                  </div>
+              </div>
+          </div>
+
+          <div class="inbox_chat" id="ticket_inbox_chat">
+              <div *ngFor="let ticket of ticketList; let ticketIndex = index" class="chat_list d-flex" 
+                    [ngClass]="{'active_chat': ticketCode === ticket.code}"> 
+                  <div (click)="openChat(ticket, ticketIndex)" class="chat_people">
+                      <div class="chat_img">
+                        <img [src]="formatLocation(ticket.location).flag"  
+                        [alt]="formatLocation(ticket.location).detail" [title]="formatLocation(ticket.location).detail">
+                        <div *ngIf="ticket.online"  style="margin-top: -13px;margin-left: 14px;">
+                          <span  class="fa fa-circle text-success"></span>
+                        </div>
+                      </div>
+                      <div class="chat_ib">
+                          <h5 class="w-100 chat-name">
+                              <span class="w-75 float-left  text-elips pr-1">{{ticket.clientName}}</span>
+                              <span [title]="ticket.lastResponse ? (ticket.lastResponse | date) : 'No Res'" 
+                                  class="w-25 chat_date text-right text-elips">{{ticket.lastResponse ? (ticket.lastResponse | date:'shortDate') : 'No Res'}}
+                              </span>
+                          </h5>
+                          <p class="w-100 text-elips"><span>{{ticket.subject}}</span> 
+                            <span *ngIf="ticket.notice" class="badge badge-pill badge-primary  notice-icon">{{ticket.notice}}</span>
+                        </p>
+                          
+                      </div>                     
+                  </div>
+              </div>
+            
+ 
+          </div>
+      </div>
+
+
+      <div class="inbox_people right border-left border-top" id="ticket_inbox_people">
+          <div class="ticket-filter2 list-filter"
+               style="height: 760px; box-shadow: none !important; padding-top: 0; padding-right: 0 !important;">
+            <ng-container *ngIf="clientInfo">
+               <div class="text-center border-bottom pb-3 mb-3">
+                  <img [src]="clientInfo.profileImage" onerror="this.src='http://ssl.gstatic.com/accounts/ui/avatar_2x.png'" style="border-radius: 50%; width: 130px; padding: 20px;" alt="">
+                  <p class="fw-600">{{clientInfo.name  || (clientInfo.firstName+' '+clientInfo.surName)  }}</p>
+
+              </div>
+
+              <div class="accordion" id="accordionExample">
+                  <div class="card">
+                      <div class="card-header" id="headingTop">
+                          <h2 class="mb-0">
+                              <button class="btn btn-link" type="button" data-toggle="collapse"
+                                      data-target="#collapseTop" aria-expanded="true"
+                                      aria-controls="collapseTop">
+                                  Client Details
+                              </button>
+                          </h2>
+                      </div>
+
+                      <div id="collapseTop" class="collapse show" aria-labelledby="headingTop"
+                           data-parent="#accordionExample">
+                          <div class="card-body pl-0 pb-0">
+
+                              <div>
+                                  <p>Company Name</p>
+                                  <span>{{clientInfo.email?(clientInfo.name|| 'No Company'):'No Company'}}</span>
+                              </div>
+                              <br>
+                              <div>
+                                  <p>Email</p>
+                                  <span class="text-elips">{{clientInfo.email ||  'No Email'}}</span>
+                              </div>
+                              <br>
+
+                              <br>
+                              <div>
+                                  <p>Phone no</p>
+                                  <span>{{clientInfo.whatsappNumber || clientInfo.phoneNumber 
+                                          || clientInfo.officialPhoneNumber || 'No Number'}}</span>
+                              </div>
+                              <br>
+                                    <div>
+                                  <p>Signed Up</p>
+                                  <span>{{clientInfo.createdAt | date}}</span>
+                              </div>
+                              <br>
+                              <!-- <div>
+                                  <p>TIME LOG</p>
+                                  <span>8:30am 09/11/2019</span><br>
+                              </div> -->
+                              <br>
+                              <div *ngIf="clientType">
+                                  <ng-container *ngIf="clientInfo && clientInfo.id">
+                                    <a *ngIf="clientType === 'contact'" [routerLink]="['/clients/contacts-view', clientInfo.id]"  class="pl-4" target="_blank">View more</a> 
+                                    <a *ngIf="clientType === 'company'" [routerLink]="['/clients/companies-view', clientInfo.id]" class="pl-4" target="_blank">View more</a>
+                                  </ng-container>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card">
+                      <div class="card-header" id="headingTop2">
+                          <h2 class="mb-0">
+                              <button class="btn btn-link" type="button" data-toggle="collapse"
+                                      data-target="#collapseTop2" aria-expanded="true"
+                                      aria-controls="collapseTop2">
+                                  Options
+                              </button>
+                          </h2>
+                      </div>
+
+                      <div id="collapseTop2" class="collapse" aria-labelledby="headingTop2"
+                           data-parent="#accordionExample">
+                          <div class="card-body pl-0 pb-0" >
+                              <button *ngIf="!selectedTicket.closed" class="fin-sec-btn" (click)="closeorReopenTicket(2)" title="Close ticket">Close Ticket</button>
+                              <button *ngIf="selectedTicket.closed" class="fin-sec-btn" (click)="closeorReopenTicket(1)" title="Close ticket">Reopen Ticket</button>
+                            
+                            </div>
+                      </div>
+                  </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!clientInfo">
+                <h6>Loading Client...</h6>
+            </ng-container>
+          </div>
+      </div>
+
+
+      <div class="mesgs border-top" >
+          <div class="border-bottom pb-3 d-flex" *ngIf="selectedTicket">
+              <span *ngIf="selectedTicket.agentID" title="assigned to agent" class="mx-2 mt-1"><i class="fa fa-user-check text-success fa-2x"></i></span>
+              <button (click)="handleAssignTicket()" class="fin-sec-btn m-0">Assign Ticket</button>
+              <span data-toggle="modal" data-target="#showTodos" *ngIf="todoList && todoList.length" title="todos" class="mx-3 mt-1 is-clickable">
+                  <i class="fa fa-clipboard-list text-info fa-2x"></i>
+              </span>
+              <div class="m-auto d-flex">
+                <div class="input-group">
+                    <input type="text" class="gen-input2 browser-default" style="width: 80% !important;"
+                    placeholder="Search conversation" (input)="searchConservation($event)">
+                    <div class="input-group-append">
+                        <div class="m-2"><span class="fa fa-search fa-1x"></span></div>
+                   </div>
+                </div>
+         
+                <!-- <div class="m-2"><span class="fa fa-search fa-1x"></span></div> -->
+                <!-- <span class="pt-1 pl-2 hov-pointer fin-blue">Search</span> -->
+            </div>
+            <span [ngSwitch]="selectedTicket.src" >
+              <span *ngSwitchCase="'WHATSAPP'" title="whatsapp" class="mr-4 mt-1"><span class="fab fa-whatsapp text-success fa-2x"></span></span>
+              <span *ngSwitchCase="'WEBSITE'" title="web chat" class="mr-4 mt-1"><i class="fas fa-comment-dots text-primary fa-2x"></i></span>
+              <span *ngSwitchCase="'CALL'" title="call" class="mr-4 mt-1"><i class="fas fa-phone  fa-2x"></i></span>
+              <span *ngSwitchCase="'TWITTER'" title="twitter" class="mr-4 mt-1"><i class="fab fa-twitter text-primary fa-2x"></i></span>
+              <span *ngSwitchDefault title="email" class="mr-4 mt-1"><span class="fa fa-envelope text-info fa-2x"></span></span>
+
+            </span>
+
+              <!-- <p class="text-center "><span class="fs-18 fw-600" *ngIf="clientInfo">{{clientInfo.name || clientInfo.firstName+' '+clientInfo.surName }}</span></p> -->
+              <ng-container >
+                <div *ngIf="selectedTicket.stat !== 'RESOLVED' && !selectedTicket.closed"  class="float-right"><button class="fin-pry-btn" (click)="resolveTicket()">Resolve Ticket</button></div>
+                <div *ngIf="!selectedTicket.closed && selectedTicket.stat === 'RESOLVED'"  class="float-right"><button class="fin-sec-btn m-0" (click)="closeorReopenTicket(2)">Close Ticket</button></div>
+                <div *ngIf="selectedTicket.closed"  class="float-right"><button class="fin-sec-btn m-0" (click)="closeorReopenTicket(1)">Reopen Ticket</button></div>
+          
+              </ng-container>
+              <ng-container>
+              </ng-container>
+          </div>
+
+          <div class="ticket_msg_history pt-2" id="ticket_msg_history">
+            <ng-container *ngIf="chatList">
+                <ng-container *ngIf="chatList.length">
+                    <!-- <div class="incoming_msg">
+                        <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png"
+                                                           alt="sunil"></div>
+                        <div class="received_msg">
+                            <div class="received_withd_msg">
+                                <p>Test which is a new approach to have all
+                                    solutions</p>
+                                <span class="time_date"> 11:01 AM    |    June 9</span></div>
+                        </div>
+                    </div>
+                    <div class="outgoing_msg">
+                        <div class="sent_msg">
+                            <p>Test which is a new approach to have all
+                                solutions</p>
+                            <span class="time_date"> 11:01 AM    |    June 9</span></div>
+                    </div> -->
+                    <ng-container *ngFor="let chat of chatList">
+                        <div class="incoming_msg" *ngIf="(chat.sender || chat.type === 1); else outgoing_msg">
+                            <div class="received_msg" *ngIf="chat.message !== 'null'&&chat.message !== null">
+                           
+                                <div class="received_withd_msg multi-line" >
+                                  <div *ngIf="formatMsg(chat.message).type === 'image/jpeg'">
+                                    <img width="60%" [src]="formatMsg(chat.message).meta" alt="image">
+                                  </div>
+                                  <div *ngIf="formatMsg(chat.message).type === 'video/mp4'">
+                                    <video width="400" controls>
+                                      <source [src]="formatMsg(chat.message).meta" type="video/mp4">
+                                      Your browser does not support HTML5 video.
+                                    </video>
+                                  </div>
+                                  <div *ngIf="formatMsg(chat.message).type === 'audio/ogg'">
+                                    <audio controls>
+                                      <source [src]="formatMsg(chat.message).meta" type="audio/ogg">
+                                    Your browser does not support the audio element.
+                                    </audio>
+                                  </div>
+                                  <p  *ngIf="formatMsg(chat.message).type === 'text'"  [innerHTML]="chat.message" ></p>
+                                  <span class="time_date">{{(chat.createdDate) | date:'medium'}}</span>
+                              </div>
+                            </div>
+                            
+                        </div>
+                        <ng-template #outgoing_msg>
+                            <div class="outgoing_msg" *ngIf="chat.message !== 'null'">
+                                <div class="sent_msg multi-line">
+                                    <p class="" >{{chat.message}}</p>
+                                    <span class="time_date">{{(chat.createdDate) | date:'medium'}}</span></div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </ng-container>
+                <div class="text-center" *ngIf="!chatList.length">
+                    <h6>No Recent Conservation</h6>
+                </div>
+            </ng-container>  
+            <ng-container *ngIf="!chatList">
+                <div class="text-center">
+                    <h6>Loading Chats....</h6>
+                </div>
+            </ng-container>
+          </div>
+          <div class="type_msg tab-content" id="ticket_type_msg">
+              <div class="">
+                  <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item"><a class="nav-link active" style="background: transparent;"
+                                              id="create-lead-source-tab"
+                                              data-toggle="tab"
+                                              href="#create-lead-source" role="tab"
+                                              aria-controls="email"
+                                              aria-selected="true">Reply</a>
+                      </li>
+                      <li class="nav-item"><a class="nav-link" style="background: transparent;"
+                                              id="create-customer-source-tab" data-toggle="tab"
+                                              href="#create-customer-source"
+                                              role="tab"
+                                              aria-controls="call"
+                                              aria-selected="false">Note</a>
+                      </li>
+                      <li class="nav-item"><a class="nav-link" style="background: transparent;"
+                                              id="log-call-tab" data-toggle="tab"
+                                              href="#log-call"
+                                              role="tab"
+                                              aria-controls="call"
+                                              aria-selected="false">Log a Call</a>
+                      </li>
+                      <li class="nav-item">
+                        <button data-toggle="modal" data-target="#addTodo" class="fin-pry-btn">Add Todo</button>
+                      </li>
+                      <li *ngIf="selectedTicket.closed" class="nav-item">
+                        <p  class="text-danger m-0 ml-2"> <i class="fa fa-times-circle"></i> Ticket Closed</p>
+                      </li>
+                    </ul>
+                  <!--<p>Set up Roles</p>-->
+                </div> 
+
+              <div class="settings-label tab-pane fade show active" id="create-lead-source" role="tabpanel"
+                   aria-labelledby="create-lead-source-tab">
+                  <div class="input_msg_write pt-4" [title]="selectedTicket.closed ? 'Ticket is Closed': ''">
+                    <textarea ngModel [(ngModel)]="chatMsg" class="write_msg textarea" name="chatMsg" placeholder="Type a message"
+                       (click)="autoRemoveNotity()" [disabled]="selectedTicket.closed" >
+                    </textarea>
+                          <button  *ngIf="!msgLoading" (click)="sendMsg()" class="msg_send_btn " type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                      </button>
+                      <span class="msg_send_btn text-center pt-1"  *ngIf="msgLoading"><i class="fa fa-spinner fa-spin"></i></span> 
+                  </div>
+                  <div class="chat-icons" >
+                      <ul>
+                        <emoji-mart *ngIf="showEmoji" (emojiClick)="emojiClicked($event)" [style]="{ position: 'absolute', bottom: '2px', left: '45px' }"
+                           title="Pick your emoji…" emoji="point_up"></emoji-mart>
+                          <li>
+                            <span (click)="toggleEmojiPicker()"><i class="fas  fa-smile"></i></span>
+                          </li>
+                          <!-- <li>
+                            <span (click)="toggleEmojiPicker()"><i class="fa fa-paperclip"></i></span>
+                          </li> -->
+                          <!-- <li><i class="fas fa-star"></i></li>
+                          <li><i class="fas fa-image"></i></li>
+                          <li><i class="fas fa-image"></i></li> -->
+                      </ul>
+                  </div>
+              </div>
+              <div class="settings-label tab-pane fade" id="create-customer-source" role="tabpanel"
+                   aria-labelledby="create-customer-source-tab">
+                <app-ticket-notes [selectedTicket]="selectedTicket" ></app-ticket-notes>
+
+              </div>
+              <div class="settings-label tab-pane fade" id="log-call" role="tabpanel"
+                   aria-labelledby="log-call-tab">
+                  <div class="input_msg_write pt-4">
+                      <input type="text" class="write_msg" name="callLog" placeholder="Type a message"
+                            [(ngModel)]="callLogValue"  [disabled]="selectedTicket.closed" style="border: none; padding-left: 15px; width: 99% !important;"/>
+                      <!--<textarea name="" id="" class="write_msg" cols="30" rows="10" style="border: none;" placeholder="Type a message"></textarea>-->
+                      <button *ngIf="!callLogLoading" (click)="createCallLog()" class="msg_send_btn " type="button"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+                      </button>
+                      <span  *ngIf="callLogLoading" class="note-loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </div>
+                  <div class="chat-icons">
+                      <ul>
+                          <li data-toggle="modal" data-target="#showCallLogs" (click)="viewCallLog()" title="view call logs">
+                            <button class=" fin-sec-btn">View Logs</button> 
+                          </li>
+                      </ul>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="pt-4" *ngIf="!loadingPage">
+      
+    <loading-spinner (reloadSpinner)="getTickets()" [spinnerType]="spinnerType"></loading-spinner>
+  </div>
+<!-- Add Todo Modal -->
+  <div class="modal fade" id="addTodo" tabindex="-1" role="dialog" aria-labelledby="addTodoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTodoLabel">Add Todo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-danger">All fields with (*) are required</p>
+          <form #addTodoForm="ngForm">
+            <div class="form-group">
+                <label class="col-form-label">Name <span class="text-danger">*</span> </label>
+                <input  type="text" class="gen-input2 browser-default" name="name" ngModel required>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label">Content <span class="text-danger">*</span></label>
+                <textarea class="form-control"  cols="10" rows="3" name="content" ngModel required></textarea>
+                <!-- <input formControlName="detail" type="text" class="gen-input2 browser-default"> -->
+            </div>
+            <!-- <div class="form-group">
+              <label class="col-form-label">Reminder</label>
+              <input  type="datetime-local" class="gen-input2 browser-default" name="reminder" ngModel>
+          </div> -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="(addTodoForm.invalid || todoLoading)" (click)="addTodo(addTodoForm)" 
+                type="button" class="fin-pry-btn">Save changes 
+                <span *ngIf="todoLoading"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Ticket Modal -->
+  <button id="assignTicketHandler" data-toggle="modal" data-target="#assignTicket" class="d-none">assign Ticket</button>
+<div class="modal fade" id="assignTicket" tabindex="-1" role="dialog" aria-labelledby="assignTicketLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignTicketLabel">Assign Ticket</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="text-danger">All fields with (*) are required</p>
+            <form >
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Agents  <span class="text-danger">*</span> </label>
+                  <ngx-select-dropdown (change)="handleAgentSelect()" [options]="agentList" name="agentID" [(ngModel)]="selectedAgent" [config]="config" > </ngx-select-dropdown>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Groups <span class="text-danger">*</span></label>
+                  <ng-container *ngIf="selectedAgent&&selectedAgent.id; else noSelectedAgent">
+                    <ng-container *ngIf="agentGroup.list; else loadingGroups">
+                      <select class=" form-control" name="group" [(ngModel)]="agentGroup.selected">
+                        <option disabled value="">Select Group</option>
+                        <option [value]="group.groupID+'+'+group.groupName" 
+                            *ngFor="let group of agentGroup.list" value="">{{group.groupName}}</option>
+                      </select>
+                    </ng-container>
+                    <ng-template #loadingGroups>
+                      <p>Loading groups</p>
+                    </ng-template>
+                  </ng-container>
+                  <ng-template #noSelectedAgent>
+                    <p>Agent is required to select group</p>
+                  </ng-template>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="!(selectedAgent && selectedAgent.id && agentGroup.selected)
+          || assignLoading" type="button" (click)="assigneTicket()" class="fin-pry-btn">
+          Save <span *ngIf="assignLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TodoList Modal -->
+  <div class="modal fade" id="showTodos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" *ngIf="todoList">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">To-do({{todoList.length}})</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12" style="margin-top: 10px">
+                <div  style="width: 100%"> 
+                  <ng-container *ngIf="todoList.length">
+                  <div *ngFor="let todo of todoList" class="custom-control custom-checkbox d-flex mb-2" style="margin-left: 50px;">
+                    <input type="checkbox" [checked]="todo.stat === 'DONE'" [disabled]="todo.stat === 'DONE'"
+                    class="custom-control-input" [id]="todo.id" (click)="markTodo(todo)" >
+                    <label class="custom-control-label"  [for]="todo.id"
+                      style="font-size: 14px;font-weight: 600;color:#000000">
+                      {{todo.name}}<br>
+                      <span class="text-center multi-line" style="font-weight: normal;color: #474847;font-size: 12px">
+                        {{todo.content}}</span>
+                    </label>
+                  </div>
+                  </ng-container>
+                  <ng-container *ngIf="!todoList.length">
+                    <h6 class="text-center">No Notes</h6>
+                  </ng-container>
+               
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="fin-pry-btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- CallLogList Modal -->
+    <div class="modal fade" id="showCallLogs" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" *ngIf="todoList">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Call Logs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12" style="margin-top: 10px">
+                  <div  style="width: 100%"> 
+                  <ng-container *ngIf="callLogList; else note_loading">
+                  <ng-container *ngIf="callLogList.length">
+                    <div  class="" style="margin-left: 25px;">
+                       <ul *ngFor="let calllog of callLogList">
+                         <li ><i class="fa fa-circle"></i><span class="ml-2">{{calllog.content}}</span></li >
+                       </ul>
+                    </div>
+                    </ng-container>
+                    <ng-container *ngIf="!callLogList.length">
+                      <h6 class="text-center">No Call Log</h6>
+                  </ng-container>
+                </ng-container>
+                <ng-template #note_loading>
+                  <h6 class="text-center">Loading Call Logs...</h6>
+                </ng-template>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="fin-pry-btn" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

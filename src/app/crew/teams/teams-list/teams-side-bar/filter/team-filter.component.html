@@ -1,0 +1,33 @@
+<form (ngSubmit)="editFilter()" [formGroup]="filterForm">
+  <div class="form-group">
+    <div class="form-group">
+      <label>Filter Name</label>
+      <input type="text" name="filterName" formControlName="filterName" class="form-control form-control-sm" required>
+    </div>
+    <div class="form-group">
+      <label>Deals</label>
+      <input type="number" name="noOfDeals" formControlName="noOfDeals" class="form-control form-control-sm" required>
+    </div>
+    <div class="form-group">
+      <label>Deals Lost</label>
+      <input type="number" name="noOfDealsLost" formControlName="noOfDealsLost" class="form-control form-control-sm"
+        required>
+    </div>
+    <div class="form-group">
+      <label>Deals Won</label>
+      <input type="number" name="noOfDealsWon" formControlName="noOfDealsWon" class="form-control form-control-sm"
+        required>
+    </div>
+    <!-- <div class="form-group">
+      <label>Inovices</label>
+      <input type="number" name="noOfInvoices" formControlName="noOfInvoices" class="form-control form-control-sm"
+        required>
+    </div> -->
+    <div class="form-group">
+      <button (click)="cancel()" type="button" class="btn btn-danger btn-filter">Cancel</button>      
+      <button [disabled]="filterForm.invalid || editLoading " type="submit" class="fin-pry-btn btn-filter">
+        Submit <span *ngIf="editLoading"><i class="fa fa-spinner fa-spin"></i></span>
+      </button>
+    </div>
+  </div>
+</form>

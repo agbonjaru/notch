@@ -1,0 +1,220 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content ">
+  <div class="create-deal-wrapper">
+    <a routerLink="/sales/deals-list">
+      < back</a> <div class="row ">
+
+        <ng-container [formGroup]="createDealForm">
+          <div class="col-md-8 create-deal-left">
+            <h1 style="margin-top: 30px; margin-bottom: 0px;">Create Deal</h1>
+            <p class="text-danger">All field with (*) are required</p>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <label for="cname">Deal Name <span class="text-danger" >*</span> </label>
+                <br />
+                <input formControlName="name" type="text" id="cname" name="cname" placeholder="name"
+                  class="gen-input browser-default" />
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="date">Probable Close Date <span class="text-danger" >*</span></label>
+                <br />
+                
+                <input formControlName="closeDate" readonly autocomplete="off" type="text" placeholder="dd/mm/yyyy" id="date" name="date" [minDate]="date"
+                  class="gen-input browser-default" bsDatepicker/>
+
+              </div>
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="cname">Currency <span class="text-danger" >*</span></label>
+                <br />
+                <select (change)="changeCurrency()" formControlName="currency" class="gen-input browser-default form-control">
+                  <option disabled value="">Select Currency</option>
+                  <option *ngFor="let cun of (currencyList)" [value]="cun.currency_code">
+                    {{cun.currency_code}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-6 col-sm-12">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="value">Deal Value (<span [innerHTML]="currenySymbol" ></span>)</label>
+                <br />
+                <input autocomplete="off" formControlName="amount" type="number" id="value" name="value" placeholder="value"
+                  class="gen-input browser-default" />
+                <p style="margin: 0px !important;" [innerHTML]="createDealForm.value.amount?(createDealForm.value.amount | currency:'code':currenySymbol):''"></p>
+                <p class="text-danger" *ngIf="createDealForm.controls.amount.dirty && 
+                          createDealForm.controls.amount.errors  &&
+                          createDealForm.controls.amount.errors.min">
+                    Deal Value must not be less than 0
+                </p>
+              </div>  
+      
+
+      
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+      
+              <div  class="col-md-6 col-sm-12">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="cname">Sales Person <span class="text-danger" >*</span> </label>
+                <br />
+                <div class="w-75">
+                  <ngx-select-dropdown (change)="fetchSalesPTeam()" formControlName="creatorID" [options]="salesPersonList$ | async" 
+                  [config]="salespersonConfig" >
+                </ngx-select-dropdown>
+                </div>
+                <!-- <select (change)="fetchSalesPTeam()" formControlName="creatorID" class="gen-input browser-default form-control">
+                  <option value="" disabled selected>Select sales person</option>
+                  <ng-container *ngIf="(salesPersonList$ | async) as salesPersonList">
+                    <option *ngFor="let member of salesPersonList" 
+                      [value]="member.id+'+'+member.name">{{member.name}}</option>
+                  </ng-container>
+                </select> -->
+
+              </div>
+              <div  class="col-md-6 col-sm-12">
+                <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                <label for="cname">Teams <span class="text-danger" >*</span> 
+              
+                </label>
+                <br /> 
+                <ng-container *ngIf="(teamList$ | async) as teamList; else loadingTeam" >
+                  <select [style.display]="!getDealControls('teamID').disabled ? 'block': 'none'" formControlName="teamID" class="gen-input browser-default form-control">
+                      <option value="" disabled selected>Select team</option>
+                      <option *ngFor="let team of teamList" 
+                        [value]="team.teamID">{{team.teamName}}</option>
+                  </select>
+                  <select disabled [style.display]="getDealControls('teamID').disabled ? 'block': 'none'" class="gen-input browser-default form-control">
+                    <option  value="">Self</option>
+                  </select>
+
+                  </ng-container>
+                    <ng-template #loadingTeam>
+                      <p>{{createDealForm.value.creatorID ? 'Loading Teams...' : 'Salesperson is required to select a team'}}</p>
+                    </ng-template>
+                    <ng-container *ngIf="getDealControls('creatorID').value">
+                      <div *ngIf="getDealControls('creatorID').value.id===generalSrv.user.id" class="custom-control custom-checkbox">
+                        <input (click)="handleSelf($event)" type="checkbox" class="custom-control-input" id="customCheck1">
+                        <label class="custom-control-label" for="customCheck1">For Self?</label>
+                      </div>
+                    </ng-container>
+              </div>
+
+       
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <label for="cname">Deal Process <span class="text-danger" >*</span> </label>
+                <br />
+                <select (change)="fetchStages()" formControlName="salesProcessName"
+                  class="gen-input browser-default form-control">
+                  <option value="" disabled selected>Select Process</option>
+                  <option *ngFor="let process of salesProcessList$ | async" [value]="process.id+'+'+process.name">
+                    {{process.name}}</option>
+                </select>
+
+              </div>
+                <div class="col-md-6 col-sm-12">
+                    <label for="cname">Deal Stage <span class="text-danger" >*</span> </label>
+                    <br />
+                    <ng-container *ngIf="(stageList$ | async) as stageList; else loadingStage">
+                        <select
+                          formControlName="currStage"
+                          class="gen-input browser-default form-control"
+                        >
+                          <option value="" disabled selected>Select stage</option>
+                        
+                              <ng-container *ngFor="let stage of filterStage(stageList)">             
+                                <option 
+                                      [value]="stage.id+'+'+stage.name">{{stage.name}}</option>
+                              </ng-container>
+                            </select>
+                      </ng-container>
+                      <ng-template #loadingStage>
+                        <p>{{createDealForm.value.salesProcessName ? 'Loading Stages...' : 'Deal process is required to select deal stage'}}</p>
+                      </ng-template>
+
+                  </div>
+       
+
+            </div>
+
+            <br />
+            <br />
+          </div>
+          <div class="col-md-4 col-sm-12 Associated-deal">
+            <h1 style="margin: 20px">Associate Deal with</h1>
+
+            <div class="col-md-12 col-sm-12 create-deal-right">
+              <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+              <label>Client <span class="text-danger" >*</span></label>
+              <br />
+              <ng-container >
+                <div class="w-75">
+                  <ngx-select-dropdown (searchChange)="clientLookUp($event)" formControlName="client" class="styleFool" 
+                  [config]="Companyconfig"  [options]="(clientList$ | async)"
+                  [disabled]="disable.company">
+                  </ngx-select-dropdown>
+                </div>
+              </ng-container>
+              
+            </div>
+            <div class="col-md-12  col-sm-12 create-deal-right">
+              <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+              <label>Contact</label>
+              <br />
+              <ng-container *ngIf="(contactList$ | async) as contactList">
+                <div class="w-75">
+                  <ngx-select-dropdown  formControlName="contacts" class="styleFool" [multiple]="true"
+                  [config]="ContactConfig"  [options]="contactList"
+                  [disabled]="disable.contact" ></ngx-select-dropdown>
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-md-12  col-sm-12 create-deal-right">
+              <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+              <label for="cname">Competitor</label>
+              <br />
+            <ng-container *ngIf="(competitorList$ | async) as competitorList">
+                <div class="w-75">
+                  <ngx-select-dropdown  formControlName="salesCompetitors" class="styleFool" 
+                  [config]="competitorConfig"  [options]="competitorList" [multiple]="true">
+            </ngx-select-dropdown>
+                </div>
+            </ng-container>
+            </div>
+            <div class="col-md-12  col-sm-12 create-deal-right">
+              <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+              <label>Product</label>
+              <br />
+              <ng-container *ngIf="(productList$ | async) as productList">
+                <div class="w-75">
+                  <ngx-select-dropdown  formControlName="products" class="styleFool" 
+                  [config]="productConfig"  [options]="productList" [multiple]="true">
+            </ngx-select-dropdown>
+                </div>
+            </ng-container>           
+            </div>
+            <div class="d-flex create-deal-btn mt-5" style="margin-left: 10px">
+              <button [disabled]="createDealForm.invalid || disable.loading" class="fin-pry-btn" (click)="create()" type="button">
+                CREATE DEAL <span *ngIf="disable.loading"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+
+            </div>
+
+          </div>
+        </ng-container>
+
+  </div>
+</div>
+</div>

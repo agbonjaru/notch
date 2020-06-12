@@ -1,0 +1,46 @@
+html,
+body,
+header,
+.carousel {
+  height: 60vh;
+}
+
+@media (max-width: 740px) {
+  html,
+  body,
+  header,
+  .carousel {
+    height: 100vh;
+  }
+
+  body {
+    background: url("/assets/img/mobile-bg.png");
+    background-size: cover;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+  html,
+  body,
+  header,
+  .carousel {
+    height: 100vh;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+  .navbar:not(.top-nav-collapse) {
+    background: #1c2331 !important;
+  }
+}
+
+.save-btn {
+  border-radius: 6px;
+  background: #158ded;
+  border: 2px solid #158ded;
+  padding: 9px 15px;
+  color: #fff;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+}
+

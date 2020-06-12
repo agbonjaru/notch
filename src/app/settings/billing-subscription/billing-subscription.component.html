@@ -1,0 +1,238 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+          <!-- <loading-spinner [spinnerType]="'notch-loader'" *ngIf="dataContext.loading$ | async"
+            [spinnerStyle]="{'top': '25%'}">
+          </loading-spinner> -->
+
+
+          <!-- main content -->
+          <div class="">
+            <div class="row pl-5 pr-5" style="width: 100%; margin: 0;">
+              <div class=" col-md-12 col-xl-12">
+                <div class="license-card" style="margin: 0">
+                  <div class="license-card-header">
+                    <h3 class="text-left">License Details
+                      <span *ngIf="licenseLoading || (dataContext.loading$ | async)" class="float-right"><span
+                          class="fa fa-spinner fa-spin"></span></span>
+                    </h3>
+                  </div>
+                  <div class="row" *ngIf="!licenseLoading">
+                    <div class="col-md-4" style="border-right: 1px #C4C4C4 solid">
+                      <div class="fin-blue" style="margin-top: 20%">
+                        <h3>ACTIVE PLAN</h3>
+                      </div>
+                      <div class="text-center  mt-4">
+                        <p>You are currently subscribed to the<br>
+                          <span style="font-weight: bold;">{{currentLicense?.license}}</span> plan, which run till
+                          {{currentLicense?.exprDate | date: 'medium'}}</p>
+                      </div>
+                      <div class="form-group" style="margin-top: 10%">
+                        <!--<label class="col-form-label" style="color: #000000;font-weight: 500;margin: auto">Select New License</label>-->
+                        <!--<br>-->
+                        <select class="gen-input browser-default form-control mb-5" [(ngModel)]="selectedLicenseID"
+                          style="width: 70%;margin: auto" (change)="updateSelectedLicense(selectedLicenseID);">
+                          <option value="0" disabled selected>Select New License</option>
+                          <option *ngFor="let license of licenses" value="{{license.id}}"
+                            [selected]="license.id==selectedLicenseID">
+                            {{license.name}}</option>
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="col-md-8" style="padding-left: 30px">
+                      <div>
+                        <div class="d-flex"
+                          style="margin-top: 3%;border-bottom: 1px #C4C4C4 solid;padding-bottom: 20px">
+                          <h3 class="text-left">{{selectedLicense?.name}}</h3>
+
+                          <!-- disable auto renewal -->
+                          <mat-slide-toggle
+                            *ngIf="selectedLicense?.id==currentLicense?.licenseID && currentLicense?.status === 'Running'"
+                            [(ngModel)]="currentLicense.autoRenew" (change)="disableAutoRenewal()" class="ml-auto mr-2">
+                            Auto Renew
+                          </mat-slide-toggle>
+
+                          <mat-slide-toggle
+                            *ngIf="selectedLicense?.id!=currentLicense?.licenseID || currentLicense?.status !== 'Running'"
+                            [(ngModel)]="licenseToggled" (change)="updateLicense()" class="ml-auto mr-2">
+                            {{'Switch to monthly plan'}}
+                          </mat-slide-toggle>
+                        </div>
+                        <div class="" style="margin-top: 5%">
+                          <p>{{selectedLicense?.descrip}}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div style="margin-top: 5%;border-bottom: 1px #C4C4C4 solid;padding-bottom: 20px">
+                          <h3 class="text-left">Amount <span
+                              *ngIf="!licenseToggled"><small>({{'Billed Monthly'}})</small></span></h3>
+
+                        </div>
+                        <div style="padding-top: 10px;">
+                          <p><small><span>&#8358;</span></small>
+                            {{selectedLicense?.activePrice.toLocaleString('en-US')}}
+                          </p>
+                        </div>
+                        <div class="right"
+                          *ngIf="selectedLicense?.id!=currentLicense?.licenseID || currentLicense?.status !== 'Running'">
+                          <button class="fin-pry-btn"
+                            [disabled]="selectedLicense?.id==currentLicense?.licenseID && currentLicense?.status === 'Running'"
+                            (click)="openSelectCardModal()"
+                            style="margin: 10px">{{selectedLicense?.id!=currentLicense?.licenseID ? 'UPGRADE PLAN' : (currentLicense?.status !== 'Running' ? 'Renew Plan' : 'Active')}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+              <!--3 cards below-->
+              <div class="row" style="margin-top: 30px;width: 100%;margin-bottom: 50px">
+                <div class="col-md-12">
+                  <div class="license-card">
+                    <div class="license-card-header">
+                      <h3 class="text-left">Invoices</h3>
+                    </div>
+                    <div class="license-card-body" style="">
+                      <div class="col-12">
+
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>Description</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                              <th>Created Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let invoice of invoices">
+                              <td>{{invoice.descrip}}</td>
+                              <td>{{invoice.totalAmount.toLocaleString("en-US")}}</td>
+                              <td>{{invoice.status}}</td>
+                              <td>{{invoice.createdDate | date: 'medium'}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <!-- <div class="col-md-4">
+                          <div class="" style="margin: 25px">
+                            <h3 class="text-left" style="margin-bottom: 30px">Description</h3>
+                            <p>02-04-2020</p>
+                            <p>02-04-2020</p>
+                            <p>02-04-2020</p>
+                            <p>02-04-2020</p>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="" style="margin: 25px">
+                            <h3 class="text-left" style="margin-bottom: 30px">Amount</h3>
+                            <p>$7,000</p>
+                            <p>$7,000</p>
+                            <p>$7,000</p>
+                            <p>$7,000</p>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="" style="margin: 25px">
+                            <h3 class="text-left" style="margin-bottom: 30px">Status</h3>
+                            <p><span class="contact-detail badge-danger pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px">Overdue</span></p>
+                            <p><span class="contact-detail badge-warning pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px">Pending</span></p>
+                            <p> <span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px">Paid</span></p>
+                            <p><span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px">Paid</span></p>
+                          </div>
+                        </div> -->
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class=" mt-5 col-md-6">
+                  <div class="license-card">
+                    <div class="license-card-header">
+                      <h3 class="text-left">Usage Statistics (mb)</h3>
+                    </div>
+                    <div class="license-card-body">
+                      <div class="left" style="margin: 25px;font-size: 14px">
+                        <h3 style="margin-bottom: 30px">Total</h3>
+                        <p>{{usageData?.total.toLocaleString('en-US')}} mb</p>
+                      </div>
+                      <div class="right" style="margin: 25px;font-size: 14px">
+                        <h3 style="margin-bottom: 30px">Used</h3>
+                        <p>{{usageData?.used.toLocaleString('en-US')}} mb</p>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="mt-5 col-md-6">
+                  <div class="license-card">
+                    <div class="license-card-header">
+                      <h3 class="text-left">Payment Method</h3>
+                    </div>
+                    <div class="">
+                      <div class="license-body-card text-left" style="margin: 30px;font-size: 16px;">
+
+
+                        <div class="row" *ngFor="let card of billingCards">
+
+                          <div class="col-md-6">xxxx xxxx xxxx {{card.lastFour}}<br><span style="font-size: 12px"
+                              class="text-info">{{card.expMonth}}/{{card.expYear}}</span></div>
+                          <div class="col-md-4">{{card.brand}}</div>
+                          <div class="col-md-2" style="cursor: pointer;">
+                            <!-- <i class="fa fa-pencil-alt text-black-50"></i> -->
+                            <span (click)="deleteBillingCard(card.id)">
+                              <i class="fa fa-trash ml-3 text-black-50"></i>
+                            </span>
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="fin-blue text-center" style="border-top: 1px #C4C4C4 solid;padding-top: 10px">
+                      <p style="cursor: pointer" (click)="addCardDialog()">
+                        {{billingService.billingLoadingValue === false ? 'Add Card' : 'loading'}}
+                        <span *ngIf="billingService.billingLoading$ | async"><span
+                            class="fa fa-spinner fa-spin"></span></span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <!-- end main content -->
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+    <!--edit to arrow-left or arrow-right -->
+  </blockquote>
+</div>

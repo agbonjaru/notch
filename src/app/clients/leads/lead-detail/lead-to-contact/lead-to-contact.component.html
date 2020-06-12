@@ -1,0 +1,139 @@
+<div class="w-100 p-3">
+  <h5 class="">Convert to Contact</h5>
+  <hr />
+  <div
+    [ngClass]="{'d-none': alertCode < 0, 'alert': alertCode >= 0, 'alert-success': alertCode == 1, 'alert-danger': alertCode == 0}">
+    {{alertMessage}}
+  </div>
+  <form class="mt-4 leadToContactForm" [formGroup]="leadToContactForm" (ngSubmit)="submit(leadToContactForm)">
+    <div class="lead-conversion-input-wrapper">
+      <div class="row">
+        <div class="col form-group">
+          <label for="firstname">Firstname *</label>
+          <input type="text" class="gen-input browser-default w-100" id="firstname" formControlName="firstName">
+        </div>
+        <div class="col form-group">
+          <label for="surName">Surname *</label>
+          <input type="text" class="gen-input browser-default w-100" id="surName" formControlName="surName">
+        </div>
+        <div class="col form-group">
+          <label for="otherName">Other name</label>
+          <input type="text" class="gen-input browser-default w-100" id="otherName" formControlName="otherName">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col form-group">
+          <label for="email">Email address*</label>
+          <input type="text" class="gen-input browser-default w-100" id="email" formControlName="email">
+        </div>
+        <div class="col form-group">
+          <label for="otherEmail">Other email address</label>
+          <input type="text" class="gen-input browser-default w-100" id="otherEmail" formControlName="otherEmail">
+        </div>
+        <div class="col form-group w-75">
+          <label for="postalAddress">Postal Address</label>
+          <input type="text" class="gen-input browser-default w-100" id="postalAddress" formControlName="postalAddress">
+        </div>
+      </div>
+      <div *ngIf="showMore" class="conversion-hidden-data">
+        <hr>
+        <div class="row">
+          <div class="col form-group">
+            <label for="maidenName">Maiden name</label>
+            <input type="text" class="gen-input browser-default w-100" id="maidenName" formControlName="maidenName">
+          </div>
+          <div class="col-4 form-group">
+            <label for="spouseName">Spouse name</label>
+            <input type="text" class="gen-input browser-default w-100" id="spouseName" formControlName="spouseName">
+          </div>
+          <div class="col form-group">
+            <label for="occupation">Occupation</label>
+            <input type="text" class="gen-input browser-default w-100" id="occupation" formControlName="occupation">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col form-group">
+            <label for="personalPhoneNumber">Personal phone number</label>
+            <input type="text" class="gen-input browser-default w-100" id="personalPhoneNumber"
+              formControlName="personalPhoneNumber">
+          </div>
+          <div class="col form-group">
+            <label for="officialPhoneNumber">Official phone number</label>
+            <input type="text" class="gen-input browser-default w-100" id="officialPhoneNumber"
+              formControlName="officialPhoneNumber">
+          </div>
+          <div class="col form-group">
+            <label for="whatsappNumber">Whatsapp Number</label>
+            <input type="text" class="gen-input browser-default w-100" id="whatsappNumber"
+              formControlName="whatsappNumber">
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col form-group">
+            <label for="dateOfBirth">Date of birth</label>
+            <input type="text" class="gen-input browser-default" bsDatepicker formControlName="dateOfBirth"
+                [bsConfig]="{ adaptivePosition: true}" [bsValue]="dateOfBirth" [maxDate]="max_date_of_birth">
+          </div>
+          <!-- <div class="col form-group">
+            <label for="gender">Gender</label>
+            <select type="text" class="gen-input browser-default w-100" id="gender" formControlName="gender">
+              <option selected>Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div> -->
+          <div class="col form-group">
+            <label for="maritalStatus">Marital status</label>
+            <select name="maritalStatus" id="maritalStatus" formControlName="maritalStatus">
+              <option class="gen-input browser-default"> Select marital status</option>
+              <option [selected]="info?.maritalStatus == 'single'" value="single" class="gen-input browser-default"> Single </option>
+              <option [selected]="info?.maritalStatus == 'married'" value="married" class="gen-input browser-default"> Married </option>
+              <option [selected]="info?.maritalStatus == 'divorced'" value="divorced" class="gen-input browser-default"> Divorced </option>
+              <option [selected]="info?.maritalStatus == 'widowed'" value="widowed" class="gen-input browser-default"> Widowed </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col form-group w-25">
+            <label for="stateOfOrigin">State of Origin</label>
+            <input type="text" class="gen-input browser-default w-100" id="stateOfOrigin"
+              formControlName="stateOfOrigin">
+          </div>
+          <div class="col form-group">
+            <label for="fax">Fax</label>
+            <input type="text" class="gen-input browser-default w-100" id="fax" formControlName="fax">
+          </div>
+          <div class="col form-group">
+            <label for="zip">Zip</label>
+            <input type="text" class="gen-input browser-default w-100" id="zip" formControlName="zip">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col form-group">
+            <label for="nextOfKin">Next of Kin</label>
+            <input type="text" class="gen-input browser-default w-100" id="nextOfKin" formControlName="nextOfKin">
+          </div>
+          <div class="col form-group">
+            <label for="kinRelationship">Next of Kin Relationship</label>
+            <input type="text" class="gen-input browser-default w-100" id="kinRelationship"
+              formControlName="nextOfKinRelationship">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <span (click)="toggleShowMore()"
+        class="mt-3 text-primary is-clickable">{{showMore? "Show less" : "Show more"}}</span>
+    </div>
+    <div class="row">
+      <div class="form-group w-100">
+        <button type="button" class="btn border border-info mr-2 fin-sec-btn float-right w-25" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary float-right w-25 mr-2">
+          Convert
+          <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

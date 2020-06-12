@@ -1,0 +1,281 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content">
+  <div class="create-deal-wrapper" *ngIf="!loadingView; else activateSpinner">
+    <div class="row sub-creation">
+      <div class="col-md-8 create-deal-left" style="border-right: none;">
+        <div style="margin-bottom: 30px">
+          <h1>Update Subscription</h1>
+        </div>
+        <span *ngIf="fullPayloadSub">
+
+          <form [formGroup]="subscriptionForm" class="form">
+            <div class="row">
+              <div class="col-md-7 mb-2">
+                <button type="button" class="fin-sec-btn " routerLink="/sales/Subscriptions-list">
+                  Go Back
+                </button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <label for="name"><span class="text-danger">*</span> Client</label>
+                <br>
+                <input type="text" formControlName="clientName" class="gen-input browser-default form-control "
+                  disabled>
+              </div>
+
+              <div class="col-md-6 col-sm-12">
+                <span style="width: 30%" class="ml-1">
+                  <label for="exampleInputEmail1" style="font-size: 13px;"><span class="text-danger">*</span>
+                    Frequency</label>
+                  <select class="gen-input browser-default form-control" formControlName="frequency">
+                    <option value="" disabled selected>Frequencies</option>
+                    <option *ngFor="let frequency of frequencies" [value]="frequency.key">{{frequency.value}}</option>
+                  </select>
+                </span>
+              </div>
+
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12" *ngIf="productsName?.length !== 0">
+                <label for="name"><span class="text-danger">*</span> Products</label>
+                <br>
+                <select class="gen-input browser-default form-control" formControlName="productName"
+                  (change)="handleProductSelection()">
+                  <option value="" disabled selected>Products</option>
+                  <option *ngFor="let product of productsName" [value]="product.name">
+                    {{product?.name}}</option>
+                </select>
+
+              </div>
+
+              <div class="col-md-6 col-sm-12 ">
+                <label><span class="text-danger">*</span> Start date</label>
+                <br>
+                <!-- <input type="date" [min]="restricDate" name="startDate" formControlName="startDate"
+                  class="gen-input browser-default"> -->
+
+                <input type="text" [minDate]="restricDateTYP" name="unknown32" formControlName="startDate"
+                  class="gen-input browser-default" placeholder="dd/mm/yyyy" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',
+                  selectFromOtherMonth: true }">
+              </div>
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <label for="email"><span class="text-danger">*</span> Amount</label>
+                <br>
+                <input type="number" name="amount" min="0" (change)="handleComputation()"
+                  oninput="this.value = this.value <= 0 ? this.value=0 : Math.abs(this.value)" formControlName="amount"
+                  class="gen-input browser-default">
+                <!-- <input type="text" name="currency-field" id="currency-field" value="" data-type="currency"
+                  (keyup)="onKeyUp()" (blur)="onKeyUp()" formControlName="amount"> -->
+                <!-- oninput="this.value = this.value <= 0 ? this.value=0 : Math.abs(this.value)" -->
+                <!-- min="0" -->
+                <!-- <input type="text" name="amount" (change)="handleComputation()" formControlName="amount"
+                  class="gen-input browser-default" (click)="transformAmount('Edit')" (blur)="transformAmount($event)"
+                  [(ngModel)]="formattedAmount"> -->
+
+              </div>
+
+
+              <div class="col-md-6 col-sm-12">
+                <label> <span class="text-danger">*</span> Number of Period</label>
+                <br>
+                <input type="number" min="1"
+                  oninput="this.value = this.value <= 0 ? this.value=1 : Math.abs(this.value)" name="periodCount"
+                  formControlName="periodCount" class="gen-input browser-default">
+              </div>
+
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="row">
+              <div class="col-md-6 col-sm-12">
+                <label><span class="text-danger">*</span> Reference</label>
+                <br>
+                <input type="text" name="refNumber" formControlName="refNumber" class="gen-input browser-default">
+              </div>
+              <div class="col-md-6 col-sm-12">
+                <label for="name"> <span class="text-danger">*</span> Add TAX</label>
+                <br>
+
+                <select class="gen-input browser-default form-control" formControlName="tax"
+                  (change)="handleTaxSelection()">
+                  <option value="" disabled selected>TAX</option>
+                  <option value="none">No tax</option>
+                  <option *ngFor="let tax of taxList$ | async" [value]="tax.rate">
+                    {{tax.name+' ('+tax.rate+')'}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-md-6 col-sm-12 pt-3 mt-2">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked14" disabled="true"
+                    formControlName="isUpfront">
+                  <label class="custom-control-label" for="defaultUnchecked14">Upfront
+                    Payment?</label>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-12 pt-3 mt-2">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="defaultUnchecked15"
+                    [disableControl]="!activateTaxInclusive" (change)="handleTaxSelection()"
+                    formControlName="taxInclusive">
+                  <label class="custom-control-label" for="defaultUnchecked15">Tax
+                    Inclusive ?
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="space-30 hidden-xs"></div>
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <br>
+            <br>
+
+          </form>
+        </span>
+
+      </div>
+      <div class="col-md-4 col-sm-12 mt-5">
+
+        <form [formGroup]="subscriptionForm">
+          <div class="col-md-12 col-sm-12 create-deal-right">
+            <label><span class="text-danger">*</span> Description</label>
+            <br>
+            <textarea type="text" id="name" name="description" [(ngModel)]="description" formControlName="description"
+              class="gen-input browser-default" style="height: 180px"></textarea>
+          </div>
+
+          <div class="col-md-12 col-sm-12 mt-3">
+            <span style="width: 30%">
+              <label for="exampleInputEmail1" style="font-size: 13px;"><span class="text-danger">*</span>
+                Currency</label>
+              <select formControlName="currency" id="ngx-select-resize-sub" class="form-control"
+                style="width: 75% !important;">
+                <option value="" disabled="" selected="">Select Currency</option>
+                <option *ngFor="let curr of currencies" [value]="curr">
+                  {{curr}}
+                </option>
+              </select>
+            </span>
+          </div>
+          <!-- [(ngModel)]="selectedCurrency" -->
+          <div class="col-md-12 col-sm-12 mt-3">
+            <label style="font-size: 14px;">Amount After Tax</label>
+            <br>
+            <input type="number" [value]="taxation.amountAftertax" class="gen-input browser-default form-control"
+              disabled>
+          </div>
+
+          <div class="col-md-12 col-sm-12 mt-3">
+            <span style="width: 30%">
+
+              <label for="exampleInputEmail1" style="font-size: 13px;" class="row">
+
+                <span class="col-md-4"> <small style="color: red;">*</small> Team</span>
+                <span class="col-md-8">
+                  <span class="custom-control custom-checkbox toggle-adv-table" style="margin-left: 5rem!important;">
+                    <input type="checkbox" (click)="handleSelf($event)"
+                      class="custom-control-input text-center checkbox-all" id="customCheck01" [checked]="selfActive">
+                    <label class="custom-control-label" for="customCheck01" style="padding-top: 3px;color: #000000">
+                      For Self?
+                    </label>
+                  </span>
+                </span>
+
+              </label>
+
+
+              <span *ngIf="!selfActive; else self">
+                <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                  <ngx-select-dropdown [config]="teamConfig" [options]="arrayTeams " [multiple]="false"
+                    id="ngx-select-resize-sub" formControlName="team" name="team">
+                  </ngx-select-dropdown>
+                </ng-container>
+                <ng-template #loadingOwner>
+                  <small class="text-danger" style="display: block;margin-top: 10px;"><i>...fetching Teams
+                    </i>
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </small>
+                </ng-template>
+              </span>
+              <ng-template #self>
+                <input type="text" name="refNumber" class="gen-input browser-default form-control" value="SELF"
+                  disabled>
+              </ng-template>
+
+            </span>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+    <div class="text-right sub-btn">
+      <button class="fin-pry-btn save-sub-btn list-btn" type="button" routerLink="/sales/Subscriptions-list">GO
+        BACK</button>
+      <button class="fin-pry-btn save-sub-btn" type="button" (click)="handleSubscriptionUpdate()">UPDATE <span
+          *ngIf="savingSpinner"><i class="fa fa-spinner fa-spin"></i></span> </button>
+
+    </div>
+
+
+    <div style="margin: 30px 0">
+      <h1>Invoices Related to Subscription</h1>
+    </div>
+    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+
+          <th class="th-sm">Invoice code
+
+          </th>
+          <th class="th-sm">Client Name
+
+          </th>
+          <th class="th-sm">Invoice Amount
+
+          </th>
+          <th class="th-sm">Balance Due
+
+          </th>
+          <th class="th-sm">Invoice Date
+
+          </th>
+          <th class="th-sm">Payment Due Date
+
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-row" *ngFor="let data of dataSource | async; let i = index"
+          [routerLink]="['/sales/edit-invoice', data.id]" style="cursor: pointer">
+          <td>{{data?.displayCode}}</td>
+          <td>{{data?.clientName}}</td>
+          <td>{{data?.totalCost}}</td>
+          <td>{{data?.balanceDue}}</td>
+          <td>{{data?.createdOn | date: 'longDate'}}</td>
+          <td>{{data?.paymentDueDate | date: 'longDate'}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+
+
+  </div>
+
+  <ng-template #activateSpinner>
+    <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+  </ng-template>
+
+
+
+
+</div>

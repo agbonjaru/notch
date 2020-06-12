@@ -1,0 +1,68 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <app-subscription-sidebar #sidebar (getClearFilter)="handleClearAllFilter()"
+        (getSubscriptionDateFilter)="handleDateFilter(sidebar.subscriptionDateForm)"
+        (getClientNameFilter)="handleClientFilter(sidebar.clientForm)"
+        (getSubscriptionCurrencyFilter)="handleCurrencyFilter(sidebar.currencyForm)"
+        (getSubscriptionValueFilter)="handleValueFilter(sidebar.subscriptionValueForm)"
+        (getSubscriptionOwnerFilter)="handleOwnerFilter(sidebar.subscriptionOwnerForm)"
+        (getSubscriptionEndDateFilter)="handleEndDateFilter(sidebar.subscriptionEndDateForm)"
+        (getSubscriptionCustomFilter)="handleCustomFilter($event)">
+      </app-subscription-sidebar>
+
+    </div>
+
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+            <span style="width: 35%">
+              <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                <select (change)="handleFilterBySupervisor()" [(ngModel)]="selectedTeamId"
+                  class="gen-input browser-default form-control content-list-search">
+                  <option value="" disabled="" selected="">Select Team</option>
+                  <option *ngFor="let team of arrayTeams" [value]="team.teamID">
+                    {{team.teamName}}
+                  </option>
+                </select>
+              </ng-container>
+              <ng-template #loadingOwner>
+                <small class="text-danger"><i>...fetching Teams </i>
+                  <i class="fa fa-spinner fa-spin"></i>
+                </small>
+              </ng-template>
+            </span>
+          </div>
+
+          <div class="col-md-6 content-list-buttons">
+            <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+            <a *ngIf="genSer.isAuthorized('CREATE_SUBSCRIPTION')" routerLink="/sales/Create-Subscriptions">
+              <button class="fin-pry-btn">CREATE SUBSCRIPTION</button>
+            </a>
+          </div>
+        </div>
+        <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+          (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource"></app-datatable>
+
+
+
+        <ng-template #activateSpinner>
+          <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

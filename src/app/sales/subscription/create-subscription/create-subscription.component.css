@@ -1,0 +1,13 @@
+.list-btn {
+  margin-right: 10px;
+  background: #404a52;
+}
+
+.hidDate {
+  display: none;
+  visibility: hidden;
+}
+
+div.ngx-dropdown-container {
+  width: 75% !important
+}

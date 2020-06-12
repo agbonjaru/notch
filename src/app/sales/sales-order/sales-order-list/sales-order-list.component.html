@@ -1,0 +1,117 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+      <app-sidebar-sales-order (getFilter)='getSaleOrders(null, $event)'
+        (getCustomFilter)="getFilteredSalesOrder($event)">
+      </app-sidebar-sales-order>
+    </div>
+
+    <div class="content-list col-xl-10 col-lg-9 col-md-8">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+            <ng-container *ngIf="(teamList$ | async) ; else loadingOwner">
+              <select (change)="getSaleOrders(teamVal.value)" #teamVal="ngModel" name="team" [(ngModel)]="selectedTeam"
+                class="gen-input browser-default form-control content-list-search">
+                <option value="" disabled="" selected="">Select Team</option>
+                <option *ngFor="let team of (teamList$ | async)" [value]="team.teamID">{{team.teamName}}</option>
+              </select>
+            </ng-container>
+            <ng-template #loadingOwner>
+              <small class="text-danger"><i>...fetching Teams </i>
+                <i class="fa fa-spinner fa-spin"></i>
+              </small>
+            </ng-template>
+          </div>
+          <div class="col-md-6 content-list-buttons">
+
+            <ng-container *ngIf="gs.isAuthorized('CREATE_SALESORDER')">
+              <button (click)="exportTable()" class="fin-sec-btn" *ngIf="ViewSwitch === 'List'">EXPORT</button>
+              <a *ngIf="teamId" routerLink="/sales/create-sales-order">
+                <button class="fin-pry-btn">CREATE SALES ORDER</button>
+              </a>
+              <span *ngIf="!teamId" data-toggle="tooltip" data-placement="top" title="You need to be part of team">
+                <button disabled class="fin-pry-btn">CREATE SALES ORDER</button>
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row mt-3 mb-2">
+          <div class="col-md-6">
+            <h4 class=" m-auto fs-15">
+              <span class="fin-green">SWITCH VIEW : </span>
+              <a [ngClass]="{'fin-blue' : ViewSwitch !== 'Dashboard'}"
+                (click)="handleViewSwitch('Dashboard')">DASHBOARD</a> | <a
+                [ngClass]="{'fin-blue' : ViewSwitch !== 'List'}" (click)="handleViewSwitch('List')">LIST</a>
+            </h4>
+
+          </div>
+
+        </div>
+        <div *ngIf="ViewSwitch === 'List'">
+          <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+            [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)" [bodyrows]="salesOrderList">
+          </app-datatable>
+          <a class="dropdown-item d-none" data-toggle="modal" data-target="#ModalCenter4">Copy To</a>
+
+        </div>
+
+        <div *ngIf="ViewSwitch === 'Dashboard'">
+          <app-sales-order-dashboard [salesOrderList]="salesOrderList" [teamId]="selectedTeam"
+            (getFilter)="getSaleOrders(null, $event)">
+          </app-sales-order-dashboard>
+        </div>
+      </div>
+      <!-- <ng-template #loading>
+        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+
+      </ng-template> -->
+    </div>
+  </div>
+
+
+  <!-- Copy to Client -->
+  <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalCenterTitle4">Copy To Client</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="name">Select Client</label>
+              <br>
+              <ngx-select-dropdown *ngIf="dropdownOptions.length" class="styleFool" [config]="config"
+                [options]="dropdownOptions" [multiple]="false" name="clientName" [(ngModel)]="selectedClientName"
+                (change)="handleClientSelection()">
+              </ngx-select-dropdown>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closeModal" class="fin-sec-btn" data-dismiss="modal">Close
+          </button>
+          <button type="button" [disabled]="!salesOrderInfo.client" class="fin-pry-btn" (click)="handleCopy()">Copy To
+            Client</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Copy to Client -->
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

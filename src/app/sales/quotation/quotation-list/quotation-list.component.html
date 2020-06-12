@@ -1,0 +1,105 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+      <app-quotation-sidebar #sidebar (getClearFilter)="handleClearAllFilter()"
+        (getQuotationDateFilter)="handleDateFilter(sidebar.quotationDateForm)"
+        (getQuotationCurrencyFilter)="handleCurrencyFilter(sidebar.currencyForm)"
+        (getClientNameFilter)="handleClientFilter(sidebar.clientForm)" (getQuotationValueFilter)="
+          handleValueFilter(sidebar.quotationValueForm)
+        " (getQuotationOwnerFilter)="
+          handleOwnerFilter(sidebar.quotationOwnerForm)
+        " (getQuotationCustomFilter)="handleCustomFilter($event)">
+      </app-quotation-sidebar>
+    </div>
+
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+            <span style="width: 35%">
+              <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                <select (change)="handleFilterBySupervisor()" [(ngModel)]="selectedTeamId"
+                  class="gen-input browser-default form-control content-list-search">
+                  <option value="" disabled="" selected="">Select Team</option>
+                  <option *ngFor="let team of arrayTeams" [value]="team.teamID">
+                    {{team.teamName}}
+                  </option>
+                </select>
+              </ng-container>
+              <ng-template #loadingOwner>
+                <small class="text-danger"><i>...fetching Teams </i>
+                  <i class="fa fa-spinner fa-spin"></i>
+                </small>
+              </ng-template>
+            </span>
+          </div>
+          <div class="col-md-6 content-list-buttons">
+            <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+            <a *ngIf="genSer.isAuthorized('CREATE_QUOTE')" routerLink="/sales/create-quote"><button
+                class="fin-pry-btn">CREATE QUOTES</button></a>
+          </div>
+
+          <!-- Copy to Client -->
+          <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle4">
+                    Copy To Client
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label for="name">Select Client</label>
+                      <br />
+                      <ngx-select-dropdown [config]="config" [options]="dropdownOptions | async" [multiple]="false"
+                        name="clientName" [(ngModel)]="selectedClientName" (change)="handleClientSelection()">
+                      </ngx-select-dropdown>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" [disabled]="!copyQuoteDetails.clientName" class="fin-pry-btn"
+                    (click)="handleCopy()">
+                    Copy To Client
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Copy to Client -->
+
+        </div>
+        <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+          (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource"></app-datatable>
+
+        <span style="visibility: hidden;">
+          <a class="dropdown-item" data-toggle="modal" data-target="#ModalCenter4">Copy
+            To</a>
+        </span>
+
+
+        <ng-template #activateSpinner>
+          <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

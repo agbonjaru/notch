@@ -1,0 +1,403 @@
+<!--  -->
+<div class="br-pagebody ml-0 mr-0">
+  <div class="row row-sm my-4" *ngIf="salesPersonDeals;">
+
+    <div class="col-sm-3">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10" style="font-size: 18px">
+              Total Deals
+            </p>
+            <p class="tx-24 mg-b-0 lh-1" style="font-size: 25px">
+              {{ salesPersonDeals.noOfDeals }}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4" style="font-size: 30px"></i>
+      </div>
+    </div>
+
+    <div class="col-sm-3 ">
+      <div class=" rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold tx-teal mg-b-10" style="font-size: 18px">
+              Deals Won
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{ salesPersonDeals.noOfDealsWon }}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-teal" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1  tx-semibold tx-danger  mg-b-10" style="font-size: 18px">
+              Deals Lost
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{ salesPersonDeals.noOfDealsLost }}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-danger" style="font-size: 30px"></i>
+      </div>
+    </div>
+
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3"
+        style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10" style="font-size: 18px">
+              Invoices
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{ invoiceList.length}}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4" style="font-size: 30px"></i>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="content-body-header">
+  <!-- Nav -->
+  <div class="content-body-nav col-md-12">
+    <ul>
+      <li>
+        <span><img src="/assets/img/ribbon-blue.svg" alt="" /></span>
+        <a (click)="toggleClass('sales-info', 'aboutDp')" class="team-members-toggler about-within">
+          About Salesperson
+          <span class="aboutDp dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <span><img src="/assets/img/ribbon-dark.svg" alt="#!" class="deals-within" /></span><a
+          (click)="toggleClass('deal-list', 'contacts')">Deals
+          <span class="contacts dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down">
+        <span><img src="/assets/img/ribbon-red.svg" alt="" /></span>
+        <a (click)="toggleClass('target-list', 'target')">Target
+          <span class="target dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down">
+        <span><img src="/assets/img/ribbon-purple.svg" alt="" /></span>
+        <a (click)="toggleClass('commission-list', 'commission')">Commission
+          <span class="commission dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li id="dropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a href="#!">More
+          <span style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i> </span></a>
+      </li>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink5">
+        <a class="dropdown-item" (click)="openContent('Leads')">Assigned Leads</a>
+        <a class="dropdown-item" (click)="openContent('Contacts')">Assigned Contacts</a>
+        <a class="dropdown-item" (click)="openContent('Companies')">Assigned Companies</a>
+        <a class="dropdown-item" (click)="openContent('quotes')">Quotes</a>
+        <a class="dropdown-item" (click)="openContent('invoices')">Invoices</a>
+        <a class="dropdown-item" (click)="openContent('sales-orders')">Sales Orders</a>
+      </div>
+    </ul>
+  </div>
+</div>
+
+<section class="dropdown-list">
+  <!--About salesperson-->
+  <div class="about-contact sales-info  d-none dp-item">
+    <ng-container>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">NAME</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.firstName + " " + salesPerson.lastName
+          }}</span>
+        </div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">EMAIL ADDRESS</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.email
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">DATE OF BIRTH</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.dateOfBirth || " "
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">PHONE NUMBER</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.mobileNo || " "
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">ADDRESS</span>
+          <br />
+          <span class="contact-detail">{{ (salesPerson?.street || " ")
+             + (salesPerson?.city || " ")
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">STATE</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.state
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">COUNTRY</span>
+          <br />
+          <span class="contact-detail">{{
+            salesPerson.country
+          }}</span>
+        </div>
+        <div class="col-sm-6 text-right"></div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!--Deal List-->
+  <div class="about-contact deal-list d-none dp-item">
+    <ng-container *ngIf="assignedDeals; else loadingDeals">
+      <ng-container *ngIf="assignedDeals.length">
+        <div class="about-contact-row"
+          *ngFor="let deal of assignedDeals | paginate: { itemsPerPage: 5, currentPage: d, id:'deal'}">
+          <div class="col-sm-3">
+            <span class="contact-detail-top">DEAL CODE</span>
+            <br />
+            <span class="contact-detail">{{ deal.displayCode }}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">DEAL NAME</span>
+            <br />
+            <span class="contact-detail">{{ deal.name }}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">AMOUNT</span>
+            <br />
+            <span class="contact-detail">{{ deal.currency + " "+ deal.amount  }}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">CURRENT STAGE</span>
+            <br />
+            <span class="contact-detail">{{ deal.currStage }}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">WORKFLOW NAME</span>
+            <br />
+            <span class="contact-detail">{{ deal.salesProcessName }}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail">
+              <button [routerLink]="['/sales/deals-view', deal.code]" class="btn btn-primary btn-sm"
+                style="padding: 0 14px!important;" title="View">
+                <i class="fa fa-eye"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="center">
+          <pagination-controls *ngIf="assignedDeals.length  > 5;" (pageChange)="d = $event" id="deal">
+          </pagination-controls>
+        </div>
+      </ng-container>
+      <div *ngIf="!assignedDeals.length" class="about-contact-row ">
+        <h6 class="text-center">No Deals</h6>
+      </div>
+    </ng-container>
+    <ng-template #loadingDeals>
+      <div class="about-contact team-member d-block">
+        <h6>Loading Deals...</h6>
+      </div>
+    </ng-template>
+  </div>
+
+  <!--Target List-->
+  <div class="about-contact target-list d-none dp-item">
+    <ng-container *ngIf="salesPersonTarget; else loadingTargets">
+      <ng-container *ngIf="salesPersonTarget.length">
+        <div class="about-contact-row"
+          *ngFor="let target of salesPersonTarget | paginate: { itemsPerPage: 5, currentPage: t, id:'target' }">
+          <div class="col-sm-3">
+            <span class="contact-detail-top">TARGET DESCRIPTION</span>
+            <br />
+            <span class="contact-detail">{{ target.target }}</span>
+          </div>
+
+          <div class="col-sm-2">
+            <span class="contact-detail-top">TARGET TYPE</span>
+            <br />
+            <span class="contact-detail">{{ target.type }}</span>
+          </div>
+
+          <div class="col-sm-2">
+            <span class="contact-detail-top">TARGET VALUE</span>
+            <br />
+            <span *ngIf=" target.currency != null"
+              class="contact-detail">{{ target.currency + " " + target.value }}</span>
+            <span *ngIf="target.currency === null" class="contact-detail">{{ target.value }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <span class="contact-detail-top">TARGET PERIOD</span>
+            <br />
+            <span class="contact-detail">{{ target.period }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <span class="contact-detail-top">TARGET COUNT</span>
+            <br />
+            <span class="contact-detail">{{ target.stage || " NONE " }}</span>
+          </div>
+
+          <div class="col-sm-2">
+            <span class="contact-detail">
+              <button [routerLink]="['/target/dashboard', target.id,'assigned']" class="btn btn-primary btn-sm"
+                style="padding: 0 14px!important;" title="View">
+                <i class="fa fa-eye"></i>
+              </button>
+            </span>
+          </div>
+
+        </div>
+        <div class="center">
+          <pagination-controls *ngIf="salesPersonTarget.length > 5;" (pageChange)="t = $event" id="target">
+          </pagination-controls>
+        </div>
+      </ng-container>
+      <div *ngIf="!salesPersonTarget.length" class="about-contact-row ">
+        <h6 class="text-center">No Target</h6>
+      </div>
+    </ng-container>
+    <ng-template #loadingTargets>
+      <div class="about-contact team-member d-block">
+        <h6>Loading Target...</h6>
+      </div>
+    </ng-template>
+  </div>
+
+  <!--Commission-->
+  <div class="about-contact commission-list d-none dp-item">
+    <ng-container *ngIf="assignedCommissions else loading2">
+      <ng-container *ngIf="assignedCommissions.length">
+        <div class="about-contact-row"
+          *ngFor="let list of assignedCommissions | paginate: { itemsPerPage: 5, currentPage: c, id:'commission' }">
+
+          <div class="col-sm-4">
+            <span class="contact-detail-top">COMMISSION</span>
+            <br />
+            <span class="contact-detail">{{ list.commission }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <span class="contact-detail-top">VALUE</span>
+            <br />
+            <span *ngIf=" list.currency != null"
+              class="contact-detail">{{ list.currency + " " + list.target_value }}</span>
+            <span *ngIf="list.currency === null" class="contact-detail">{{ list.target_value }}</span>
+            <span class="contact-detail"></span>
+          </div>
+
+          <div class="col-sm-2">
+            <span class="contact-detail-top">TYPE</span>
+            <br />
+            <span class="contact-detail">{{ list.type }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <span class="contact-detail-top">PERIOD</span>
+            <br />
+            <span class="contact-detail">{{ list.period }}</span>
+          </div>
+
+          <div class="col-sm-3">
+            <span class="contact-detail-top">COUNT</span>
+            <br />
+            <span class="contact-detail">{{ list.stage }}</span>
+          </div>
+
+          <div class="col-sm-2">
+            <span class="contact-detail">
+              <button [routerLink]="['/target/commissions',  list.id]" class="btn btn-primary btn-sm"
+                style="padding: 0 14px!important;" title="View">
+                <i class="fa fa-eye"></i>
+              </button>
+            </span>
+          </div>
+
+        </div>
+        <div class="center">
+          <pagination-controls *ngIf="assignedCommissions.length > 5;" (pageChange)="c = $event" id="commission">
+          </pagination-controls>
+        </div>
+      </ng-container>
+      <div *ngIf="!assignedCommissions.length" class="about-contact-row ">
+        <h6 class="text-center">No Commission</h6>
+      </div>
+    </ng-container>
+
+    <ng-template #loading2>
+      <div>
+        <h6>Loading...</h6>
+      </div>
+    </ng-template>
+
+  </div>
+
+</section>

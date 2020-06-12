@@ -1,0 +1,128 @@
+<div class="content" style="margin-top: 90px;">
+    <div class="row" style="width: 100%; margin: 0;">
+        <div *ngIf="sidebarState === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%" (click)="toggleSidebar('open')">
+            <div class="card">
+                <div class="card-body">
+                    <span class="fa fa-solar-panel"></span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="sidebarState === 'open'" class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+            style="border-right: 4px solid #ECF2FB; width: 80%;">
+            <app-target-sidebar 
+                (getFilter)='getProfiles($event)'
+                (getClearFilter)="clearFilter()"
+                (toggleSidebar)="toggleSidebar($event)"
+            ></app-target-sidebar>
+        </div>
+        <div class="{{mainStyle}} content-list">
+          <div class="list">
+              <div class="row content-list-header">
+                  <div class="col-md-6 offset-md-6 content-list-buttons">
+                    <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+                    <button 
+                        *ngIf="generalService.isAuthorized('CREATE_COMMISSION')" (click)="openProfileModal()"
+                        class="fin-pry-btn" data-toggle="modal" data-target="#ModalCenter4">
+                            Create Commission Profile
+                    </button>
+                  </div>
+
+                  <!-- Add commission Modal -->
+                  <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="ModalCenterTitle2">Add Commission</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <form [formGroup]="profileForm">
+                                      <div class="form-group">
+                                          <label class="col-form-label" style="color: #7E7F9A">
+                                            Commission Title <span style="color: red;"> *</span>
+                                          </label>
+                                          <br>
+                                          <input type="text"  name="cname" data-placeholder="Pick Sales Person" formControlName="title"
+                                           class="gen-input browser-default" style="width: 100%">
+                                      </div>
+                                      <div class="form-group">
+                                          <label class="col-form-label" style="color: #7E7F9A">
+                                            Commission Type <span style="color: red;"> *</span>
+                                          </label>
+                                          <br>
+                                          <select class="gen-input browser-default form-control" style="width: 100%" formControlName="type">
+                                            <option value="revenue">Revenue</option>
+                                            <option value="markup">Markup</option>
+                                            <option value="product_revenue">Product/Service Revenue</option>
+                                          </select>
+                                      </div>
+                                      <div class="form-group">
+                                          <label class="col-form-label" style="color: #7E7F9A">
+                                            Commission Rate(%) <span style="color: red;"> *</span>
+                                          </label>
+                                          <br>
+                                          <input type="text" id="cname" name="cname" class="gen-input browser-default" 
+                                            style="width: 100%" formControlName="rate">
+                                          <small><em>Kindly note that this input only accepts a valid number.</em></small>
+                                          <br>
+                                      </div>
+                                      <div class="custom-control custom-checkbox d-flex">
+                                          <input type="checkbox" class="custom-control-input" id="defaultChecked2" 
+                                          [checked]="enable_accelerator" (change)="toggleAcceleratorOption()">
+                                          <label class="custom-control-label" for="defaultChecked2" style="font-size: 16px;color: #7E7F9A;font-weight: 600;margin: 20px">
+                                              Accelerator
+                                          </label>
+                                      </div>
+                                      <div class="form-group" *ngIf="enable_accelerator">
+                                          <label class="col-form-label" style="color: #7E7F9A">
+                                            Accelerate Rate(%) <span style="color: red;"> *</span>
+                                          </label>
+                                          <br>
+                                          <input type="text" id="money" name="cname" class="gen-input browser-default" 
+                                            style="width: 100%" formControlName="accelerator">
+                                          <small><em>Kindly note that this input only accepts a valid number.</em></small>
+                                          <br>
+                                      </div>
+                                      <div class="form-group" *ngIf="enable_accelerator">
+                                          <label class="col-form-label" style="color: #7E7F9A">
+                                            Accelerator Type <span style="color: red;"> *</span>
+                                          </label>
+                                          <br>
+                                          <select class="gen-input browser-default form-control" style="width: 100%" formControlName="accelerator_type">
+                                              <option value="all">On All</option>
+                                              <option value="additional">On Additional</option>
+                                          </select>
+                                      </div>
+                                  </form>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                                  </button>
+                                  <button type="button" class="fin-pry-btn" (click)="saveProfile()"
+                                  [disabled]="profileForm.invalid">SAVE</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Add commission Modal End-->
+              </div>
+              <app-datatable
+              [dataChanged]="dataTable.dataChangedObs"
+              [options]="dataTable.options"
+              [heads]="dataTable.heads"
+              (feedback)="dataFeedBackObsListener($event)"
+              [bodyrows]="profiles"
+            ></app-datatable>
+              
+
+              <ng-template #activateSpinner>
+                    <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+              </ng-template>
+          </div>
+      </div>
+  </div>
+
+</div>

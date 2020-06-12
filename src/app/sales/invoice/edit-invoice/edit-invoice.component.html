@@ -1,0 +1,340 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list" style="height: 100%" id="printInvoice">
+      <div class="list">
+        <div class="row">
+          <div class="col-md-7">
+            <button type="button" class="fin-sec-btn" routerLink="/sales/invoice-list/"
+              [queryParams]="{session_id: 'List'}">
+              Go Back
+            </button>
+          </div>
+        </div>
+        <div class="row content-list-header" style="padding-top: 10px">
+          <div class="col-md-8 text-left filter-actions-top">
+            <div style="width: 30%">
+              <label for=""><small style="color: red;">*</small> Client</label>
+              <br />
+              <select class="gen-input browser-default form-control pl-1" disabled style="width: 100%">
+                <option>{{ clientName }}</option>
+              </select>
+            </div>
+
+            <span style="width: 30%" class="ml-2">
+              <label for="exampleInputEmail1" style="font-size: 13px;"><small style="color: red;">*</small>
+                Currency</label>
+              <select [(ngModel)]="selectedCurrency" class="gen-input browser-default form-control content-list-search"
+                style="width: 100% !important;">
+                <option value="" disabled="" selected="">Select Currency</option>
+                <option *ngFor="let curr of currencies" [value]="curr">
+                  {{curr}}
+                </option>
+              </select>
+            </span>
+
+            <div style="width: 30%">
+              <label for=""><small style="color: red;">*</small> Reference</label>
+              <br />
+              <input type="text" name="invoiceRefNumber"
+                class="gen-input browser-default form-control ml-2 content-list-search" placeholder="Reference"
+                [(ngModel)]="invoiceRefNumber" />
+            </div>
+          </div>
+
+          <div class="col-md-4 content-list-buttons file-input">
+            <button class="fin-sec-btn" (click)="handlePrint()">
+              PRINT
+            </button>
+          </div>
+
+          <div class="col-md-6 text-left filter-actions-top mt-3">
+
+            <span style="width: 30%" class="mr-2" [formGroup]="teamForm">
+              <label for="exampleInputEmail1" style="font-size: 13px;" class="row"
+                [ngStyle]="{'margin-bottom': selfActive ? '30px' : '6px'}">
+                <span class="col-md-4" [ngStyle]="{'margin-top': selfActive ? '-16px' : '-14px'}"> <small
+                    style="color: red;">*</small> Team</span>
+                <span class="col-md-8">
+
+                  <span class="custom-control custom-checkbox toggle-adv-table ml-1" style="margin-top:35px;"
+                    style="float: right;">
+                    <input type="checkbox" (click)="handleSelf($event)"
+                      class="custom-control-input text-center checkbox-all" id="customCheck01" [checked]="selfActive">
+                    <label class="custom-control-label" for="customCheck01" style="padding-top: 3px;color: #000000">
+                      For Self?
+                    </label>
+                  </span>
+
+                </span>
+
+
+              </label>
+              <span *ngIf="!selfActive; else self">
+                <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                  <ngx-select-dropdown [config]="teamConfig" [options]="arrayTeams" [multiple]="false"
+                    formControlName="team" [id]="currencyIdAttribute">
+                  </ngx-select-dropdown>
+                </ng-container>
+                <ng-template #loadingOwner>
+                  <small class="text-danger" style="display: block;margin-top: 10px;"><i>...fetching Teams </i>
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </small>
+                </ng-template>
+              </span>
+              <ng-template #self>
+
+                <input type="text" name="self" class="gen-input browser-default form-control  content-list-search"
+                  value="SELF" disabled style="width: 190px !important; margin-top: -24px;">
+              </ng-template>
+
+            </span>
+
+            <span class="mr-2">
+              <label for=""><small style="color: red;">*</small> Invoice date</label>
+              <br />
+              <input type="text" name="unknown" [(ngModel)]="startDate"
+                class="gen-input browser-default form-control content-list-search" autocomplete="off"
+                placeholder="dd/mm/yyyy" bsDatepicker [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', 
+                selectFromOtherMonth: true }">
+
+            </span>
+            <span class="mr-2">
+              <label for=""><small style="color: red;">*</small> Payment due date</label>
+              <br />
+              <input type="text" [minDate]="startDate" name="unknown" [(ngModel)]="paymentDueDate"
+                class="gen-input browser-default form-control content-list-search" autocomplete="off"
+                placeholder="dd/mm/yyyy" bsDatepicker [bsConfig]="{ dateInputFormat:
+                'DD-MM-YYYY',
+                selectFromOtherMonth: true }">
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- Editable table -->
+      <div class="">
+        <div class="card" style="margin-top: 30px">
+
+          <div class="card-body">
+            <div id="table" class="table-editable" style="overflow: auto">
+              <div class="row">
+                <div class="col-sm-4" style="margin-bottom: 15px">
+                  <span class="table-add mb-3 mr-2">
+                    <a (click)="addQuote()" class="text-success">
+                      <i class="fas fa-plus" aria-hidden="true"> </i>
+                      <span>ADD</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+              <table class="table table-bordered table-responsive-md table-striped text-center"
+                [formGroup]="invoiceForm">
+                <tr>
+                  <th class="text-center"><span class="text-danger">*</span> Item Name</th>
+                  <th class="text-center"><span class="text-danger">*</span> Description</th>
+                  <th class="text-center"><span class="text-danger">*</span> Unit Price ({{selectedCurrency}})</th>
+                  <th class="text-center"><span class="text-danger">*</span> Quantity</th>
+                  <th class="text-center">Tax</th>
+                  <th>Tax Inclusive?</th>
+                  <th class="text-center">Tax Amount ({{selectedCurrency}})</th>
+                  <th class="text-center">Amount ({{selectedCurrency}})</th>
+                  <th class="text-center"></th>
+                </tr>
+
+                <ng-container>
+                  <tr formArrayName="invoiceFormArray" *ngFor="
+                      let creds of invoiceFormArray.controls;
+                      let i = index
+                    ">
+                    <ng-container [formGroupName]="i">
+                      <td class="pt-3-half">
+                        <select class="pt-3-half" formControlName="itemName" (change)="handleProductSelection(i)">
+                          <option value="" disabled selected>Items</option>
+                          <option *ngFor="let product of productsName" [value]="product.name">
+                            {{ product.name }}</option>
+                        </select>
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="text" [value]="description[i]" formControlName="description" />
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" name="unitPrice" (input)="handleComputation(i)"
+                          [value]="taxation[i].unitPrice" formControlName="unitPrice" />
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" name="quantity" (input)="handleComputation(i)"
+                          formControlName="quantity" />
+                      </td>
+                      <td class="pt-3-half">
+                        <select name="" formControlName="tax" (change)="handleTaxSelection(i)">
+                          <option value="none">No tax</option>
+                          <option *ngFor="let tax of taxList$ | async" [value]="tax.rate">
+                            {{tax.name+' ('+tax.rate+')'}}
+                          </option>
+                        </select>
+                      </td>
+                      <td class="pt-3-half">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" formControlName="taxInclusive" (change)="handleTaxSelection(i)"
+                            [value]="taxation[i].taxInclusive" [disableControl]="!activateTaxInclusive[i]"
+                            class="custom-control-input text-center checkbox-all" id="defaultUnchecked{{ i }}" />
+                          <label class="custom-control-label" for="defaultUnchecked{{ i }}"></label>
+                        </div>
+                      </td>
+                      <td class="pt-3-half">
+                        {{taxation[i].taxAmount }}
+                      </td>
+                      <td class="pt-3-half">
+                        {{taxation[i]?.amountAfterTax }}
+                      </td>
+                      <td class="text-center">
+                        <span class="table-remove" (click)="deleteQuote(i)">
+                          <i class="fas fa-trash hov-pointer-black text-danger"></i>
+                        </span>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+
+              </table>
+
+              <div class="row">
+                <div class="col-sm-4" style="margin-bottom: 15px">
+                  <span class="table-add mb-3 mr-2">
+                    <a (click)="addQuote()" class="text-success">
+                      <i class="fas fa-plus" aria-hidden="true"> </i>
+                      <span>ADD</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Editable table -->
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-container [ngSwitch]="true">
+              <h6 *ngSwitchCase="paymentHistory?.length !== 0" class="fin-sec-color fs-22">
+                <small>You cannot Update this invoice once payment has been
+                  made.</small>
+              </h6>
+
+
+              <button type="button" *ngSwitchDefault class="fin-pry-btn mr-0 mt-3" (click)="handleInvoiceUpdate()">
+                Update
+                <span *ngIf="savingSpinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+              <button type="button" class="fin-sec-btn mr-0 mt-3 ml-1" (click)="sendInvoice()">Send Invoice </button>
+              <button type="button" class="fin-sec-btn ml-3 mt-3" routerLink="/sales/invoice-list"
+                [queryParams]="{session_id: 'List'}">
+                Go Back to List
+              </button>
+            </ng-container>
+          </div>
+
+          <div class="offset-sm-2 col-sm-4 right invoice-total">
+            <table class="table table-borderless text-right mt-3 pt-3">
+              <tbody>
+                <tr>
+                  <th scope="row">Amount Before Tax</th>
+                  <td title="View more options" class="tooltip-test">
+                    {{ totalInvoiceAmountDetails?.amountBeforeTax | currency : selectedCurrency :'symbol-narrow' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Tax Amount</th>
+                  <td title="View more options" class="tooltip-test">
+                    {{ totalInvoiceAmountDetails?.taxAmount | currency : selectedCurrency :'symbol-narrow' }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Total Amount</th>
+                  <td title="View more options" class="tooltip-test">
+                    {{ totalInvoiceAmountDetails?.amountAfterTax | currency : selectedCurrency :'symbol-narrow' }}
+                  </td>
+                </tr>
+
+                <ng-container *ngIf="paymentHistory?.length !== 0">
+                  <tr *ngFor="let payment of paymentHistory">
+                    <th scope="row" style="color: red">
+                      Amount Paid
+                      <span class="pl-1">
+                        {{ payment.date | date: "longDate" }}</span>
+                    </th>
+                    <td title="View more options" class="tooltip-test">
+                      <span class="currency">(
+                      </span>{{ payment.amountPaid | currency : selectedCurrency :'symbol-narrow'}})
+                    </td>
+                  </tr>
+                </ng-container>
+
+                <tr class="last-row">
+                  <th scope="row">
+                    <h4>Balance</h4>
+                  </th>
+                  <td title="View more options" class="tooltip-test">
+                    <h4>
+                      {{totalInvoiceAmountDetails?.balanceDue | currency : selectedCurrency :'symbol-narrow' }}
+                    </h4>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Editable table -->
+
+      <form [formGroup]="paymentForm">
+        <h2 class="fin-sec-color fs-22">Receive Payment</h2>
+        <div class="row">
+          <div class="col-md-3 col-sm-12 create-deal-right">
+            <label for="email"><small style="color: red;">*</small> Amount</label>
+            <br />
+            <input type="number" min="1" [max]="totalInvoiceAmountDetails?.balanceDue" formControlName="amount"
+              name="payment" class="gen-input browser-default"
+              oninput="this.value = this.value <= 0 ? this.value=0 : Math.abs(this.value) " #amt
+              (keyup)="checkValue(amt.value)" />
+            <p style="color: red; font-size: 11px;" *ngIf="validatePaymentAmount">Amount cannot exceed balance.</p>
+          </div>
+          <div class="col-md-3 col-sm-12 create-deal-right">
+            <label for="name"><small style="color: red;">*</small> Select Bank</label>
+            <br />
+            <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+            <select class="gen-input browser-default form-control" formControlName="bankNameSelected">
+              <option *ngIf="bankAccountDetails.length" value="" disabled selected>Select Bank</option>
+              <option *ngIf="!bankAccountDetails.length" value="" disabled selected> No {{selectedCurrency}} account
+                available</option>
+              <option [value]="bank.id" *ngFor="let bank of bankAccountDetails">{{
+                bank.bank
+              }}</option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-12 create-deal-right">
+            <label><small style="color: red;">*</small> Description</label>
+            <br />
+            <textarea type="text" id="name" name="cname" formControlName="description" class="gen-input browser-default"
+              style="height: 120px"></textarea>
+          </div>
+          <button class="fin-pry-btn float-right pay-btn" (click)="handlePaymentCreation()"
+            [disabled]="paymentForm.invalid || balancePaidInFull || paymentForm.controls.amount.value === 0">
+            SAVE <span *ngIf="savingSpinner2"><i class="fa fa-spinner fa-spin"></i></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

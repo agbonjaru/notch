@@ -1,0 +1,45 @@
+.note-loading{
+    border: medium none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 17px;
+    height: 33px;
+    position: absolute;
+    right: 13px;
+    width: 33px;
+    bottom: 44px;
+}
+.textarea{
+    padding-top: 10px;
+    padding-right: 10px;
+    border: none; 
+    padding-left: 15px; 
+    width: 93% !important;
+}
+.agent-mentions{
+    position: absolute;
+    bottom: 35%;
+    left: 12%;
+    min-height: 50px;
+    max-height: 300px;
+    width: 250px;
+    overflow: auto;
+}
+.agent-mentions .list-group-item{
+    padding: 10px;
+    cursor: pointer;
+}
+.agent-mentions .list-group-item:hover , .agent-mentions .list-group-item.active{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.agent-mentions .list-group-item .name{
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+}
+.agent-mentions .list-group-item .email{
+    display: block;
+    font-size: 10px;
+}

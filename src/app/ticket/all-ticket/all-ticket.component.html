@@ -1,0 +1,313 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+    <app-all-ticket-filter (emitFilter)="filterEmitted($event)"  ></app-all-ticket-filter>
+
+    </div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list" *ngIf="ticketList">
+        <div class="row content-list-header" style="border-bottom: 1px #c4c4c4 solid;padding-bottom: 20px">
+          <div class="col-md-6 text-left filter-actions-top">
+<!-- 
+            <div class="list-actions">
+              <button class="fin-sec-btn" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="#">Email</a>
+                <a class="dropdown-item" href="#">SMS</a>
+                <a class="dropdown-item" href="#">Chat</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter">Assign
+                  Ticket</a>
+                <a class="dropdown-item" href="#">Delete</a>
+              </div>
+            </div> -->
+            <!-- Assign Ticket Modal -->
+            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle">Assign Ticket</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign Ticket to</label>
+                        <br>
+                        <select id="mselect1" multiple="" data-placeholder="Pick Sales Person" style="width: 100%;">
+
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign Ticket to</label>
+                        <br>
+                        <select id="mselect0" multiple="" data-placeholder="Select Client" style="width: 100%;">
+
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                    </button>
+                    <button type="button" class="fin-pry-btn">Assign</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Assign Ticket Modal End-->
+
+            <!-- Assign Lead Modal -->
+            <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle3"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle3">Assign Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign company to</label>
+                        <br>
+                        <select id="mselect" multiple="" data-placeholder="Pick Sales Person" style="width: 100%;">
+
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign company to</label>
+                        <br>
+                        <select id="mselect2" multiple="" data-placeholder="Select Team" style="width: 100%;">
+
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                    </button>
+                    <button type="button" class="fin-pry-btn">Assign</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Assign Lead Modal End-->
+          </div>
+          <div class="col-md-6 content-list-buttons">
+            <!-- <button class="fin-sec-btn">EXPORT</button>
+            <button class="fin-sec-btn">IMPORT</button> -->
+            <span *ngIf="gs.isAuthorized('ADD_TICKETS')" >
+              <button (click)="openTicketModal()" class="fin-pry-btn" data-toggle="modal"  id="add-ticket">ADD Ticket</button>
+            </span>
+          </div>
+
+        </div>
+        <ng-container *ngIf="ticketList.length">
+          <div class="ticket-content row mb-2" *ngFor="let ticket of ticketList| paginate: { itemsPerPage: 10, currentPage: p }">
+            <div class="col-xl-8 d-flex card-view"  >
+                <div (click)="view(ticket.code)">
+                    <p class="m-0">
+                      <span>{{ticket.name}} </span>-{{ticket.subject}}
+                      <span *ngIf="ticket.notice" class="ml-3 badge badge-primary">New Message</span>
+                    </p>  
+                    <p class="m-0"><span >{{ticket.clientName}}</span> - 
+                      Agent responded {{ ticket.lastResponse != 0 ? (ticket.lastResponse | timeago) : ticket.lastResponse }}.
+                      Due on {{ ticket.dueDate | date}}
+                    </p>
+   
+                </div>
+            </div> 
+            <div class="col-xl-4">
+              <div class="right" style="margin-right: 80px;">
+                <select #prty="ngModel" [(ngModel)]="ticket.priority"
+                (change)="updateTicket('priority', ticket, prty.value)" 
+                class="gen-input browser-default form-control content-list-search {{getPrityColor(ticket.priority)}}"
+                  style="border: none;border-radius: 0;width: 100px!important;cursor: pointer">
+                  <option value="HIGH">High</option>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="URGENT">Urgent</option>
+                </select>
+                <select *ngIf="!(ticket.stat === 'RESOLVED'); else resolvedClosedTicket" #stat="ngModel" [(ngModel)]="ticket.stat" (change)="updateTicket('status', ticket, stat.value)"
+                  class="gen-input browser-default form-control content-list-search"
+                  style="border: none;border-radius: 0;width: 100px!important;cursor: pointer">
+                  <option value="PENDING">Pending</option>
+                  <option value="UNSOLVED">Unsolved</option>
+                  <option value="WAITING_FOR_CUSTOMER">Waiting</option>
+                </select>
+                <ng-template #resolvedClosedTicket>
+                  <div style="margin-left: 16px;">
+                    <p *ngIf="ticket.stat === 'RESOLVED'">Resolved</p>
+
+                    <!-- <p *ngIf="ticket.closed">Closed</p> -->
+                    <!-- <p *ngIf="!ticket.closed && ticket.stat === 'RESOLVED'">Resolved</p> -->
+                  </div>
+                </ng-template>
+                <!-- <div id="dropdownMenuLink19" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  style="margin-left: 20%;cursor: pointer">
+                  <span>.</span>
+                  <span>.</span>
+                  <span>.</span>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink19">
+                  <a class="dropdown-item" [routerLink]="['/ticket/ticket-view', ticket.code]">message</a>
+                  <a class="dropdown-item" href="#">close</a>
+                </div> -->
+              </div>
+            </div> 
+          </div>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          
+
+        </ng-container>
+        <ng-container *ngIf="!ticketList.length">
+          <div class="text-center">
+            <h6>No Tickets</h6>
+          </div>
+        </ng-container>
+
+      </div>
+      <div *ngIf="!ticketList">
+
+        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>
+      <!-- Add Ticket Modal -->
+      <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+      aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="ModalCenterTitle4">Add Ticket</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+             <div class="modal-body">
+              <p class="text-danger">All field with (*) are required</p>
+
+                 <form [formGroup]="ticketForm"> 
+                     <div class="form-group"> 
+                         <label class="col-form-label">Client Name  <span class="text-danger">*</span> </label>
+                         <ngx-select-dropdown formControlName="clientName" [options]="clientList" [config]="config" ></ngx-select-dropdown>
+                         <!-- <input  type="text" class="gen-input2 browser-default"> -->
+                     </div>
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Subject <span class="text-danger">*</span></label>
+                         <input formControlName="subject" type="text" class="gen-input2 browser-default">
+                     </div>
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Type <span class="text-danger">*</span></label>
+                         <!-- <input formControlName="type" type="text" class="gen-input2 browser-default"> -->
+                         <select formControlName="type" class="gen-input browser-default form-control" style="width: 100%;border-color: #c4c4c4">
+                          <option value="" disabled> Select Type</option>
+                          <option value="COMPLAIN">Complain</option>
+                          <option value="ENQUIRY">Enquiry</option>
+                          <option value="INCIDENT">Incident</option>
+                          <option value="PROBLEM">Problem</option>
+                      </select>
+                        </div>
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Priority <span class="text-danger">*</span></label>
+                         <br>
+                         <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                         <select formControlName="prty" class="gen-input browser-default form-control" style="width: 100%;border-color: #c4c4c4">
+                             <option value="" disabled>Select Priority</option>
+                             <option value="URGENT">Urgent</option>
+                             <option value="HIGH">High</option>
+                             <option value="LOW">Low</option>
+                             <option value="MEDIUM">Medium</option>
+                         </select>
+
+                     </div>
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Status <span class="text-danger">*</span></label>
+                         <br>
+                         <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                         <select formControlName="status" class="gen-input browser-default form-control" style="width: 100%;border-color: #c4c4c4">
+                             <option value="" disabled >Select Status</option>
+                             <option value="PENDING">Pending</option>
+                             <!-- <option value="RESOLVED">Resolved</option> -->
+                             <option value="WAITING_FOR_CUSTOMER">Waiting For Customer</option>
+                         </select>
+
+                     </div>
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Source <span class="text-danger">*</span></label>
+                         <br>
+                         <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                         <select formControlName="source" class="gen-input browser-default form-control" style="width: 100%;border-color: #c4c4c4">
+                             <option value="" disabled>Select Source</option>
+                             <option value="CALL">Phone call</option>
+                             <option value="EMAIL">Email</option>
+                             <!-- <option value="WHATSAPP">Whatsapp</option>
+                             <option value="TWITTER">Twitter</option> -->
+                         </select>
+                     </div>
+                     <div class="form-group">
+                      <label class="col-form-label">Ticket Due Date <span class="text-danger">*</span></label>
+                      <input formControlName="dueDate" placeholder="dd/mm/yyyy" type="text" class="gen-input2 browser-default" bsDatepicker>
+                  </div>
+
+
+                     <div class="form-group">
+                         <label class="col-form-label">Ticket Detail <span class="text-danger">*</span></label>
+                         <textarea class="form-control" formControlName="detail" cols="10" rows="5"></textarea>
+                         <!-- <input formControlName="detail" type="text" class="gen-input2 browser-default"> -->
+                     </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+                 <button id="closeModal" type="button" class="fin-sec-btn" data-dismiss="modal">Close</button>
+                 <button (click)="addTicket()" [disabled]="(ticketForm.invalid || loading)" 
+                 type="button" class="fin-pry-btn">Add <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span> 
+                </button>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- Add Ticket Modal End-->

@@ -1,0 +1,148 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Notifications</h1>
+            <p>Set up when you need notifications by either email or within the app</p>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="email-tab"
+                    data-toggle="tab" href="#email" role="tab" aria-controls="email" aria-selected="true">Email
+                    Notifications</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" style="background: transparent;" id="inApp-tab"
+                    data-toggle="tab" href="#inApp" role="tab" aria-controls="call" aria-selected="false">In-app
+                    Notifications</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Loader -->
+          <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless"
+            (actionState)="onActionState()" *ngIf="loader.showSpinner">
+          </loading-spinner>
+          <!-- Loader Ends -->
+
+          <ng-template [ngIf]="!loader.showSpinner">
+
+            <!--EMail notifications-->
+            <div class="settings-label pt-3 tab-pane fade show active" id="email" role="tabpanel"
+              aria-labelledby="email-tab">
+              <form>
+                <div class="row mb-3 pt-2 pb-2">
+                  <div class="col-md-12">
+                    <p>Select the notifications you wish to see for users with the role below</p>
+                  </div>
+
+                  <div class="col-sm-12 col-lg-6 col-xl-4">
+                    <select #Notify="ngModel" (change)="getUsersByRoles()" name="email" [(ngModel)]="roleName"
+                      class="gen-input2 browser-default form-control" id="role">
+                      <option value="" disabled="" class="col-md-12" ted="">Select role</option>
+                      <option *ngFor="let role of allRoles" value="{{role.id}} {{role.name}}">{{role.name}}</option>
+                    </select>
+                  </div>
+
+                </div>
+
+                <!-- Small Loader -->
+                <div class="col-sm-12 col-xl-4 col-lg-6 pb-4" *ngIf="showSmallSpinner">
+                  <loading-spinner [spinnerType]="'fadingCircle'" [spinnerStyle]="{'margin': '15px auto'}">
+                  </loading-spinner>
+                </div>
+
+                <div *ngIf="(!showSmallSpinner) && (roleName !== null)" class="row">
+                  <ng-container *ngIf="notifyList">
+                    <div *ngFor="let notify of notifyList.email " class="col-sm-12 col-xl-4 col-lg-6 pb-4">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" [value]="notify.name" (click)="checkNotification(notify)"
+                          class="custom-control-input text-center checkbox-all" [id]="notify.name"
+                          [checked]="notify.selected">
+                        <label class="custom-control-label" [for]="notify.name">{{notify.displayName}}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <button type="button" (click)="openContent('inApp')" class="fin-pry-btn mt-3">
+                        Next
+                      </button>
+                    </div>
+                  </ng-container>
+                </div>
+              </form>
+            </div>
+            <!--EMail notifications-->
+
+            <!--In-app notifications-->
+            <div class="settings-label pt-3 tab-pane fade" id="inApp" role="tabpane1" aria-labelledby="inApp-tab">
+              <form>
+                <div class="row mb-3 pt-2 pb-2">
+                  <div class="col-md-12">
+                    <p>Select the notifications you wish to see for users with the role below</p>
+                  </div>
+
+                  <div class="col-sm-12 col-lg-6 col-xl-4">
+                    <select #Notify="ngModel" (change)="getUsersByRoles()" name="inApp" [(ngModel)]="roleName"
+                      class="gen-input2 browser-default form-control" id="role">
+                      <option value="" disabled="" class="col-md-12" ted="">Select role</option>
+                      <option *ngFor="let role of allRoles" value="{{role.id}} {{role.name}}">{{role.name}}</option>
+                    </select>
+                  </div>
+
+                </div>
+
+                <!-- Small Loader -->
+                <div class="col-sm-12 col-xl-4 col-lg-6 pb-4" *ngIf="showSmallSpinner">
+                  <loading-spinner [spinnerType]="'fadingCircle'" [spinnerStyle]="{'margin': '15px auto'}">
+                  </loading-spinner>
+                </div>
+
+                <div *ngIf="(!showSmallSpinner) && (roleName !== null)" class="row">
+                  <ng-container *ngIf="notifyList">
+                    <div *ngFor="let notify of notifyList.inApp " class="col-sm-12 col-xl-4 col-lg-6 pb-4">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" [value]="notify.name" (click)="checkNotification(notify)"
+                          class="custom-control-input text-center checkbox-all" [id]="notify._id"
+                          [checked]="notify.selected">
+                        <label class="custom-control-label" [for]="notify._id">{{notify.displayName}}</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+
+                      <button *ngIf="showButton === false" type="button" (click)="saveEmailNotify()"
+                        class="fin-pry-btn mt-3" [disabled]="(isLoading)" [ladda]="isLoading"
+                        data-style="slide-right">Save
+                      </button>
+
+                      <button *ngIf="showButton === true" type="button" (click)="updateEmailNotify()"
+                        class="fin-pry-btn mt-3" [disabled]="( isLoading)" [ladda]="isLoading"
+                        data-style="slide-right">Update
+                      </button>
+
+                    </div>
+                  </ng-container>
+                </div>
+              </form>
+            </div>
+            <!--In-app notifications-->
+
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

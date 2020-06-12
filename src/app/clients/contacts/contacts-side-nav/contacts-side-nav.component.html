@@ -1,0 +1,319 @@
+<div class="list-filter">
+  <div class="accordion" id="accordionExample">
+    <h6>Filters
+      <button class="btn btn-small" style="background-color: #35657b !important; margin-left: 10%"
+        (click)="clearAllFilter()">Clear
+        Filter</button>
+    </h6>
+
+    <!-- Contact Client -->
+    <!-- <div class="card">
+      <div class="card-header" id="heading1">
+        <h2 class="mb-0">
+          <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#collapse1"
+            aria-expanded="true" aria-controls="collapse1">
+            Contacts
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByContactName()" [formGroup]="contactForm">
+            <div class="form-group">
+              <div class="form-group">
+                <label>Contact Name</label>
+                <select formControlName="contactName" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Contact</option>
+                  <option [value]="contact" *ngFor="let contact of dropdownOptions | async">{{contact}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- SALESPERSON -->
+    <div class="card">
+      <div class="card-header" id="heading3">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3"
+            aria-expanded="false" aria-controls="collapse3" (click)="fetchCompanyList()">
+            SalesPerson
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse3" class="collapse " aria-labelledby="heading3" data-parent="#accordionExample">
+        <div [formGroup]="companyForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">Select</label>
+            <ngx-select-dropdown [config]="config" [options]="companies | async" [multiple]="false"
+              style="width: 100% !important" formControlName="companyName">
+            </ngx-select-dropdown>
+          </div>
+
+          <div class="form-group">
+            <button (click)="filterByCompanyName()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOB -->
+    <div class="card">
+      <div class="card-header" id="heading2">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2"
+            aria-expanded="false" aria-controls="collapse2">
+            Date of Birth <small>
+              (*Range)
+            </small>
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse2" class="collapse " aria-labelledby="heading2" data-parent="#accordionExample">
+        <div [formGroup]="dateOfBirthForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">From: Past Date</label>
+            <input formControlName="fromDate" type="date" class="form-control form-control-sm dateWidth" id="fromDate">
+
+          </div>
+          <div class="form-group">
+            <label for="toDate">To: Latest Date</label>
+            <input formControlName="toDate" type="date" class="form-control form-control-sm dateWidth" id="toDate">
+          </div>
+          <div class="form-group">
+            <button (click)="filterByDOB()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Companies -->
+    <!-- <div class="card">
+      <div class="card-header" id="heading3">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3"
+            aria-expanded="false" aria-controls="collapse3" (click)="fetchCompanyList()">
+            Company
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse3" class="collapse " aria-labelledby="heading3" data-parent="#accordionExample">
+        <div [formGroup]="companyForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">Filter By CompanyName</label>
+            <ngx-select-dropdown [config]="config" [options]="companies | async" [multiple]="false"
+              style="width: 100% !important" formControlName="companyName">
+            </ngx-select-dropdown>
+          </div>
+
+          <div class="form-group">
+            <button (click)="filterByCompanyName()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- maritalStatus -->
+    <div class="card">
+      <div class="card-header" id="heading6">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6"
+            aria-expanded="false" aria-controls="collapse6">
+            Marital Status
+          </button>
+        </h2>
+      </div>
+      <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByMaritalStatus()" [formGroup]="maritalStatusForm">
+            <div class="form-group">
+              <!-- <input type="text" formControlName="status" class="form-control form-control-sm dateWidth"> -->
+              <select formControlName="status" class="form-control form-control-sm dateWidth">
+                <option value="" disabled>Select Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Seperated">Seperated</option>
+                <option value="Divorced">Divorced</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gender -->
+    <div class="card">
+      <div class="card-header" id="heading7">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7"
+            aria-expanded="false" aria-controls="collapse7">
+            Gender
+          </button>
+        </h2>
+      </div>
+      <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByGender()" [formGroup]="genderForm">
+            <div class="form-group">
+              <select formControlName="gender" class="form-control form-control-sm dateWidth">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter List -->
+    <div *ngFor="let filter of filterList;let index = index" class="card">
+      <div class="card-header" [id]="'headingfilter'+ index">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+            [attr.data-target]="'#collapsefilter' + index" aria-expanded="false" aria-controls="collapse">
+            {{filter.name}}
+          </button>
+        </h2>
+      </div>
+      <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+        <div class="card-body">
+          <form *ngIf="!(showFilter === index)" (ngSubmit)="filterByCustomFilter(filter.filter)">
+            <div class="form-group">
+              <label><b>Contact Name </b><br> {{filter.filter.companyName.name}}</label><br>
+              <label><b>Gender </b><br> {{filter.filter.gender}}</label><br>
+              <label><b>Marital Status </b><br> {{filter.filter.maritalStatus}}</label><br>
+            </div>
+            <div class="form-group">
+              <button (click)="editFilter(index, filter)" type="button" class="btn btn-info btn-filter">Edit</button>
+              <button (click)="deleteFilter(filter)" type="button"
+                class="ml-1 btn btn-danger btn-filter">Delete</button>
+              <button type="submit" class="mt-2 btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+          <ng-container *ngIf="showFilter === index">
+
+            <form (ngSubmit)="createUpdateFilter('update')" [formGroup]="createFilterForm" (click)="fetchCompanyList()">
+              <div class="form-group">
+                <div class="form-group">
+                  <p>Filter Name</p>
+                  <input formControlName="filterName" type="text" class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <p>Company Name</p>
+                  <ngx-select-dropdown [config]="config" [options]="companies | async" [multiple]="false"
+                    style="width: 100% !important" formControlName="companyName">
+                  </ngx-select-dropdown>
+                </div>
+                <div class="form-group" data-role="rangeslider">
+                  <label for="price-min">Gender:</label>
+
+                  <select formControlName="gender" class="form-control form-control-sm dateWidth">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                <div class="form-group" data-role="rangeslider">
+                  <label for="price-min">Marital Status:</label>
+                  <input formControlName="maritalStatus" type="text" class="form-control form-control-sm dateWidth">
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+                </div>
+              </div>
+            </form>
+
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Filter -->
+    <div class="card">
+      <div class="card-header" id="heading22">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse22"
+            aria-expanded="false" aria-controls="collapse22" (click)="fetchCompanyList()">
+            Create Filter
+          </button>
+        </h2>
+      </div>
+      <div id="collapse22" class="collapse" aria-labelledby="heading22" data-parent="#accordionExample">
+        <div class="card-body create-filter">
+          <form (ngSubmit)="createUpdateFilter('create')" [formGroup]="createFilterForm">
+            <div class="form-group">
+              <div class="form-group">
+                <p>Filter Name</p>
+                <input formControlName="filterName" type="text" class="form-control form-control-sm">
+              </div>
+              <div class="form-group">
+                <p>Company Name</p>
+                <ngx-select-dropdown [config]="config" [options]="companies | async" [multiple]="false"
+                  style="width: 100% !important" formControlName="companyName">
+                </ngx-select-dropdown>
+              </div>
+              <div class="form-group" data-role="rangeslider">
+                <label for="price-min">Gender:</label>
+                <select formControlName="gender" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div class="form-group" data-role="rangeslider">
+                <label for="price-min">Marital Status:</label>
+                <!-- <input formControlName="maritalStatus" type="text" class="form-control form-control-sm dateWidth"> -->
+                <select formControlName="maritalStatus" class="form-control form-control-sm dateWidth">
+                  <option value="" disabled>Select Status</option>
+                  <option value="Single">Single</option>
+                  <option value="Married">Married</option>
+                  <option value="Seperated">Seperated</option>
+                  <option value="Divorced">Divorced</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!--
+dateOfBirth
+gender
+maritalStatus
+maidenName
+spouseName
+occupation
+phoneNumber
+email
+otherEmail
+postalAddress
+fax
+zip
+stateOfOrigin
+nextOfKin
+nextOfKinRelationship
+profileImage -->

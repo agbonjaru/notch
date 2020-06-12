@@ -1,0 +1,118 @@
+<app-client-header></app-client-header>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <app-leads-side-nav (filterQuery)="filterLeads($event)"></app-leads-side-nav>
+
+    </div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+            <!--<input type="text" placeholder="Search Companies" class="gen-input browser-default content-list-search">-->
+
+            <!-- <div class="list-actions">
+              <button class="fin-sec-btn" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="#">Email</a>
+                <a class="dropdown-item" href="#">SMS</a>
+                <a class="dropdown-item" href="#">Chat</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter">Assign
+                  Lead</a>
+                <a class="dropdown-item" href="#">Delete</a>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- Hide content list while loading -->
+          <ng-template [ngIf]="!loader.showSpinner">
+            <div class="col-md-6 mb-2 content-list-buttons">
+              <!-- <button class="fin-sec-btn">EXPORT</button> -->
+              <!-- <button class="fin-sec-btn">IMPORT</button> -->
+              <button type="button" class="fin-sec-btn d-none" id="show-assign-lead-btn"data-toggle="modal" data-target="#assignLeadModal"> ASSIGN LEAD
+              </button>
+              <button *ngIf="genSer.isAuthorized('LEAD_ACTIONS')" class="fin-pry-btn" data-toggle="modal" data-target="#addLeadModal">CREATE LEAD</button>
+            </div>
+          </ng-template>
+          <!-- End Hide content list while loading -->
+
+          <!-- Add Lead Modal -->
+          <app-add-lead></app-add-lead>
+          <!-- Add Lead Modal End-->
+
+          <!-- Assign Lead Modal -->
+          <div class="modal fade" id="assignLeadModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title mt-0" id="assignLeadModalTitle">Assign Lead: {{selected_lead?.sourceValue}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div [class]="assign_message_class">
+                    {{assign_message}}
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <label for="email">Salesperson</label>
+                      <select class="gen-input browser-default w-100" id="selected_salesperson"
+                        name="selected_salesperson" [(ngModel)]="selected_salesperson" (change)="load_salesperson_teams()">
+                        <option value="">Select Salesperson</option>
+                        <option *ngFor="let salesperson of salespersons; let i = index" value={{i}}>
+                          {{salesperson?.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <div class="w-100 d-flex align-content-senter">
+                        <span *ngIf="!teams?.length && selected_salesperson" class="pt-4 center-spin"><span class="fa fa-spinner fa-spin fa-3x text-primary"></span></span> 
+                      </div>
+
+                      <label *ngIf="teams?.length" for="email">Team</label>
+                      <select class="gen-input browser-default w-100" id="selected_team" name="selected_team"
+                        *ngIf="teams?.length" [(ngModel)]="selected_team">
+                        <option value="">Select Team</option>
+                        <option *ngFor="let team of teams; let i = index" value={{i}}>{{team?.teamName}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE</button>
+                  <button [disabled]="loading" type="button" class="fin-pry-btn" (click)="assignLead()">ASSIGN <span *ngIf="loading"><span
+                        class="fa fa-spinner fa-spin"></span></span> </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leads Table -->
+        <ng-template [ngIf]="!loader.showSpinner">
+          <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+            [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)" [bodyrows]="leadList">
+          </app-datatable>
+        </ng-template>
+        <!-- Leads Table Ends -->
+
+        <!-- Loader -->
+        <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless" (actionState)="onActionState()"
+          *ngIf="loader.showSpinner">
+        </loading-spinner>
+        <!-- Loader Ends -->
+
+      </div>
+
+    </div>
+  </div>
+</div>

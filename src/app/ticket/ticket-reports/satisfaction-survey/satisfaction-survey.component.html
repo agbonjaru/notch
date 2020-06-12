@@ -1,0 +1,287 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <a routerLink="/ticket/ticket-reports">
+      < back
+    </a>
+    <div  class="col-xl-12 col-lg-12 col-md-12 content-list " style="padding: 70px;height: 90vh">
+      <ng-container >
+
+
+      <div  class="helpdesk-right-header" style="margin-top: -30px;margin-bottom: 50px">
+        <h3 style="font-size: 16px;font-weight: 600">Satisfaction Survey</h3>
+        <data-range (getFilter)="getReport($event)" ></data-range>
+      </div>
+      <div *ngIf="reportList && overviewList; else loading" class="survey-container tab-content" style="padding: 20px">
+        <ul class="nav nav-tabs" role="tablist" style="margin-top: 20px">
+          <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="overview-tab"
+              data-toggle="tab" href="#overview-gam" role="tab" aria-controls="email" aria-selected="true">OVERVIEW</a>
+          </li>
+          <!-- <li class="nav-item pl-3"><a class="nav-link " style="background: transparent;" id="response-tab"
+              data-toggle="tab" href="#response-gam" role="tab" aria-controls="call" aria-selected="false">RESPONSES</a>
+          </li> -->
+        </ul>
+
+        <!--Overview-->
+
+        <div class="settings-label tab-pane fade show active" id="overview-gam" role="tabpanel"
+          aria-labelledby="overview-tab">
+          <div class="rate-container">
+            <p>How would you rate your overall satisfaction for the resolution provided</p>
+            <div *ngIf="overviewList" class="row">
+              <div class="col-md-9" style="border-right: 1px #c4c4c4 solid;height: 40px">
+                <div class="row">
+                  <div class="col-md-2">
+                    <div class="positive d-flex">
+                      <img src="/assets/img/great-emoji.svg" width="20%">
+                      <span>Great <b>{{overviewList.excellentTotal}}</b></span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="positive good-rate d-flex">
+                      <img src="/assets/img/good-emoji.svg" width="20%">
+                      <span>Good <b>{{overviewList.goodTotal}}</b></span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="neutral d-flex">
+                      <img src="/assets/img/okay-emoji.svg" width="20%">
+                      <span>Okay <b>{{overviewList.neutralTotal}}</b></span>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="negative d-flex">
+                      <img  src="/assets/img/not-good-emoji.svg" width="11%">
+                      <span>Not Okay <b>{{overviewList.badTotal}}</b></span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="negative d-flex">
+                      <img  src="/assets/img/terrible-emoji.svg" width="20%">
+                      <span>Terrible <b>{{overviewList.terribleTotal}}</b></span>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <div class="col-md-3 d-flex ans">
+                <span>{{overviewList.total}} Total</span>
+                <span>{{overviewList.unresponsesTotal}} Unanswered</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="row" style="margin-top: 30px">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-1">
+                  <p>Great</p>
+                </div>
+                <div class="col-md-5">
+                  <div class="progress-bar progress-bar-striped active" role="progressbar" id="" aria-valuenow="60"
+                    aria-valuemin="0" aria-valuemax="100"
+                    style="height: 10px;margin-top: 5px;border-radius: 5px;background-color: #169384"
+                  [ngStyle]="{'width': toPercent(overviewList.excellentTotal)}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1">
+                  <p>Okay</p>
+                </div>
+                <div class="col-md-5">
+                  <div class="progress-bar progress-bar-striped active" role="progressbar" id="" aria-valuenow="60"
+                    aria-valuemin="0" aria-valuemax="100"
+                    style="height: 10px;margin-top: 5px;border-radius: 5px;background-color: #169384"
+                  [ngStyle]="{'width': toPercent(overviewList.neutralTotal)}">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-1">
+                  <p>Terrible</p>
+                </div>
+                <div class="col-md-5">
+                  <div class="progress-bar progress-bar-striped active" role="progressbar" id="" aria-valuenow="60"
+                    aria-valuemin="0" aria-valuemax="100"
+                    style="height: 10px;margin-top: 5px;border-radius: 5px;background-color: #169384"
+                  [ngStyle]="{'width': toPercent(overviewList.terribleTotal)}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- <div class="settings-label tab-pane fade" id="response-gam" role="tabpanel" aria-labelledby="response-tab">
+          <div class="rate-container">
+            <p>How would you rate responses for the resolution provided by the agent?</p>
+            <div class="row">
+              <div class="col-md-6" style="border-right: 1px #c4c4c4 solid;height: 40px">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="positive d-flex">
+                      <img src="assets/img/positive-smiley.svg"><span>100% Positive</span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="neutral d-flex">
+                      <img src="assets/img/neutral-smiley.svg"><span>0% Positive</span>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="negative d-flex">
+                      <img src="assets/img/negative-smiley.svg"><span>0% Positive</span>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+              <div class="col-md-6 d-flex ans">
+                <span>2 Answered</span>
+                <span>0 Unanswered</span>
+              </div>
+            </div>
+
+          </div>
+          <div class="row" style="margin-top: 30px">
+            <div class="col-md-2 satisfied">
+              <p>Extremely satisfied</p>
+              <p>Neither satisfied nor dissatisfied</p>
+              <p>Extremely dissatisfied</p>
+            </div>
+            <div class="col-md-10 ">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" id="pg" aria-valuenow="60"
+                aria-valuemin="0" aria-valuemax="100"
+                style="width:70%;height: 10px;margin-top: 5px;border-radius: 5px;background-color: #169384">
+              </div>
+            </div>
+
+          </div>
+        </div> -->
+
+        <div class="tab-content">
+          <ul class="nav nav-tabs" role="tablist" style="margin-top: 20px">
+            <li class="nav-item"><a  class="nav-link active" style="background: transparent;" id="group-tab"
+                data-toggle="tab" href="#group-gam" role="tab" aria-controls="email" aria-selected="true">Agents</a>
+            </li>
+            <li class="nav-item pl-3" (click)="toggle()"><a   class="nav-link " style="background: transparent;" id="agent-tab"
+                data-toggle="tab" href="#agent-gam" role="tab" aria-controls="call" aria-selected="false">Groups</a>
+            </li>
+          </ul>
+
+          <div class="settings-label tab-pane fade show active" id="group-gam" role="tabpanel"
+            aria-labelledby="group-tab">
+            <div class="card" style="padding: 20px;margin-top: 20px">
+              <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+                width="100%">
+                <thead>
+                  <tr>
+                    <th class="th-sm">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input text-center checkbox-all"
+                          id="defaultUnchecked">
+                        <label class="custom-control-label" for="defaultUnchecked"></label>
+                      </div>
+                    </th>
+                    <th class="th-sm">Group</th>
+                    <th class="th-sm">Great</th>
+                    <th class="th-sm">Good</th>
+                    <th class="th-sm">Okay</th>
+                    <th class="th-sm">Not Okay</th>
+                    <th class="th-sm">Terrible</th>
+                    <th class="th-sm">Total</th>
+                    <th class="th-sm">Unanswered</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of reportList.agents" class="table-row">
+                    <td>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input text-center" id="defaultUnchecked1">
+                        <label class="custom-control-label" for="defaultUnchecked1"></label>
+                      </div>
+                    </td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.excellent}}</td>
+                    <td>{{data.good}}</td>
+                    <td>{{data.neutral}}</td>
+                    <td>{{data.bad}}</td>
+                    <td>{{data.terrible}}</td>
+                    <td>{{data.total}}</td>
+                    <td>{{data.unresponses}}</td>
+                  </tr>
+  
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="settings-label tab-pane fade" id="agent-gam" role="tabpanel" aria-labelledby="agent-tab">
+            <div class="card" style="padding: 20px;margin-top: 20px">
+              <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+              width="100%">
+              <thead>
+                <tr>
+                  <th class="th-sm">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input text-center checkbox-all"
+                        id="defaultUnchecked">
+                      <label class="custom-control-label" for="defaultUnchecked"></label>
+                    </div>
+                  </th>
+                  <th class="th-sm">Group</th>
+                  <th class="th-sm">Great</th>
+                  <th class="th-sm">Good</th>
+                  <th class="th-sm">Okay</th>
+                  <th class="th-sm">Not Okay</th>
+                  <th class="th-sm">Terrible</th>
+                  <th class="th-sm">Total</th>
+                  <th class="th-sm">Unanswered</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of reportList.groups" class="table-row">
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input text-center" id="defaultUnchecked1">
+                      <label class="custom-control-label" for="defaultUnchecked1"></label>
+                    </div>
+                  </td>
+                  <td>{{data.name}}</td>
+                  <td>{{data.excellent}}</td>
+                  <td>{{data.good}}</td>
+                  <td>{{data.neutral}}</td>
+                  <td>{{data.bad}}</td>
+                  <td>{{data.terrible}}</td>
+                  <td>{{data.total}}</td>
+                  <td>{{data.unresponses}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <loading-spinner [spinnerType]="'wave'" ></loading-spinner>
+    </ng-template>
+    </div>
+
+
+  </div>
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

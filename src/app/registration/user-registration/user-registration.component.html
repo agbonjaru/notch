@@ -1,0 +1,132 @@
+<!-- <div class="col-12 spinner-container" *ngIf="signUpservice.loading$ | async">
+  <mat-progress-spinner class="example-margin ml-auto mr-5" mode="indeterminate" diameter="20">
+  </mat-progress-spinner>
+</div> -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 left-div">
+      <div class=" container-fluid login-header p-0">
+        <a href="" id="logo-container"><img src="assets/img/notch-logo1.svg" width="120" alt=""></a>
+        <div class="login-alternate d-flex float-right hidden-md hidden-sm hidden-xs">
+          <p>Already a member?</p>
+          <a routerLink="/login" style="font-weight: bold; margin-left: 10px;text-decoration: none">Login</a>
+        </div>
+      </div>
+
+      <h2 class="" style="font-size: 20px">Sign Up To Get Started</h2>
+      <div class="pt-4 mb-4">
+
+      </div>
+      <form action="" class="form" [formGroup]="registrationForm">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="fname">First Name</label>
+            <br>
+            <input
+              [ngClass]="firstnameControl.touched ? (firstnameControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="text" id="fname" formControlName="firstName" class="gen-input browser-default" />
+            <!-- <br>
+            <span *ngIf="firstnameControl.touched && !firstnameControl.valid"
+              class="text-danger font-weight-light"><small> first name is required</small>
+            </span> -->
+          </div>
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="lname">Last Name</label>
+            <br>
+            <input
+              [ngClass]="lastnameControl.touched ? (lastnameControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="text" id="lname" formControlName="lastName" class="gen-input browser-default" />
+            <!-- <br>
+            <span *ngIf="lastnameControl.touched && !lastnameControl.valid"
+              class="text-danger font-weight-light"><small> last
+                name is required</small>
+            </span> -->
+          </div>
+        </div>
+        <div class="space-30 hidden-xs"></div>
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="email">Email</label>
+            <br>
+            <input [disableControl]="invitedUser"
+              [ngClass]="emailControl.touched ? (emailControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="email" id="email" formControlName="email" class="gen-input browser-default" />
+            <!-- <br>
+            <span *ngIf="(emailControl.touched && !emailControl.valid) && emailControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                email is required</small>
+            </span>
+            <br>
+            <span *ngIf="(emailControl.touched && !emailControl.valid) && emailControl.errors.pattern"
+              class="text-danger font-weight-light"><small>
+                Please enter a valid email address</small>
+            </span> -->
+          </div>
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="password">Password</label>
+            <br>
+            <input
+              [ngClass]="passwordControl.touched ? (passwordControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="password" id="password" formControlName="password" class="gen-input browser-default" />
+            <!-- <br>
+            <span *ngIf="passwordControl.touched && !passwordControl.valid"
+              class="text-danger font-weight-light"><small> password is required</small>
+            </span> -->
+          </div>
+        </div>
+
+
+        <br>
+        <br>
+        <!-- Default checked -->
+        <!-- <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="defaultChecked2" formControlName="rememberMe">
+          <label class="custom-control-label" for="defaultChecked2">Remember me</label>
+        </div> -->
+        <br>
+        <!-- <a style="text-decoration: none">
+          <span class="save-btn"> SIGN UP</span>
+        </a> -->
+
+        <div class="d-inline-flex">
+
+          <button class="btn m-0 save-btn" [disabled]="!registrationForm.valid || (signUpservice.loading$ | async)"
+            (click)="signUp()">
+            SIGN UP
+          </button>
+
+          <!-- Loader -->
+          <div class="all-loader animated ml-3" id="loader-4" *ngIf="signUpservice.loading$ | async"
+            [ngClass]="{'fadeIn faster': !signUpservice.loading$}">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+        </div>
+
+
+      </form>
+      <div class="row hidden-lg hidden-xg">
+        <div class="col-md-12 text-center">
+          <div class="login-alternate text-center d-flex m-auto" style="padding-top: 25px;">
+            <p>Already have an account?</p>
+            <a routerLink="/login" style="font-weight: bold; margin-left: 10px;">Login</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-4 login-bg signup-bg">
+      <!--<img src="img/login-bg.jpg" alt="">-->
+      <h3>Login to Charge up
+        <br>
+        your sales for more Profit
+      </h3>
+    </div>
+  </div>
+</div>

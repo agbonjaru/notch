@@ -1,0 +1,477 @@
+<app-teams-subnav></app-teams-subnav>
+
+
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div class="col-md-12 settings-wrapper tab-content" style="margin-top: 150px">
+
+      <header class="settings-header">
+        <h1>Gamification Leader Board</h1>
+      </header>
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="all-tab" data-toggle="tab"
+            href="#all-gam" role="tab" aria-controls="email" aria-selected="true">ALL</a>
+        </li>
+        <li class="nav-item pl-3"><a class="nav-link " style="background: transparent;" id="indi-tab" data-toggle="tab"
+            href="#indi-gam" role="tab" aria-controls="call" aria-selected="false">SALESPERSON</a>
+        </li>
+        <li class="nav-item pl-3"><a class="nav-link " style="background: transparent;" id="team-tab" data-toggle="tab"
+            href="#team-gam" role="tab" aria-controls="task" aria-selected="false">TEAMS</a>
+        </li>
+      </ul>
+
+      <button class="fin-pry-btn float-right" data-toggle="modal" data-target="#ModalCenter4"
+        style="margin: 20px">CREATE GAME
+      </button>
+
+      <!-- Add game Modal -->
+      <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalCenterTitle2">Create Game</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <p style="font-weight: 500">Choose a particular game type</p>
+                <div class="d-flex">
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+                    <label class="custom-control-label" style="font-size: 16px;color: #474847;margin: 10px"
+                      for="defaultUnchecked">Salesperson</label>
+                  </div>
+                  <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked2"
+                      name="defaultExampleRadios2">
+                    <label class="custom-control-label" style="font-size: 16px;color: #474847;margin: 10px"
+                      for="defaultUnchecked2">Team</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label" style="color: #000000;font-weight: 500;margin-top: 30px">Select Game
+                    Type</label>
+                  <br>
+                  <select class="gen-input browser-default form-control" style="width: 100%">
+                    <!--<option value="" disabled selected>Sub-periods</option>-->
+                    <option value="1">Deals</option>
+                    <option value="2">Revenue</option>
+                    <option value="3">Task</option>
+                    <option value="4">calls</option>
+                    <option value="5">Task</option>
+                  </select>
+                </div>
+                <div class="custom-control custom-checkbox d-flex" style="margin-top: 50px">
+                  <input type="checkbox" class="custom-control-input" id="defaultChecked2" checked>
+                  <label class="custom-control-label" for="defaultChecked2" style="font-size: 15px;color: #000000">
+                    Repeat this game every
+                  </label>
+                  <select class="gen-input browser-default form-control" style="width: 30%;margin-left: 15px">
+                    <!--<option value="" disabled selected>Sub-periods</option>-->
+                    <option value="1">Day</option>
+                    <option value="2">Week</option>
+                    <option value="3">Year</option>
+
+                  </select>
+                  <br>
+                </div>
+                <div class="d-flex">
+                  <label class="" style="font-size: 15px;color: #000000;margin: 20px">
+                    for the next weeks
+                  </label>
+                  <input type="number" id="cname3" name="cname" placeholder="0" class="gen-input browser-default"
+                    style="width: 29%;margin-left: 39px;margin-top: 12px">
+                </div>
+                <div>
+                  <label class="col-form-label" style="color: #000000;font-weight: 500;margin-top: 30px">Select
+                    Competitors</label>
+                  <select id="mselect" multiple="" data-placeholder="Select salesperson/Teams"
+                    style="width: 100%; margin-bottom: 20px;color: #474847">
+                    <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                    <!--Add select all-->
+                    <!--<option value="" disabled selected>Choose your option</option>-->
+                    <option value="1">Salesperson/teams</option>
+                    <option value="2">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                    <option value="3">Salesperson/teams</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <label class="col-form-label" style="color: #000000;font-weight: 500;margin-top: 30px">Start
+                      date</label>
+                    <br>
+                    <input type="text" id="cname" name="cname" class="gen-input browser-default" style="width: 100%;">
+                  </div>
+                  <div class=" col-md-6">
+                    <label class="col-form-label" style="color: #000000;font-weight: 500;margin-top: 30px">End
+                      date</label>
+                    <br>
+                    <input type="text" id="cname2" name="cname" class="gen-input browser-default" style="width: 100%;">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+              </button>
+              <button type="button" class="fin-pry-btn">SAVE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add game Modal End-->
+
+      <div class="settings-label tab-pane fade show active" id="all-gam" role="tabpanel" aria-labelledby="all-tab">
+        <div class="gamification-card">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class="gam-card-header">
+                      <img src="assets/img/revenue-bg.svg" alt="" class="img-fluid w-100">
+
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Salesperson: Mary Doe</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class=" gam-card-header2">
+                      <img src="assets/img/deals-bg.svg" alt="" class="img-fluid w-100">
+
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Team: Team Name</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class=" gam-card-header3">
+                      <img src="assets/img/task-bg.svg" alt="" class="img-fluid w-100">
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Salesperson: Mary Doe</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class=" gam-card-header4">
+                      <img src="assets/img/call-bg.svg" alt="" class="img-fluid w-100">
+
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Team: Team Name</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+
+              <!--2nd card below-->
+
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>$5,000 acquired</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>100 Deals closed</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Task Carried out</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Calls made</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-label tab-pane fade" id="indi-gam" role="tabpanel" aria-labelledby="indi-tab">
+        <div class="gamification-card">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class="gam-card-header">
+                      <img src="assets/img/revenue-bg.svg" alt="" class="img-fluid w-100">
+
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Salesperson: Mary Doe</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class=" gam-card-header2">
+                      <img src="assets/img/deals-bg.svg" alt="" class="img-fluid w-100">
+
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Salesperson: Team Name</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <a href="gamification-within.html">
+                  <div class="gam-card">
+                    <div class=" gam-card-header3">
+                      <img src="assets/img/task-bg.svg" alt="" class="img-fluid w-100">
+                    </div>
+                    <div class="gam-card-body text-left p-3">
+                      <p>Competitors: 12</p>
+                      <p>Start: May 02 2019</p>
+                      <p>End: June 20 2019</p>
+                      <p>Leading Salesperson: Mary Doe</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3">
+                <div class="gam-card">
+                  <div class=" gam-card-header4">
+                    <img src="assets/img/call-bg.svg" alt="" class="img-fluid w-100">
+
+                  </div>
+                  <div class="gam-card-body text-left p-3">
+                    <p>Competitors: 12</p>
+                    <p>Start: May 02 2019</p>
+                    <p>End: June 20 2019</p>
+                    <p>Leading Salesperson: Team Name</p>
+                  </div>
+                </div>
+              </div>
+
+              <!--2nd card below-->
+
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>$5,000 acquired</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>100 Deals closed</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Task Carried out</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Calls made</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-label tab-pane fade" id="team-gam" role="tabpanel" aria-labelledby="team-tab">
+        <div class="gamification-card">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="gam-card">
+                  <div class="gam-card-header">
+                    <img src="assets/img/revenue-bg.svg" alt="" class="img-fluid w-100">
+
+                  </div>
+                  <div class="gam-card-body text-left p-3">
+                    <p>Competitors: 12</p>
+                    <p>Start: May 02 2019</p>
+                    <p>End: June 20 2019</p>
+                    <p>Leading Team: Mary Doe</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="gam-card">
+                  <div class=" gam-card-header2">
+                    <img src="assets/img/deals-bg.svg" alt="" class="img-fluid w-100">
+
+                  </div>
+                  <div class="gam-card-body text-left p-3">
+                    <p>Competitors: 12</p>
+                    <p>Start: May 02 2019</p>
+                    <p>End: June 20 2019</p>
+                    <p>Leading Team: Team Name</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="gam-card">
+                  <div class=" gam-card-header3">
+                    <img src="assets/img/task-bg.svg" alt="" class="img-fluid w-100">
+                  </div>
+                  <div class="gam-card-body text-left p-3">
+                    <p>Competitors: 12</p>
+                    <p>Start: May 02 2019</p>
+                    <p>End: June 20 2019</p>
+                    <p>Leading Team: Mary Doe</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="gam-card">
+                  <div class=" gam-card-header4">
+                    <img src="assets/img/call-bg.svg" alt="" class="img-fluid w-100">
+
+                  </div>
+                  <div class="gam-card-body text-left p-3">
+                    <p>Competitors: 12</p>
+                    <p>Start: May 02 2019</p>
+                    <p>End: June 20 2019</p>
+                    <p>Leading Team: Team Name</p>
+                  </div>
+                </div>
+              </div>
+
+              <!--2nd card below-->
+
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>$5,000 acquired</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>100 Deals closed</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style="border-radius: 50%;"></div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Task Carried out</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="leader-gam-card text-center">
+                  <p class="text-left" style="padding: 10px">1st</p>
+                  <div> <img src="assets/img/1.jpg" width="75px" height="75px" alt="" style=" border-radius: 50%;">
+                  </div>
+                  <h1>Mary Doe</h1>
+                  <p>Sales Executive</p>
+                  <p>500 Calls made</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

@@ -1,0 +1,146 @@
+.email-feed-item-time {
+    color: #555;
+}
+
+.email-item {
+    border-bottom: 1px solid #eeeeee;
+    color: #444444;
+}
+
+.email-item.read {
+    color: #aaaaaa;
+}
+
+.email-item:last-child {
+    border-bottom: 0;
+}
+
+.email-item-body-wrapper {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px !important;
+    padding-bottom: 8px !important;
+}
+
+.email-item-body-wrapper:last-child {
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+}
+
+.email-feed-item-sender{
+    font-weight: bold;
+}
+
+.email-feed-item-body {
+    margin-bottom: 3px !important;
+}
+
+.email-feed-item-action {
+    font-size: 10px !important;
+    font-weight: bold;
+    color: #999999;
+    cursor: pointer;
+}
+
+#viewEmailModal {
+    z-index: 10070 ;
+}
+
+/** */
+.veil {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.email-display-wrapper {
+    box-sizing: border-box;
+
+    width: 600px;
+    height: auto;
+
+    border-radius: 10px;
+    padding: 25px;
+
+    background-color: #FFFFFF;
+}
+
+.email-display-wrapper>div {
+    box-sizing: border-box;
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+}
+
+.email-display-header > h6 {
+    float: left;
+    margin: 0;
+    margin-bottom: 7.5px;
+    padding: 0;
+
+    max-width: 80%;
+}
+
+.email-display-body {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+
+    min-height: 150px;
+    max-height: 350px;
+    
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    
+    margin-bottom: 10px;
+    padding: 10px 0;
+
+    overflow-y: scroll;
+}
+
+.email-display-attachment {
+    max-width: 100% !important;
+    padding-bottom: 5px;
+    overflow-x: scroll !important;
+}
+.email-display-footer div {
+    display: unset;
+    width: auto !important;
+}
+
+.email-display-footer .deal {
+    display: inline-block;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    height: auto;
+}
+.email-display-footer .deal > span {
+    display: inline-block;
+    height: 100%;
+    padding: 10px 20px;
+}
+
+.email-display-footer .title-span {
+    border-right: 1px solid #dddddd;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #dddddd;
+}
+
+.email-display-footer .deal-name {
+    height: 100%;
+}
+
+.email-display-footer .btn {
+    margin:  0 0 0 10px;
+}

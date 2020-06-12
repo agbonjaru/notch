@@ -1,0 +1,309 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>Edit Deal Pipeline Workflow</h1>
+
+            <ng-container *ngIf="allDealStagesByWorkflow">
+              <div *ngIf="editWorkflow == false">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      style="background: transparent;"
+                      id="email-seq-tab"
+                      data-toggle="tab"
+                      role="tab"
+                      aria-controls="call"
+                      aria-selected="false"
+                    >
+                      {{ editWorkflowName | uppercase }}
+                      <span
+                        class="pl-2 pt-1"
+                        (click)="editWorkflowStage()"
+                        id="edit-role-name"
+                        style="display: inline;"
+                      >
+                        <i class="far fa-edit"></i>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                *ngIf="editWorkflow == true"
+                class="nav nav-tabs"
+                style="padding-left: 30px;"
+              >
+                <form [formGroup]="dealPipelineWorkflowForm">
+                  <div class="form-group">
+                    <div class="row">
+                      <div>
+                        <input
+                          type="text"
+                          formControlName="workflowName"
+                          class="form-control"
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="hidden"
+                          formControlName="workflowId"
+                          class="form-control"
+                        />
+                      </div>
+                      <div>
+                        <span
+                          class="pl-2 pt-1"
+                          (click)="updateWorkflow()"
+                          id="save-role-name"
+                          style="display: inline;"
+                        >
+                          <i class="far fa-save"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="allDealStagesByWorkflow" class="settings-label">
+            <div class="row">
+              <div
+                class="col-md-12 col-sm-12 col-lg-6 col-xl-7 role-creation-tab border-left-0"
+                style="padding-top: 20px;"
+              >
+              <div class="d-flex justify-content-between">
+               <div> <h4 style="color: #7E7F9A;">Workflow Pipeline</h4></div>
+                <div *ngIf="allDealWorkflow">
+                  <button (click)="updateWorkflowStatus(0)" *ngIf="allDealWorkflow.status===0" class="float-right fin-pry-btn">Activate</button>
+                  <button (click)="updateWorkflowStatus(1)" *ngIf="allDealWorkflow.status===1" class="float-right fin-pry-btn btn-secondary">Deactivate</button>
+                </div>
+              </div>
+         
+
+                <div class="transition-setup">
+                  <div class="transition-boxes">
+                    <ul class="list-unstyled mb-0 connected-sortable">
+                      <li  
+                        class="transition-row connected-sortable droppable-area1 row w-100 m-0"
+                        *ngFor="let dealStage of allDealStagesByWorkflow"
+                      >
+                        <p class="left col-sm-4 text-left mt-3 mb-0">
+                          <!-- <b>{{ dealStage.number }}</b> -->
+                        </p>
+                        <span
+                          class="trans-step draggable-item col-sm-4 text-center text-elips"
+                          >{{ dealStage.name }}</span
+                        >
+                        <span *ngIf="!(dealStage.name === 'Won' || dealStage.name === 'Lost')"
+                          class="right col-sm-4 text-right mt-3 fin-pry-color"
+                        >
+                          <a (click)="loadStages(dealStage)"> 
+                            <i
+                              class="fas fa-cog"
+                              data-toggle="modal"
+                              data-target="#ModalCenter4"
+                              title="Configure stage"
+                            ></i>
+                          </a>
+                          <a (click)="deleteDealStage(dealStage)">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-md-12 pr-0 pt-3">
+                  <a 
+                    [routerLink]="['/settings/deals-workflow']"
+                    class="left"
+                    style="margin-top: 13px;"
+                  >
+                    < Back
+                  </a>
+                  <button (click)="resetAddStage()"
+                    class="fin-sec-btn mt-2 mr-3 right"
+                    data-toggle="modal"
+                    data-target="#ModalCenter4"
+                  >
+                    Add stage
+                  </button>
+
+                  <!-- Add Transition Modal -->
+                  <div
+                    class="modal fade"
+                    id="ModalCenter4"
+                    tabindex="-1"
+                    data-backdrop="static" data-keyboard="false" 
+                    role="dialog"
+                    aria-labelledby="ModalCenterTitle4"
+                    aria-hidden="true"
+                  >
+                    <div
+                      class="modal-dialog modal-dialog-centered"
+                      role="document"
+                    >
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="ModalCenterTitle4">
+                          Configure Stage
+                          </h5>
+                          <button
+                            type="button"
+                            class="close d-none"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+
+                        <form [formGroup]="dealStagesForm">
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label>Stage Name  <span class="text-danger">*</span> </label>
+                              <input
+                                type="text"
+                                formControlName="name"
+                                class="gen-input2 browser-default"
+                              />
+                            </div>
+
+                            <div class="form-group">
+                              <label>Condition</label>
+                              <input 
+                                type="text"
+                                formControlName="userCondition"
+                                class="gen-input2 browser-default"
+                                placeholder="Enter condition to be met before next stage"
+                              />
+                            </div>
+
+                            <div class="form-group">
+                              <label
+                                >Document to be uploaded before moving to next
+                                stage</label
+                              >
+                              <input
+                                type="text"
+                                formControlName="docName"
+                                class="gen-input2 browser-default w-90 mr-1"
+                                placeholder="Enter document name"
+                                style="width: 89% !important;"                              />
+                              <button [disabled]="dealStagesForm.controls.docName.invalid" (click)="addDocs()"  class=" fin-pry-btn "> <span ><span class=" fa fa-plus"></span></span> </button>
+                              <ul *ngIf="stageDocs.length" class="mt-2 ml-2">
+                                <li *ngFor="let doc of stageDocs">
+                                  <i class="fa fa-file"></i> {{doc}} <span (click)="removeDoc(doc)" class="text-danger is-clickable"> <i  class="fa fa-times"></i> </span>
+                                </li>
+                              </ul>
+                              <p class="mt-1" *ngIf="!stageDocs.length">No documents added </p>
+                            </div>
+                            <div class="form-group">
+                              <label class="mr-2" >Extra Requirements:</label>
+                              <div (click)="checkClicked('inlineCheckbox1')" class="form-check form-check-inline">
+                                <label id="forcastLabel" class="form-check-label" for="">Deal Forecast</label>
+                                <input  formControlName="requireForecast" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                              </div>
+                              <div (click)="checkClicked('inlineCheckbox2')" class="form-check form-check-inline">
+                                <label class="form-check-label" for="">Deal Value</label>
+                                <input  formControlName="requireValue" class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div (click)="checkClicked('skipStage')"  class="form-check form-check-inline">
+                                <label  class="form-check-label mr-2" for="">Can Skip Stage:</label>
+                                <input formControlName="canSkip" class="form-check-input" type="checkbox" id="skipStage" value="option1">
+                              </div>
+                            </div>
+
+                            <!-- <div class="right">
+                                  <a class="add-stage" href="#">+Add step</a>
+                                </div> -->
+
+                            <div class="form-group">
+                              <label for="approval-right"
+                                >Permission<span class="text-danger"
+                                  ><sup>*</sup></span
+                                ></label
+                              >
+                              <br />
+                              <ng-multiselect-dropdown
+                                [placeholder]="'Select Roles'"
+                                [data]="allRoles"
+                                formControlName="roleNames"
+                                [settings]="dropdownSettings"
+                                (onSelect)="onItemSelect($event)"
+                                (onSelectAll)="onSelectAll($event)"
+                              >
+                              </ng-multiselect-dropdown>
+                             </div>
+
+                            <br />
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              *ngIf="!disBtn"
+                              type="button"
+                              class="fin-sec-btn"
+                              data-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <div *ngIf="!loadstage == true">
+                              <button
+                                type="button"
+                                (click)="addDealStage()"
+                                [disabled]="dealStagesForm.invalid || disBtn"
+                                class="fin-pry-btn"
+                              >
+                                save
+                                <span *ngIf="disBtn"
+                                  ><i class="fa fa-spinner fa-spin"></i
+                                ></span>
+                              </button>
+                            </div>
+
+                            <div *ngIf="loadstage == true">
+                              <button
+                                [disabled]="dealStagesForm.invalid || disBtn"
+                                type="button"
+                                (click)="updateDealStage()"
+                                class="fin-pry-btn"
+                              >
+                                Update
+                                <span *ngIf="disBtn"
+                                  ><i class="fa fa-spinner fa-spin"></i
+                                ></span>
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Add Transition Modal End-->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!allDealStagesByWorkflow">
+              <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

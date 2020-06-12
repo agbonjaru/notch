@@ -1,0 +1,812 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+
+
+    <div *ngIf="showEditPage; else showLoader" class="col-xl-12 col-lg-12 col-md-12 content-list" style="height: 100%">
+
+
+      <div>
+
+        <button type="button" class="fin-sec-btn mr-1 mt-3" routerLink="/sales/sales-order-list"
+          [queryParams]="{session_id: 'List'}">
+          Go Back
+        </button>
+        <span *ngIf="editMode">
+          <button class="fin-sec-btn" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1" *ngIf="salesOrderDetail">
+            <ng-container *ngIf="salesOrderDetail.status === 0">
+              <a class="dropdown-item" (click)="getApproveDecline('Approve')">Approve</a>
+              <a class="dropdown-item" (click)="getApproveDecline('Decline')">Decline</a>
+              <button type="button" id="actionBtn" class="d-none btn btn-primary" data-toggle="modal"
+                data-target="#approveDecline">
+                Launch Approve/Reject Modal
+              </button>
+            </ng-container>
+            <ng-container *ngIf="salesOrderDetail?.status !== 0">
+              <a *ngIf="salesOrderDetail?.status === 2" class="dropdown-item text-success">
+                <i class="fa  fa-check"></i> Approved</a>
+              <a *ngIf="salesOrderDetail?.status === 1" class="dropdown-item text-danger">
+                <i class="fa fa-times"></i> Declined</a>
+            </ng-container>
+            <ng-container *ngIf="salesOrderDetail?.dealCode">
+              <a class="dropdown-item" [routerLink]="['/sales/deals-view', salesOrderDetail?.dealCode]">View Deal</a>
+            </ng-container>
+
+          </div>
+        </span>
+
+
+      </div>
+      <div class="list" id="printArea">
+        <ng-container [formGroup]="createSalesForm">
+          <div class="row content-list-header" style="padding-top: 10px">
+            <div class="col-md-7 text-left filter-actions-top">
+
+              <div class="row top-row">
+
+                <div class="col-md-4">
+                  <label for=""><span class="text-danger">*</span> Client</label>
+                  <br>
+                  <ngx-select-dropdown [disabled]="editMode" [config]="configs.client" [options]="clientList"
+                    formControlName="clientName">
+                  </ngx-select-dropdown>
+
+                </div>
+                <div class="col-md-4">
+                  <label for=""><span class="text-danger">*</span> Salesperson</label>
+                  <br>
+                  <ngx-select-dropdown (change)="getSalesPTeams()" [config]="configs.salesperson"
+                    [options]="salespersonList" formControlName="source">
+                  </ngx-select-dropdown>
+                </div>
+                <div class="col-md-4">
+
+                  <label for="exampleInputEmail1" style="font-size: 13px;" class="row">
+                    <span class="col-md-4"> <small style="color: red;">*</small> Teams</span>
+                    <br>
+                    <span class="col-md-8">
+                      <span class="custom-control custom-checkbox toggle-adv-table ml-1" style="margin-top:35px;"
+                        style="float: right;">
+                        <input type="checkbox" (click)="handleSelf($event)"
+                          class="custom-control-input text-center checkbox-all" id="customCheck01"
+                          [checked]="selfActive">
+                        <label class="custom-control-label" for="customCheck01" style="padding-top: 3px;color: #000000">
+                          For Self?
+                        </label>
+                      </span>
+
+                    </span>
+                  </label>
+
+                  <span *ngIf="!selfActive; else self">
+                    <ng-container *ngIf="(teamList$ | async) as teamList; else loadingTeam">
+                      <select formControlName="teamID"
+                        class="gen-input browser-default form-control content-list-search">
+                        <option value="" disabled selected>Select Team</option>
+                        <option *ngFor="let team of teamList" [value]="team.teamID">{{team.teamName}}</option>
+                      </select>
+                    </ng-container>
+                    <ng-template #loadingTeam>
+                      <small class="text-danger" style="display: block;margin-top: 10px;font-size: 12px;">
+                        <i>
+                          {{createSalesForm.value.source ? '...Fetching Teams' : 'Salesperson is required to select a team'}}
+                        </i>
+                        <i class="fa fa-spinner fa-spin"></i>
+                      </small>
+                    </ng-template>
+                  </span>
+
+                  <ng-template #self>
+                    <input type="text" name="refNumber"
+                      class="gen-input browser-default form-control  content-list-search" value="SELF" disabled>
+                  </ng-template>
+
+                </div>
+
+                <div class="col-md-4">
+                  <label for=""><span class="text-danger">*</span> Currency</label>
+                  <br>
+                  <select formControlName="currency" class="gen-input browser-default form-control content-list-search"
+                    style="width: 100% !important;" [attr.disabled]="editMode && invoiceId ? true : null">
+                    <option value="" disabled="" selected="">Select Currency</option>
+                    <option *ngFor="let curr of currencies" [value]="curr">
+                      {{curr}}
+                    </option>
+                  </select>
+
+                </div>
+
+                <div class="col-md-4">
+                  <label for=""><span class="text-danger">*</span> Workflow</label>
+                  <br>
+                  <ngx-select-dropdown (change)="getTransition()" [config]="configs.workflow" [options]="(workFlowList)"
+                    formControlName="workflowName" [disabled]="editMode">
+                  </ngx-select-dropdown>
+                </div>
+              </div>
+
+
+
+
+              <div class="list-actions " style="padding-top: 9px">
+              </div>
+
+            </div>
+            <div class="col-md-5 content-list-buttons file-input">
+              <a *ngIf="editMode">
+                <!-- <button *ngIf="generalSrv.isAuthorized('UPLOAD_DOCUMENT')" class='fin-sec-btn' (click)="openUploadDoc()"
+                  data-toggle="modal" data-target="#ModalCenter4">Upload Document</button> -->
+                <!-- <button *ngIf="generalSrv.isAuthorized('PRINT_SALES_ORDER')" (click)="printPage()"
+                  class="ml-2 fin-sec-btn">PRINT</button> -->
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin: 10px">
+                <a class="dropdown-item" href="#">Driver's license</a>
+                <a class="dropdown-item" href="#">National id card</a>
+                <a class="dropdown-item" href="#">Date of birth</a>
+                <hr>
+                <a class="dropdown-item" href="#">Google drive</a>
+                <a class="dropdown-item" href="#">One drive</a>
+                <a class="dropdown-item" href="#">Dropbox</a>
+                <a class="dropdown-item" href="#">Browse Device</a>
+
+              </div>
+              <div>
+                <span *ngIf="salesOrderDetail?.status === 2">
+                  <img src="../../../../assets/img/approved.jpg" alt="" style="width: 28%;">
+                </span>
+                <span *ngIf="salesOrderDetail?.status === 1">
+                  <img src="../../../../assets/img/declined.png" alt="" style="width: 28%;">
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!--Change to Won Modal -->
+          <app-sales-order-transition-modal [modalId]="'transViewModal'" [salesOrder]="salesOrderDetail"
+            (submitData)="activateCommentSection($event)">
+            <!-- -->
+          </app-sales-order-transition-modal>
+          <button data-toggle="modal" data-target="#transViewModal" id="auto-click-trans-modal"
+            class="d-none">button</button>
+
+
+          <!-- Add Transition Modal End-->
+
+
+          <div>
+            <div class="row">
+              <div class="col-md-6">
+                <div [style.display]="editMode ? 'block' : 'none'">
+                  <ng-container *ngIf="transitionStageList">
+                    <div style="margin-top: 50px !important">
+                      <span class="text-danger">* <small>Kindly Update the Sales Order after
+                          every
+                          Transition</small></span>
+                    </div>
+                    <div *ngIf="transitionStageList?.transitionID; else noTrans" class="col-md-12"
+                      class="sales-order-box w-100">
+                      <div class="sales-order-box-ctrl">
+                        <div class="left fin-blue" *ngIf="transitionStageList?.backwardStages?.length > 0">
+                          <i class="fas fa-angle-double-left" id="dropdownMenuLink4" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></i>
+                          <div *ngIf="filterStage(transitionStageList.backwardStages) && salesOrderDetail?.status === 0"
+                            class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a *ngFor="let backstage of transitionStageList.backwardStages" class="dropdown-item"
+                              (click)="changeTransition(backstage, 'backward')">
+                              {{backstage.stageName}}</a>
+
+                          </div>
+                        </div>
+                        <div class="right fin-blue mt-auto mb-auto">
+                          <i class="fas fa-angle-double-right" id="dropdownMenuLink3" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"></i>
+                          <div *ngIf="filterStage(transitionStageList.forwardStages) && salesOrderDetail?.status === 0"
+                            class="
+                            dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <ng-container *ngFor="let forwardStage of transitionStageList.forwardStages">
+                              <a *ngIf="!(forwardStage.stageName === 'Approval' || forwardStage.stageName === 'Decline')"
+                                class="dropdown-item" (click)="changeTransition(
+                                  forwardStage, 
+                                  'forward',
+                                  transitionStageList.startStageID + '-' + transitionStageList.startStageName
+                                )">
+                                {{forwardStage.stageName}}
+                              </a>
+                            </ng-container>
+                          </div>
+                        </div>
+
+                      </div>
+                      <p class="sales-order-event text-center ml-auto mr-auto" id="selectedTransition"
+                        [attr.data-value]="transitionStageList.transitionID+'+'+transitionStageList.transitionName">
+                        {{transitionStageList.transitionName}}
+                        <br>
+                        <span class="text-center m-auto fs-12 fin-sec-color">
+                          <span id="selectedStage"
+                            [attr.data-value]="transitionStageList.startStageID+'+'+transitionStageList.startStageName">
+                            {{transitionStageList.startStageName}}</span> Stage</span>
+                      </p>
+                    </div>
+                    <ng-template #noTrans>
+                      <div *ngIf="transitionStageList?.backwardStages.length > 0; else test" class="col-md-12"
+                        class="sales-order-box w-100">
+                        <div class="sales-order-box-ctrl">
+                          <div class="left fin-blue">
+                            <i class="fas fa-angle-double-left" id="dropdownMenuLink4" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false"></i>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              <a *ngFor="let backstage of transitionStageList.backwardStages" class="dropdown-item"
+                                (click)="changeTransition(backstage, 'backward')">
+                                {{backstage.stageName}}</a>
+
+                            </div>
+                          </div>
+                        </div>
+                        <p class="sales-order-event text-center ml-auto mr-auto" id="selectedTransition"
+                          [attr.data-value]="lastStageInfo?.transitionID+'+'+lastStageInfo?.transitionName">
+                          {{lastStageInfo?.transitionName}}
+
+                          <br>
+                          <span class="text-center m-auto fs-12 fin-sec-color">
+                            <span id="selectedStage"
+                              [attr.data-value]="lastStageInfo?.lastStageId+'+'+lastStageInfo?.lastStageName">
+                              {{lastStageInfo?.lastStageName}}</span> Stage</span>
+                        </p>
+                      </div>
+
+                      <ng-template #test>
+                        <h6>No Transition</h6>
+                      </ng-template>
+                    </ng-template>
+                  </ng-container>
+                  <div *ngIf="createSalesForm.value.workflowName && !transitionStageList">
+                    <h6>Loading Transitions</h6>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="row" style="margin-bottom: 20px">
+                  <div class="col-md-8 offset-md-4 right invoice-total">
+                    <table class="table table-borderless text-right mt-3 pt-3">
+                      <tbody>
+
+                        <tr>
+                          <th scope="row">Total Margin</th>
+                          <td title="View more options" class="tooltip-test"><span class="currency">
+
+                            </span>{{totalMargin | currency : createSalesForm.value.currency :'symbol-narrow'}}
+                          </td>
+                        </tr>
+                        <tr class="last-row">
+                          <th scope="row">
+                            <h6>Sales Order Value</h6>
+                          </th>
+                          <td title="View more options" class="tooltip-test">
+                            <h5><span class="currency">
+
+                              </span> {{totalAmount | currency : createSalesForm.value.currency :'symbol-narrow'}}</h5>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </ng-container>
+
+        <!-- Editable table -->
+        <div class="" style="margin-top: 10%">
+
+          <div class="card" style="margin-top: 30px">
+
+            <div class="card-body advanced-table">
+              <div id="table" class="table-editable" style="overflow: auto">
+                <div class="row">
+                  <div class="col-sm-4" style="margin-bottom: 15px">
+                    <span (click)="addItem()" class="table-add mb-3 mr-2 text-success is-clickable">
+                      <i class="fas fa-plus" aria-hidden="true"></i>
+                      <span> ADD</span>
+                    </span>
+                  </div>
+
+                  <div class="col-sm-8" style="margin-bottom: 15px">
+                    <span class="table-add2 mb-3 mr-2">
+                      <a type="button" class="fin-sec-btn ml-1 mt-3" style="float: right;"
+                        href=" https://sales.notchcx.io/samples/quote_template.csv">Download
+                        Template</a>
+                      <a type="button" class="fin-sec-btn ml-1 mt-3" style="float: right;" data-toggle="modal"
+                        data-target="#importCompany">IMPORT
+                        Product</a>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Import Products Modal -->
+                <div class="modal fade" id="importCompany" tabindex="-1" role="dialog" aria-labelledby="importCompany"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="importCompany">
+                          Import Items
+                        </h5>
+                        <button type="button" id="closeImportModal" class="close" data-dismiss="modal"
+                          aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container text-center">
+                          <span><strong>Format:</strong> .csv formats only</span>
+                        </div>
+                        <div class="container-fluid py-3">
+                          <form id="file-upload-form" class="uploader">
+                            <input id="file-upload" type="file" (change)="onImportProduct($event.target.files)"
+                              name="fileUpload" accept=".xlsx,.xls,.csv" />
+                            <label for="file-upload" id="file-drag" *ngIf="!loader.importSpinner">
+                              <div id="start">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <p class="mb-4">Select a file</p>
+                                <div id="notimage" class="hidden">
+                                  Please select an image
+                                </div>
+                                <span id="file-upload-btn" class="fin-pry-btn">Select a file</span>
+                              </div>
+                            </label>
+                            <label id="file-drag" *ngIf="loader.importSpinner">
+                              <div id="start" style="opacity: 0.1;">
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <p class="mb-4">Select a file</p>
+                                <div id="notimage" class="hidden">
+                                  Please select an image
+                                </div>
+                                <span id="file-upload-btn" class="fin-pry-btn">Select a file</span>
+                              </div>
+                              <loading-spinner [spinnerType]="'jsBin'" [spinnerStyle]="{ left: '45%', top: '45%' }">
+                              </loading-spinner>
+                            </label>
+                          </form>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Import Products End-->
+
+                <table [formGroup]="salesItemForm"
+                  class="table table-bordered table-responsive-md table-striped text-center">
+                  <tr>
+                    <th class="text-center"> Item Name</th>
+                    <th class="text-center"> <span class="text-danger">*</span> Description</th>
+                    <th class="text-center"> <span class="text-danger">*</span> Purchase Price
+                      ({{createSalesForm.value.currency}})</th>
+                    <th class="text-center"> <span class="text-danger">*</span> Margin</th>
+                    <th class="text-center"> <span class="text-danger">*</span> Margin Type</th>
+                    <th class="text-center">Unit Price ({{createSalesForm.value.currency}})</th>
+                    <th class="text-center"> <span class="text-danger">*</span> Qty</th>
+                    <th class="text-center">Margin</th>
+                    <th class="text-center">Tax</th>
+                    <th class="text-center">Tax Incl</th>
+                    <th class="text-center">Tax Amount ({{createSalesForm.value.currency}})</th>
+                    <th class="text-center">Amount ({{createSalesForm.value.currency}})</th>
+                    <th class="text-center"></th>
+                  </tr>
+
+
+                  <tr formArrayName="salesOrderItems"
+                    *ngFor="let item of salesItemForm.get('salesOrderItems')['controls']; let i = index;">
+                    <ng-container [formGroupName]="i">
+                      <td class="pt-3-half">
+                        <select class="pt-3-half" formControlName="productName" (change)="setProductId(i)">
+                          <option value="" disabled selected>Items</option>
+                          <option *ngFor="let product of productListWithId" [value]="product.name">
+                            {{product.name}}</option>
+                        </select>
+                        <!-- <input type="text" (change)="setProductId(i)" (input)="setProductId(i)"
+                          formControlName="productName" [ngbTypeahead]="search" /> -->
+
+                        <!-- <input class="d-none" type="text" [id]="'hid-productId'+i" value="" formControlName="productID"> -->
+                      </td>
+                      <td class="pt-3-half">
+                        <textarea name="" formControlName="descrip" id="" style="width: 300px;height: 5rem;"></textarea>
+                        <!-- <input type="text" formControlName="descrip"> -->
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" (input)="inputChanges(i)" formControlName="purchasePrice">
+                      </td>
+                      <td class="pt-3-half">
+                        <input (input)="inputChanges(i)" type="number" formControlName="markUp">
+                      </td>
+
+                      <td class="pt-3-half">
+                        <select style="padding: 0" (change)="inputChanges(i)" name="" formControlName="markUpType">
+                          <option disabled value="">--</option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">%</option>
+                        </select>
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" [disableControl]="true" formControlName="unitPrice">
+                      </td>
+
+                      <td class="pt-3-half">
+                        <input type="number" (input)="inputChanges(i)" formControlName="quantity">
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" [disableControl]="true" formControlName="margin">
+                      </td>
+
+                      <td class="pt-3-half">
+                        <select style="padding: 0" (change)="inputChanges(i)" formControlName="taxName">
+                          <option value="none">No Tax</option>
+                          <option *ngFor="let tax of taxList$ | async" [value]="tax.rate">
+                            {{tax.name+' ('+tax.rate+')'}}
+                          </option>
+                        </select>
+                        <!-- </ng-template> -->
+
+                      </td>
+                      <td class="pt-3-half">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" formControlName="taxInclusive" (change)="inputChanges(i)"
+                            class="custom-control-input text-center checkbox-all" id="taxIclusive{{i}}">
+                          <label class="custom-control-label" for="taxIclusive{{i}}"></label>
+                        </div>
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" [id]="'taxAmount' + i" (input)="inputChanges(i)" [disableControl]="true"
+                          formControlName="taxAmount">
+                      </td>
+
+                      <td class="pt-3-half">
+                        <input type="number" [disableControl]="true" formControlName="amount">
+                      </td>
+                      <td class="text-center">
+                        <span (click)="removeItem(i)" class="table-remove">
+                          <i class="fas fa-trash hov-pointer-black text-danger"></i>
+                        </span>
+
+                      </td>
+                    </ng-container>
+                  </tr>
+
+                </table>
+                <div class="row">
+                  <div class="col-sm-4" style="margin-bottom: 15px">
+                    <span (click)="addItem()" class="table-add mb-3 mr-2 text-success is-clickable">
+                      <i class="fas fa-plus" aria-hidden="true"></i>
+                      <span> ADD</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Editable table -->
+          <div class="row">
+            <div class="col-sm-12">
+              <button *ngIf="!editMode" [disabled]="disBtn" (click)="save('create')" type="button"
+                class="fin-pry-btn  float-left mt-3">Save
+                <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i> </span>
+              </button>
+
+              <ng-container *ngIf="editMode && salesOrderDetail">
+                <button *ngIf="salesOrderDetail.status === 0" [disabled]="disBtn" type="button" (click)="save('edit')"
+                  class="fin-pry-btn float-left  mt-3">
+                  UPDATE <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i> </span>
+                </button>
+                <button *ngIf="!invoiceId && salesOrderDetail.status !== 1" type="button"
+                  (click)="handelCopyToInvoice()" class="fin-pry-btn float-left ml-1 mt-3">
+                  CREATE INVOICE
+                </button>
+                <button *ngIf="invoiceId" type="button" [routerLink]="['/sales/edit-invoice', invoiceId]"
+                  class="fin-pry-btn float-left ml-1 mt-3">
+                  VIEW INVOICE
+                </button>
+
+              </ng-container>
+              <button type="button" class="fin-sec-btn ml-1 mt-3" (click)="activateCommentSection()">
+                Add Comment
+              </button>
+
+              <button type="button" class="fin-sec-btn ml-1 mt-3" routerLink="/sales/sales-order-list"
+                [queryParams]="{session_id: 'List'}">
+                Go Back to List
+              </button>
+
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 20px">
+            <div class="col-sm-7">
+              <ng-container *ngIf="editMode">
+                <h2 class="fs-22 fin-sec-color">Uploaded documents</h2>
+                <div class="docs-uploaded">
+                  <div class="row p-3">
+                    <div class="col-xl-3 col-md-4 text-center" *ngFor="let document of documentList">
+                      <div class="doc-item" data-toggle="modal" data-target=".document" (click)="viewDoc(document)"
+                        title="view document">
+                        <span class="fa fa-file-alt fa-2x file-item"></span>
+                      </div>
+                      <p>{{document.name}}</p>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!--Upload Document-->
+                <!-- <div class="about-contact">
+                  <ng-container *ngIf="documentList;else loadingDoc">
+
+                    <div class="row ml-3" *ngIf="requiredDocument">
+                      <div *ngIf="requiredDocument.length;else noreqDoc" class="col-md-12">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th colspan="3">Stage Name</th>
+                              <th colspan="3">Document Name</th>
+                              <th colspan="6"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let doc of requiredDocument; let i = index;">
+                              <td colspan="3">{{doc.stageName}}</td>
+                              <td colspan="3" *ngFor="let file of doc.documents">{{file}}</td>
+                              <td colspan="6">
+                                <span class="w-25">
+                                  <input (change)="uploadFile($event, i, doc)" class="ml-3" [id]="'dFile' + i"
+                                    type="file">
+                                  <span class="ml-1">{{doc.size}}</span>
+                                </span>
+                                <button data-toggle="modal" data-target="#libUpload" (click)="openLibUpload(doc)"
+                                  class="btn btn-small btn-primary ml-2" [id]="'libUploadBtn-' + i">Library
+                                  Upload</button>
+                                <span class="float-right mr-3">
+                                  <span *ngIf="loading === i">
+                                    uploading...<i class="fa fa-spinner fa-spin"></i>
+                                  </span>
+                                  <button (click)="upload(i)"
+                                    class="d-none {{'uploadBtn-'+ i}} btn btn-small btn-primary mr-2">
+                                    <i class="fa fa-upload"></i> Upload
+                                  </button>
+                                  <button (click)="cancelUpload(i)"
+                                    class="d-none {{'uploadBtn-'+ i}} btn btn-small btn-danger">
+                                    <i class="fa fa-times"></i> cancel
+                                  </button>
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <ng-template #noreqDoc>
+                        <p>No Required Documents</p>
+                      </ng-template>
+                    </div>
+                    <hr>
+                     <div class=" p-1">
+
+         <h2 class="fs-22 fin-sec-color">Uploaded documents</h2>
+        <div class="row ml-3">
+          <ng-container *ngIf="documentList.length;else noDoc">
+            <div class="col-md-12" *ngFor="let document of documentList">
+              <div class="invoice-card">
+                <p>{{document.name}}
+                  <span class="float-right mr-3">
+                    <button (click)="viewFile(document)" class="btn btn-small btn-info mr-2"> <i class="fa fa-eye"></i>
+                      view</button>
+                    <button (click)="downloadFile(document)" class="btn btn-small btn-primary mr-2"><i
+                        class="fa fa-download"></i> download</button>
+                    <button (click)="deleteDoc(document)" class="btn btn-small btn-danger "><i class="fa fa-times"></i>
+                      delete</button>
+                  </span></p>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #noDoc>
+            <p>No Uploaded Documents</p>
+          </ng-template>
+        </div>
+      </div> 
+                  </ng-container>
+                  <ng-template #loadingDoc>
+                    <p>Loading Documents...</p>
+                  </ng-template>
+                  View Document Modal
+                  <app-view-doc [document]="selectedDoc"></app-view-doc>
+                  View Document Modal
+                </div>
+                Upload Document end -->
+              </ng-container>
+            </div>
+            <div class="col-sm-4 offset-sm-1 right invoice-total">
+              <table class="table table-borderless text-right mt-3 pt-3">
+                <tbody>
+                  <tr>
+                    <th scope="row">Subtotal Amount</th>
+                    <td title="View more options" class="tooltip-test">
+                      {{subTotalAmount | currency : createSalesForm.value.currency :'symbol-narrow'}} </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Tax Amount</th>
+                    <td title="View more options" class="tooltip-test">
+                      {{taxAmount | currency : createSalesForm.value.currency :'symbol-narrow'}} </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Total Margin</th>
+                    <td title="View more options" class="tooltip-test">
+                      {{totalMargin | currency : createSalesForm.value.currency :'symbol-narrow'}} </td>
+                  </tr>
+                  <tr class="last-row">
+                    <th scope="row">
+                      <h4>Total Amount</h4>
+                    </th>
+                    <td title="View more options" class="tooltip-test">
+                      <h4>
+                        {{totalAmount | currency : createSalesForm.value.currency :'symbol-narrow'}}</h4>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="row" *ngIf="commentList && commentList.length">
+            <div class="col-sm-6">
+              <div class="task-comments">
+                <div class="task-comments-header">
+                  <h6 class="left">Comments</h6>
+                </div>
+                <div class="task-comments-body">
+                  <div *ngFor="let comment of commentList" class="comment-block">
+                    <!-- <img src="/assets/img/1.jpg" alt="user image" class="left"> -->
+                    <span class="user-name-comment">
+                      <p><strong>{{comment.writer || 'Anonymous'}}</strong></p>
+                      {{comment.content}}
+                    </span>
+                    <span class="right">
+                      <p><strong>{{comment.createdDate | date}}</strong></p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Editable table -->
+
+      </div>
+    </div>
+    <ng-template #showLoader>
+      <div class="col-xl-12 col-lg-12 col-md-12 content-list" style="height: 100%">
+        <loading-spinner [spinnerType]="'wave'"></loading-spinner>
+      </div>
+    </ng-template>
+  </div>
+
+</div>
+<!-- Button trigger comment modal -->
+<button type="button" id="commentModalBtn" class="d-none btn btn-primary" data-toggle="modal"
+  data-target="#commentModal">
+  Launch demo modal
+</button>
+
+<!-- Comment Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentModalLabel">Comments</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea class="form-control" ngModel [(ngModel)]="comment" name="" id="" cols="35" rows="10"
+          placeholder="Enter Comment (optionals)"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button id="closeCommentModal" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button [disabled]="disableCommet" (click)="saveComment()" type="button" class="btn btn-primary">
+          Continue <span *ngIf="disableCommet"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Approve/Decline Modal -->
+<div class="modal fade" id="approveDecline" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content text-center h-50">
+      <div class="mt-4">
+        <i class="fa fa-question-circle fa-5x text-info"></i>
+      </div>
+      <div class="modal-body">
+        <h6>Are you sure you want to <b>{{dataApproveDecline.type}} </b> Sales Order?</h6>
+        <div class="mt-3">
+          <h5>This action is not reversible</h5>
+        </div>
+      </div>
+      <div class="modal-footer mx-auto">
+        <button (click)="approveDecline()" type="button" class="btn btn-primary"> <span *ngIf="disBtn"><i
+              class="fa fa-spinner fa-spin"></i> </span> Save Changes</button>
+        <button id="closeModal" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload document Modal -->
+<div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalCenterTitle4">Upload Document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+              aria-selected="true">Browse File</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+              aria-selected="false">Document Library</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="text-center my-3">
+              <div class="custom-file">
+                <input (change)="browseFile($event)" type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">{{selectedFile?.name || 'Choose File'}}</label>
+              </div>
+              <button [disabled]="!selectedFile" type="submit" class="mt-2 fin-pry-btn"
+                (click)="uploadFile()">Upload</button>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <app-library-upload [data]="libDocData" (onSuccess)="uploadSuccess()"></app-library-upload>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button id="closeDocumentModal" type="button" class="fin-sec-btn" data-dismiss="modal">Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Document -->
+<ng-container *ngIf="selectedDoc">
+  <app-view-doc [document]="selectedDoc" [currentStage]="currentStageDetails"
+    (updateFiles)=" this.getDocuments(this.salesOrderCode);"></app-view-doc>
+</ng-container>
+
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

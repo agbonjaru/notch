@@ -1,0 +1,186 @@
+<!-- <div class="col-12 spinner-container" *ngIf="signUpService.loading$ | async">
+  <mat-progress-spinner class="example-margin ml-auto mr-5" mode="indeterminate" diameter="20">
+  </mat-progress-spinner>
+</div> -->
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 left-div">
+      <div class=" container-fluid login-header p-0">
+        <a href="" id="logo-container"><img src="assets/img/notch-logo1.svg" width="120" alt=""></a>
+        <!-- <div class="login-alternate d-flex float-right hidden-md hidden-sm hidden-xs">
+          <p>Already a member?</p>
+          <a routerLink="/login" style="font-weight: bold; margin-left: 10px;text-decoration: none">Login</a>
+        </div> -->
+      </div>
+
+      <h2 class="" style="font-size: 20px">Kindly setup your organization
+        <small>Or Try a <span (click)="createDemoOrg()" style="cursor: pointer;color: #158DED;">Demo
+            Organization</span></small>
+      </h2>
+
+      <div class="pt-4 mb-4">
+
+      </div>
+
+      <form class="form" [formGroup]="registrationForm" *ngIf="formLoaded">
+        <div class="row">
+
+          <div class="col-md-6">
+            <label for="cname">Organization Name</label>
+            <br>
+            <input [ngClass]="cnameControl.touched ? (cnameControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="text" id="cname" formControlName="name" class="gen-input browser-default"
+              placeholder="Organization name">
+            <br>
+            <span *ngIf="(cnameControl.touched && !cnameControl.valid) && cnameControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                organization name is required</small>
+            </span>
+          </div>
+
+          <div class="col-md-6">
+            <label for="email">Organization Email</label>
+            <br>
+            <input [ngClass]="emailControl.touched ? (emailControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="email" id="email" formControlName="email" class="gen-input browser-default"
+              placeholder="Organization Email">
+            <br>
+            <span *ngIf="(emailControl.touched && !emailControl.valid) && emailControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                organization email is required</small>
+            </span>
+          </div>
+
+        </div>
+
+
+        <br>
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="country">What does your Organization do?</label>
+            <br>
+            <select
+              [ngClass]="industryControl.touched ? (industryControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              class="gen-input browser-default form-control" fromControlName="industry"
+              (change)="changeIndustry($event)">
+              <option [ngValue]="null" selected>Select Industry</option>
+              <option *ngFor="let p of cindustry" [ngValue]="p" [selected]="p===formValue.industry">{{p}}</option>
+            </select>
+            <div>
+              <span *ngIf="industryControl.touched && industryControl.value === ''"
+                class="text-danger font-weight-light"><small>
+                  You must select a value</small>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="country">Country</label>
+            <br>
+            <select
+              [ngClass]="countryControl.touched ? (countryControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              class="gen-input browser-default form-control" fromControlName="country" (change)="changeCountry($event)">
+              <option value="" selected>Select Country</option>
+              <option *ngFor="let c of countries" value="{{c.countryName}}"
+                [selected]="c.countryName===formValue.country">
+                {{c.countryName}}
+              </option>
+            </select>
+            <br>
+            <span *ngIf="(countryControl.touched && !countryControl.valid) && countryControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                country is required</small>
+            </span>
+          </div>
+
+        </div>
+
+
+        <br>
+        <div class="row">
+
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="timeZone">What is your time zone?</label>
+            <br>
+            <select
+              [ngClass]="timeZoneControl.touched ? (timeZoneControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              class="gen-input browser-default form-control" fromControlName="timeZone"
+              (change)="changeTimezone($event)">
+              <option value="" disabled>Select timezone</option>
+              <option *ngFor="let t of timeZones" value="{{t.offset}}" [selected]="t===currentTimeZoneObj">{{t.text}}
+              </option>
+            </select>
+            <br>
+            <span *ngIf="(timeZoneControl.touched && !timeZoneControl.valid) && timeZoneControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                Invalid value</small>
+            </span>
+          </div>
+
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="country">What Currency does your organization use?</label>
+            <br>
+            <select
+              [ngClass]="currencyControl.touched ? (currencyControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              class="gen-input browser-default form-control" fromControlName="currencyCode"
+              (change)="changeCurrency($event)">
+              <option value="" selected>Select Currency</option>
+              <option *ngFor="let c of countries" value="{{c.currencyCode}}"
+                [selected]="c.currencyCode===formValue.currencyCode">{{c.currencyCode}}</option>
+            </select>
+            <br>
+            <span *ngIf="(currencyControl.touched && currencyControl.value === '') && currencyControl.errors.required"
+              class="text-danger font-weight-light"><small>
+                Invalid value</small>
+            </span>
+          </div>
+
+        </div>
+
+
+
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <br>
+        <br>
+
+        <div class="d-flex ">
+          <button [disabled]="(!registrationForm.valid) || (signUpService.loading$ | async)"
+            (click)="createOrganization()" class="btn save-btn" type="submit">NEXT</button>
+
+          <!-- Loader -->
+          <div class="all-loader animated ml-3" id="loader-4" *ngIf="signUpService.loading$ | async"
+            [ngClass]="{'fadeIn faster': !signUpService.loading$}">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <!-- <span class="save-btn-2 m-2 p-2 small" type="submit" style="cursor: pointer;">START TRIAL</span> -->
+        </div>
+
+      </form>
+
+      <div class="row hidden-lg hidden-xg">
+        <div class="col-md-12 text-center">
+          <div class="login-alternate text-center d-flex m-auto" style="padding-top: 25px;">
+            <p>Already have an account?</p>
+            <a routerLink="/login" style="font-weight: bold; margin-left: 10px;">Login</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-4 login-bg signup-bg">
+      <h3>Create Organization
+        <br>
+        And start Enjoying The Crm
+      </h3>
+    </div>
+  </div>
+</div>

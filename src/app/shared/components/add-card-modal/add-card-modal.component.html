@@ -1,0 +1,86 @@
+<div class="card">
+
+  <div class="card-header">
+    <p class="card-title">Add new card</p>
+  </div>
+
+  <div class="card-body">
+    <!-- <form id="paystack-card-form">
+      <input placeholder="card number" type="text" data-paystack="number">
+      <input placeholder="cvv" type="number" data-paystack="cvv">
+      <input placeholder="expiry month" type="number" data-paystack="expiryMonth">
+      <input placeholder="expiry year" type="number" data-paystack="expiryYear">
+      <button (click)="initilizePaystack()" data-paystack="submit">Submit</button>
+    </form> -->
+
+    <!-- <div class="col-sm-12">
+      <form action="" class="form" [formGroup]="cardFormGroup" id="paystack-card-form">
+        <div class="row">
+          <div class="col-md-12">
+            <label for="number">Card Number</label>
+            <br>
+            <input style="width: 100% !important;"
+              [ngClass]="numberControl.touched ? (numberControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="text" id="number" formControlName="number" class="gen-input browser-default"
+              data-paystack="number" />
+
+          </div>
+        </div>
+        <div class="space-30 hidden-xs"></div>
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <div class="row">
+          <div class="col-md-4">
+            <label for="expiryMonth">Expiry Month</label>
+            <br>
+            <input
+              [ngClass]="expiryMonthControl.touched ? (expiryMonthControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="number" id="expiryMonth" placeholder="MM" formControlName="expiryMonth"
+              class="gen-input browser-default" data-paystack="expiryMonth" />
+
+          </div>
+          <div class="col-md-4">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="expiryYear">Expiry Year</label>
+            <br>
+            <input
+              [ngClass]="expiryYearControl.touched ? (expiryYearControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="number" id="expiryYear" formControlName="expiryYear" class="gen-input browser-default"
+              placeholder="YY" data-paystack="expiryYear" />
+
+          </div>
+          <div class="col-md-4">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="cvv">cvv</label>
+            <br>
+            <input [ngClass]="cvvControl.touched ? (cvvControl.valid === true ? 'has-success' : 'has-danger') : ''"
+              type="number" id="cvv" formControlName="cvv" class="gen-input browser-default" data-paystack="cvv" />
+
+          </div>
+        </div>
+
+        <br>
+
+        <div class="d-inline-flex">
+
+          <button class="btn m-0 save-btn" [disabled]="!cardFormGroup.valid || (billingService.billingLoading$ | async)"
+            (click)="initilizePaystack()" data-paystack="submit">
+            SAVE
+            <span *ngIf="billingService.billingLoading$ | async"><span class="fa fa-spinner fa-spin"></span></span>
+          </button>
+
+        </div>
+
+
+      </form>
+    </div> -->
+
+    <p>Your card will be charge an authorization amount which will be refunded once your card is confirmed</p>
+
+    <button class="btn m-0 save-btn" [disabled]="billingService.billingLoading$ | async" (click)="dialogRef.close()">
+      PROCEED
+      <span *ngIf="billingService.billingLoading$ | async"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+
+
+  </div>
+</div>

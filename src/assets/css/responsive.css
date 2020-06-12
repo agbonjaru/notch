@@ -1,0 +1,733 @@
+/*smart phones*/
+
+@media only screen
+and (min-device-width: 220px)
+and (max-device-width: 480px) {
+    .side-nav {
+        height: 100vh !important;
+        width: 90vw;
+    }
+
+    .doc-sign-notifs {
+        display: block;
+        float: left;
+    }
+
+    .doc-sign-notif {
+        border-left: 2px solid #dee2e6 !important;
+        margin-top: 20px;
+        border-right: none;
+        padding-left: 5px;
+    }
+
+    .doc-sign-header {
+        margin-top: 40px;
+        padding: 0 6%;
+    }
+
+    .meeting-text-area {
+        display: block;
+
+    }
+
+    .create-mail {
+        display: block;
+    }
+
+    .mail-compose {
+        width: 100%;
+        border: none;
+    }
+
+    .mail-compose-right {
+        width: 100%;
+    }
+
+    .add-clients-meeting {
+        width: 100%;
+        /* text-align: center; */
+        margin-left: 0;
+        padding-top: 18px;
+    }
+
+    .text-area {
+        width: 100%;
+        border: none !important;
+        padding-right: 10px;
+    }
+
+    nav .brand-logo {
+        left: 24% !important;
+        padding-top: 5px;
+    }
+
+    nav .brand-logo img {
+        width: 130px;
+    }
+
+    .login-bg {
+        display: none;
+    }
+
+    .content {
+        margin-top: 80px !important;
+
+    }
+
+    .nav-account img:nth-of-type(2) {
+        width: 18px;
+        margin-left: 0 !important;
+    }
+
+    .settings-content {
+        margin-top: 0 !important;
+    }
+
+    .hidden-xs {
+        display: none !important;
+    }
+
+    .nav-option {
+        /*top: -10px;*/
+
+    }
+
+    .nav-option img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .gen-input2 {
+        width: 84% !important;
+    }
+
+    .fin-sec-btn {
+        font-size: 13px;
+        padding: 12px 46px;
+    }
+
+    @keyframes yourAnimation {
+        0% {
+            transform: rotate(0) translateX(105%);
+        }
+        1% {
+            transform: rotate(0) translateX(105%);
+        }
+        101% {
+            transform: rotate(0) translateX(105%);
+        }
+        102% {
+            transform: rotate(0) translateX(0%);
+        }
+    }
+    .gen-input {
+        width: 266px !important;
+        /*width: 315px;*/
+    }
+
+    .left-div {
+        padding: 12% 8%;
+    }
+
+    .left-div h2 {
+        margin-top: 70px;
+        font-size: 28px;
+    }
+
+    .login-header img {
+        width: 180px;
+    }
+
+    .side-nav {
+        animation: yourAnimation 0.4s forwards 0s ease;
+    }
+
+    .submit-button {
+        padding: 10px 60px;
+        font-size: 15px;
+    }
+
+    .content-body-nav li {
+        margin-right: 12px;
+    }
+
+    .create-deal-wrapper {
+        height: 100%;
+    }
+
+    .spouse-children {
+        margin-top: 250px;
+    }
+
+    .Associated-deal {
+        margin-top: 200px;
+    }
+
+    .save-sub-btn {
+        margin-right: 184px;
+        margin-top: 40px;
+    }
+}
+
+/* Low res tablets (portrait and landscape) ----------- */
+@media (min-width: 481px) and (max-width: 767px) {
+    .hidden-sm {
+        display: none !important;
+    }
+
+    .create-task-btn {
+        position: relative !important;
+    }
+
+    .meeting-text-area {
+        display: block;
+
+    }
+
+    .create-mail {
+        display: block;
+    }
+
+    .mail-compose {
+        width: 100%;
+        border: none;
+    }
+
+    .mail-compose-right {
+        width: 100%;
+    }
+
+    .add-clients-meeting {
+        width: 100%;
+        /* text-align: center; */
+        margin-left: 0;
+        padding-top: 18px;
+    }
+
+    .text-area {
+        width: 100%;
+        border: none !important;
+        padding-right: 10px;
+    }
+
+    .content-body-nav li {
+        margin-right: 12px;
+    }
+
+    .gen-input {
+        width: 350px !important;
+        /*display: none;*/
+        /*width: 315px;*/
+    }
+
+    nav .brand-logo {
+        left: 20% !important;
+    }
+
+    nav .brand-logo img {
+        width: 135px;
+    }
+
+    .left-div {
+        padding: 15% 5%;
+    }
+
+    .content-body-nav li {
+        margin-right: 12px;
+    }
+
+    .content {
+        margin-top: 90px !important;
+
+    }
+
+    .settings-content {
+        margin-top: 0 !important;
+    }
+
+    .create-deal-wrapper {
+        height: 100%;
+    }
+
+    .spouse-children {
+        margin-top: 360px;
+    }
+
+    .Associated-deal {
+        margin-top: 280px;
+    }
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px) {
+    .hidden-md {
+        display: none !important;
+    }
+
+    .role-creation-tab .gen-input2 {
+        width: 100%;
+    }
+
+    .content {
+        margin-top: 90px !important;
+
+    }
+
+    .settings-content {
+        margin-top: 0 !important;
+    }
+
+    nav .brand-logo {
+        /*padding-top: 15px !important;*/
+        /*left: 15% !important;*/
+        left: 95px !important;
+    }
+
+    .left-div {
+        padding: 15% 5%;
+    }
+
+    .login-bg h3 {
+        margin-top: 170%;
+    }
+
+    .gen-input {
+        width: 150px !important;
+        /*display: none;*/
+        /*width: 315px;*/
+    }
+
+    .sub-creation .gen-input {
+        width: 100% !important;
+    }
+
+    .sub-creation .chosen-container {
+        width: 100% !important;
+    }
+
+    .sub-creation .chosen-single .gen-input2 {
+        width: 100% !important;
+    }
+
+    .nav-item.pl-5 {
+        padding: 0 !important;
+    }
+
+    .web-nav {
+        margin-left: 28% !important;
+        /*padding-top: 10px;*/
+    }
+
+    .web-nav a {
+        /*padding-top: 10px !important;*/
+        font-size: 12px;
+    }
+
+    .nav-search-icon {
+        right: 24%;
+    }
+
+    .content-body-nav li {
+        margin-right: 12px;
+    }
+
+    .sub-nav-items-sales {
+        margin-left: 13%;
+    }
+}
+
+/*desktops and laptops*/
+@media only screen
+and (min-width: 1025px)
+and (max-device-width: 1223px) {
+    .hidden-lg {
+        display: none !important;
+    }
+
+    .left-div {
+        padding: 15% 5%;
+    }
+
+    .gen-input {
+        width: 84%;
+    }
+
+    .web-nav {
+        margin-left: 28% !important;
+        /*padding-top: 10px;*/
+    }
+
+    .web-nav a {
+        /*padding-top: 10px !important;*/
+        font-size: 13px;
+    }
+
+    nav .brand-logo {
+        /*padding-top: 15px !important;*/
+        /*left: 15% !important;*/
+        left: 95px !important;
+    }
+
+    .nav-search-icon {
+        right: 24%;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .nav-option {
+        position: absolute;
+        left: 30px;
+    }
+
+    .progress-bar {
+        margin-top: 10px;
+    }
+
+    .target-amount {
+        bottom: -38px;
+    }
+
+    .username {
+        display: none;
+    }
+
+    .gen-input2 {
+        width: 100%;
+        /*width: 63%;*/
+    }
+
+    .fin-pry-btn {
+        padding: 12px 14px !important;
+    }
+
+    .nav-search {
+        width: 90% !important;
+    }
+
+    .feeds-card {
+        position: relative;
+        right: 0;
+        top: 0;
+        width: 100%;
+    }
+}
+
+/*maximum of medium devices*/
+@media only screen
+and (min-width: 993px)
+and (max-device-width: 1300px) {
+    .username {
+        display: none;
+    }
+
+    .nav-option {
+        width: 24%;
+    }
+
+    .sub-nav-items {
+        margin-left: 31%;
+    }
+
+    .content_2 {
+        padding: 7.5% 1% !important;
+    }
+
+    .content-body-nav li {
+        margin-right: 20px;
+    }
+
+    .content {
+        margin-top: 148px !important;
+
+    }
+
+    .settings-content {
+        margin-top: 0 !important;
+    }
+}
+
+/*desktops and laptops*/
+@media only screen
+and (min-width: 1224px) {
+    .left-div {
+        padding: 70px 20px 70px 145px;
+    }
+
+    .target-view-modal .modal-dialog {
+        max-width: 50%;
+    }
+
+    .pipeline-container {
+        height: 63vh;
+    }
+
+    .pipe-body {
+        height: 83%;
+    }
+
+    .ai-chat-card {
+        height: 560px !important;
+    }
+
+    .fc-widget-content {
+        height: 107px !important;
+    }
+
+    .list-actions {
+        margin-left: 10px;
+    }
+
+    .filter-actions-top {
+        display: flex;
+    }
+
+    .hidden-xg {
+        display: none !important;
+    }
+
+    .gen-input {
+        width: 75%;
+    }
+
+    nav .brand-logo {
+        /*padding-top: 10px !important;*/
+        left: 5%;
+    }
+
+    nav ul a {
+        padding: 0 50px !important;
+      height: 60px;
+    }
+
+    .web-nav {
+        margin-left: 19% !important;
+        /*padding-top: 10px;*/
+    }
+
+    .web-nav a {
+        /*padding-top: 10px !important;*/
+    }
+
+    .user-avatar {
+        right: 0;
+    }
+
+    .gen-input2 {
+        width: 100%;
+    }
+
+    .sub-nav-items {
+        margin-left: 28%;
+    }
+
+    .sub-nav-items-sales {
+        margin-left: 10%;
+    }
+
+    .sub-nav-items-target {
+        margin-left: 9%;
+    }
+    .sub-nav-items-teams {
+        margin-left: 35%;
+    }
+
+    .sub-nav-items-teams a.active {
+        color: #158DED;
+    }
+
+    .content_2 {
+        padding: 6% 1% !important;
+    }
+
+    .content-body-nav li {
+        margin-right: 30px;
+    }
+
+    .content {
+        margin-top: 148px !important;
+    }
+
+    .settings-content {
+        margin-top: 0 !important;
+    }
+}
+
+/*stubborn medium screens*/
+@media only screen
+and (min-width: 1224px)
+and (max-device-width: 1300px) {
+    nav ul a {
+        padding: 0 30px !important;
+    }
+}
+
+/******** *special media query for normal laptops* ***********/
+@media only screen
+and (min-width: 1225px)
+and (max-device-width: 1500px) {
+
+    .left-div {
+        padding: 40px 20px 70px 145px;
+    }
+
+    .left-div h2 {
+        margin-top: 85px;
+        font-size: 28px;
+    }
+
+    nav ul a {
+        padding: 0 30px !important;
+    }
+
+}
+
+@media only screen and (min-width: 601px) {
+    .white-bg {
+        height: 60px;
+    }
+
+    .contact-interaction .nav-tabs li {
+        margin-right: 0;
+        margin-left: 2px;
+    }
+
+    nav a.sidenav-trigger i {
+        margin-top: 9px;
+        font-size: 40px;
+    }
+
+    .content-list-buttons .fin-pry-btn {
+        /*margin-top: 10px;*/
+    }
+
+    .feeds-card {
+        padding: 0;
+    }
+
+    .feeds .nav-tabs .nav-item a {
+        padding: 3px;
+    }
+
+    .feed-header {
+        padding: 12px 0;
+    }
+
+    .feeds {
+        height: 47%;
+    }
+}
+
+/* Large screens ----------- */
+@media only screen
+and (min-width: 1824px) {
+    .ai-chat-card {
+        height: 700px !important;
+    }
+
+    .pipe-body {
+        height: 89%;
+    }
+
+    .pipeline-container {
+        height: 72vh;
+    }
+
+    .web-nav {
+        margin-left: 28% !important;
+        /*padding-top: 10px;*/
+    }
+
+    .add-clients-meeting .chosen-container {
+        width: 78.5% !important;
+    }
+
+    .contact-interaction .nav-tabs li {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .feeds {
+        height: 55%;
+        /*padding: 10px 20px;*/
+    }
+
+    .fc-widget-content {
+        height: 157px !important;
+    }
+
+    .feeds-card {
+        padding: 0 20px;
+    }
+
+    .feeds .nav-tabs .nav-item a {
+        padding: 6px;
+    }
+
+    .hidden-xlg {
+        display: none !important;
+    }
+
+    .user-avatar {
+        /*right: 10%;*/
+        right: 5%;
+    }
+
+    .nav-search-icon {
+        right: 19%;
+    }
+
+    .sub-nav-items {
+        margin-left: 33%;
+    }
+
+    .sub-nav-items-teams {
+        margin-left: 30%;
+    }
+
+    .sub-nav-items-teams a.active {
+        color: #158DED;
+    }
+
+    .sub-nav-items-sales {
+        margin-left: 18%;
+    }
+
+    .content_2 {
+        padding: 4% 1% !important;
+    }
+
+    .content-body-nav li {
+        margin-right: 100px;
+    }
+
+    .feeds {
+        height: 55%;
+    }
+
+    .sub-nav-items-target {
+        margin-left: 40%;
+    }
+
+    .gam-body {
+        padding: 0 4%;
+    }
+}
+
+/*Responsive utilities*/
+@media only screen and (max-width: 767px) {
+
+}
+
+@media only screen and (min-width: 768px) {
+
+}
+
+@media only screen and (min-width: 992px) {
+
+}
+
+@media only screen and (min-width: 1200px) {
+
+}

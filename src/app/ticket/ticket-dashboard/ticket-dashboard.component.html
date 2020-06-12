@@ -1,0 +1,161 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div  class="row" style="width: 100%; margin: 0;">
+    <div *ngIf="pageLoading" class="col-xl-12 col-lg-12 col-md-12 content-list ">
+      <ng-container >
+        <app-ticket-stats-card [data]="statsData" ></app-ticket-stats-card>
+      <div class="graph">
+
+        <div class="row">
+          <div class="col-xl-7 col-md-12 ticket-graph">
+            <div *ngIf="graphStats">
+            <div class="graph-header">
+              <h6 class="my-3">Chart Overview For {{selectedYear}}</h6>
+              <div class="mr-5">
+                <form class="form-inline" style="justify-content: center;">
+                  <div class="form-group mx-sm-3 mb-2">
+                    <input #year="ngModel" type="number"   name="year" [(ngModel)]="selectedYear" placeholder="Year"
+                      style="width: 240px" class="gen-input browser-default" required/>
+                  </div>
+                  <button [disabled]="year.invalid" type="button" class="fin-pry-btn" style="margin-top: 0px;"
+                    (click)="year.valid && submitYear()">Submit</button>
+                </form>
+              </div>
+              <!-- <h3>Trends</h3>
+              <data-range (getFilter)="getFilter($event)"></data-range> -->
+            </div>
+                <app-chart [title]="''" [data]="chartData" [label]="chartLabel"
+                          [chartType]="'bar'" [chartLegend]="chartLegend"
+                ></app-chart>
+            </div>
+            <div *ngIf="!graphStats">
+              <loading-spinner [spinnerType]="'wave'"></loading-spinner>
+            </div>
+          </div>
+          <div class="col-xl-5 col-md-12" style="margin-top: 60px">
+            <div class="row" *ngIf="generalStats">
+              <div class="col-xl-6 col-md-6">
+                <div class="graph-header2">
+                  <h3>Average first response time</h3>
+                  <p>{{generalStats.avgFirstResponseTime? generalStats.avgFirstResponseTime: '0:00m'}}</p>
+                </div>
+                <div class="graph-header2">
+                  <h3>Resolution within SLA</h3>
+                  <p>{{generalStats.slaResolution?generalStats.slaResolution:'0%'}}</p>
+                </div>
+              </div>
+              <div class="col-xl-6 col-md-6">
+                <div class="graph-header2">
+                  <h3>Total Assigned</h3>
+                  <p>{{generalStats.totalAssigned}}</p>
+                </div>
+                <div class="graph-header2">
+                  <h3>Average response time</h3>
+                  <p>{{generalStats.avgResponseTime?generalStats.avgResponseTime:'0:00m'}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-4 col-md-12" style="margin-top: 10px">
+          <div class="ticket-card-blw" style="width: 100%">
+            <h3>Unresolved Ticket</h3>
+            <ng-container *ngIf="!unresolvedTikList.length">
+              <h6 class="ml-4">No Tickets</h6>
+            </ng-container>
+            <ng-container *ngIf="unresolvedTikList.length">
+            <div class="left" >
+              <div style="font-weight: 600">
+                <p *ngFor="let ticket of unresolvedTikList">{{ticket.groupName}}</p>
+              </div>
+            </div>
+            <div class="right">
+              <div style="font-weight: 600">
+                <p *ngFor="let ticket of unresolvedTikList">{{ticket.totalUnresolved}}</p>
+              </div>
+            </div>
+          </ng-container>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-12" style="margin-top: 10px">
+          <div class="ticket-card-blw " style="width: 100%">
+            <h3>Customer Satisfaction</h3>
+            <div class="row " *ngIf="customerStats">
+              <div  class="row text-center ml-3" >
+                <div (click)="openComment(100)">
+                    <img class=" is-clickable"  src="/assets/img/great-emoji.svg" width="25%">
+                    <p class="">Great <b>{{customerStats.excellentTotal}}</b></p>
+                </div>
+                <div (click)="openComment(75)">
+                   <img class=" is-clickable" src="/assets/img/good-emoji.svg" width="25%">
+                    <p>Good <b>{{customerStats.goodTotal}}</b></p>
+                </div>
+                <div (click)="openComment(50)">
+                    <img class=" is-clickable"  src="/assets/img/okay-emoji.svg" width="25%">
+                    <p>Okay <b>{{customerStats.neutralTotal}}</b></p>
+                </div>
+                <div (click)="openComment(25)">
+                    <img class=" is-clickable"  src="/assets/img/not-good-emoji.svg" width="25%">
+                    <p>Not Okay <b>{{customerStats.badTotal}}</b></p>
+                </div>
+                <div (click)="openComment(0)">
+                    <img class=" is-clickable"  src="/assets/img/terrible-emoji.svg" width="25%">
+                    <p>Terrible <b>{{customerStats.terribleTotal}}</b></p>
+                </div>
+            </div>
+              <!-- <div class="col-md-6 customer-satisfaction">
+                <div>
+                  <p>Total</p>
+                  <h3>{{customerStats.total}}</h3>
+                </div>
+
+              </div> -->
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-12" style="margin-top: 10px">
+          <div class="ticket-card-blw" style="width: 100%">
+            <h3>To-do({{todoList.length}})</h3>
+            <ng-container *ngIf="todoList.length">
+              <div class="todo-container">
+                <div *ngFor="let todo of todoList" class=" d-flex mb-2" style="margin-left: 50px;">
+                  <!-- <input type="checkbox" disabled class="custom-control-input" [id]="todo.id" (click)="markTodo(todo.id)" > -->
+                  <label class=""  [for]="todo.id" >
+                    <!-- <span style="font-size: 14px;font-weight: 400;" class="text-info mr-2"><b>{{'@'+todo.creatorName}}</b></span> <br> -->
+                    <span  style="font-size: 14px;font-weight: 550;color:#000000">{{todo.name}}</span><br>
+                    <span class="text-center" style="font-weight: normal;color: #474847;font-size: 12px">
+                      {{todo.content}}</span>
+                  </label>
+                </div>
+
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!todoList.length">
+              <h6 class="text-center">No Todo</h6>
+            </ng-container>
+
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!-- <div  id="steady-spinner"></div> -->
+
+    </div>
+    <div *ngIf="!pageLoading" class="content-list w-100"  >
+        <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

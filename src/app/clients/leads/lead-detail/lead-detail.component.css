@@ -1,0 +1,34 @@
+@media (min-width: 992px){
+  .modal-lg {
+    max-width: 50%;
+  }
+
+  .lead-conversion-modal {
+    max-height: 600px !important;
+  }
+}
+
+.content {
+  margin-top: 125px !important;
+}
+
+.lead-header-nav {
+  font-weight: 500;
+}
+
+.lead-header-nav a, .lead-header-nav a:hover, .lead-header-nav a:active {
+  color: rgb(1, 141, 216)
+}
+
+.lead-conversion-modal {
+  max-height: 550px !important;
+}
+
+.lead-score-modal {
+  max-width: 60% !important;
+}
+
+.lead-score-modal .modal-content {
+  height: auto !important;
+  padding: 20px !important;
+}

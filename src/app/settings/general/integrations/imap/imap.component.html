@@ -1,0 +1,38 @@
+<div class="p-2 pb-0 imap-setting-wrapper">
+  <div class="imap-setting-form-wrapper">
+    <div [class]="alert_class">{{alert_message}}</div>
+    <form [formGroup]="imap_setting_form">
+      <div class="form-group row">
+        <div class="col-6">
+          <label for="imap-mode" class="m-0">Mode:</label>
+          <select type="text" name="imap-mode" id="imap-mode" formControlName="mode" (change)="check_setting_mode()">
+            <option value="">Choose setting mode</option>
+            <option value="imap">Imap</option>
+            <option value="smtp">SMTP</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="imap-port" class="m-0">Port:</label>
+          <input type="text" name="imap-port" id="imap-port" placeholder="Port" formControlName="port"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="imap-host" class="m-0">Host:</label>
+        <input type="text" name="imap-host" id="imap-host" placeholder="Host (eg: mail.example.com)" formControlName="host"/>
+      </div>
+      <div class="form-group">
+        <label for="imap-domain" class="m-0">Domain name:</label>
+        <input type="text" name="imap-domain" id="imap-domain" placeholder="Domain (eg: google.com, notchcx.com)" formControlName="domain"/>
+        <small class="text-secondary">Do not include qualifiers like <i>http</i> or <i>www</i></small>
+      </div>
+    </form>
+  </div>
+  <div class="form-group row float-right">
+    <button type="button" class="btn btn-danger float-right" data-dismiss="modal" (click)="deactivate_imap_setting()">Deactivate</button>
+    <button type="button" class="btn border border-info mr-2 fin-sec-btn float-right" data-dismiss="modal">Close</button>
+    <button [disabled]="loading" type="button" class="btn btn-primary float-right" (click)="submit(imap_setting_form)" >
+      {{imap_setting_exists ? 'Update' : 'Save'}}
+      <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>General Approval Workflow </h1>
+            <!--<p>Set up Roles</p>-->
+          </div>
+          <div class="settings-label">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-8" style="padding-top: 20px;">
+                <label>Workflows</label>
+                <app-datatable 
+                [dataChanged]="dataTable.dataChangedObs" 
+                [options]="dataTable.options" 
+                [heads]="dataTable.heads"
+                  (feedback)="dataFeedBackObsListener($event)"
+                   [bodyrows]="[]">
+                </app-datatable>
+
+                <!--
+                <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+                  width="100%">
+                  <thead>
+                    <tr>
+                      <th class="th-sm">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input text-center checkbox-all"
+                            id="defaultUnchecked">
+                          <label class="custom-control-label" for="defaultUnchecked"></label>
+                        </div>
+                      </th>
+                      <th class="th-sm">Name
+
+                      </th>
+                      <th class="th-sm">Creation Date
+
+                      </th>
+                      <th class="th-sm">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr class="table-row">
+                      <td>
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input text-center" id="defaultUnchecked1">
+                          <label class="custom-control-label" for="defaultUnchecked1"></label>
+                        </div>
+                      </td>
+                      <td>Tiger Nixon</td>
+                      <td>Edinburgh</td>
+                      <td style="font-weight: bold !important; cursor: pointer; text-align: center;">
+                        <div id="dropdownMenuLink15" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span>.</span>
+                          <span>.</span>
+                          <span>.</span>
+                        </div>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink15">
+                          <a class="dropdown-item" href="gen-app-workflow-within.html">View</a>
+                          <a class="dropdown-item" href="#">Edit</a>
+                          <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              -->
+
+                <button type="button" class="fin-pry-btn mt-3 right" data-toggle="modal" data-target="#ModalCenter4"
+                  style="margin-top: -13px;">
+                  Add Workflow
+                </button>
+
+                <!-- Add Transition Modal -->
+                <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle4">Add Workflow</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form [formGroup]="workflowForm">
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">Approval Workflow
+                              Name<span class="text-danger"><sup>*</sup></span></label>
+                            <input type="text" formControlName="bulkSms" class="form-control" id="target-value">
+                          </div>
+
+                          <div class="form-group">
+                            <label>Add Conditions<span class="text-danger"><sup>*</sup></span></label>
+                            <br>
+                            <select id="mselect3" class="workflow-mselect" data-placeholder="" style="width: 100%;">
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">England</option>
+                              <option value="3">Option 4</option>
+                              <option value="3">Tokyo</option>
+                            </select>
+                          </div>
+
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="fin-pry-btn">Add</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Transition Modal End-->
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

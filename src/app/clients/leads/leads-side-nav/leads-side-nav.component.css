@@ -1,0 +1,7 @@
+.nate-input {
+    box-sizing: border-box !important;
+    display: block;
+    float: left;
+    width: 100% !important;
+    padding: 5px 10px !important;
+}

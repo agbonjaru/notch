@@ -1,0 +1,33 @@
+.score-card-head {
+    height: 50px;
+}
+
+.score-factor-list {
+    margin-top: 40px;
+    margin-bottom: 0 !important;
+    max-height: 350px;
+    overflow-y: scroll !important;
+}
+
+.score-factor-list thead {
+    background-color: #eeeeee;
+}
+
+.score-factor-list thead td{
+    font-weight: 500 !important;
+}
+
+.score-factor-list tr {
+    border-bottom: none !important;
+}
+
+.score-factor-list td {
+    padding-left: 15px !important;
+}
+
+
+.score-factor-list::-webkit-scrollbar-thumb {
+    width: 3.5px;
+    height: 100px;
+    background-color: dodgerblue;
+}

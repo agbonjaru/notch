@@ -1,0 +1,418 @@
+/* You can add global styles to this file, and also import other style files */
+/* @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"; */
+
+@import "assets/calendar-assets/core/main.css";
+@import "assets/calendar-assets/daygrid/main.css";
+@import "assets/css/bootstrap.min.css";
+@import "assets/css/chosen.min.css";
+@import "assets/css/dropzone.css";
+@import "assets/css/dope-icons.css";
+@import "assets/css/mdb.css";
+@import "assets/css/emojionearea.min.css";
+@import "assets/css/richtext.min.css";
+@import "assets/css/materialize.css";
+@import "assets/css/style.css";
+@import "assets/css/additions.css";
+@import "assets/css/responsive.css";
+@import "assets/css/util.min.css";
+@import "assets/css/addons/datatables.min.css";
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+@import "../node_modules/ladda/dist/ladda-themeless.min.css";
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+@import "../node_modules/animate.css/animate.min.css";
+@import "../node_modules/ngx-toastr/toastr.css";
+
+body {
+  background: #ecf2fb;
+}
+
+/* PRINT CSS */
+.printNone {
+  display: none;
+}
+
+#ngx-select-print>.ngx-dropdown-container {
+  width: 33% !important;
+  border: 1px solid #C4C4C4 !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+  color: #7e7f9a !important;
+  background: transparent !important;
+}
+
+/* PRINT ENDS CSS */
+
+
+sup {
+  top: -0.2em !important;
+  margin-left: 3px;
+}
+
+sup.required {
+  color: #dc3545;
+  ;
+}
+
+.ng-touched.ng-invalid {
+  border-color: #dc3545;
+}
+
+button:disabled {
+  background: #375973;
+}
+
+blockquote.gmail_quote {
+  display: none !important;
+}
+
+#steady-spinner {
+  border: 4px solid lightblue;
+  border-top-color: #09e;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  margin: auto;
+  margin-top: 20px;
+  /* border-top-color: green; */
+  animation: spin 1s ease-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ngx-dropdown-container {
+  /* width: 75% !important; */
+  border: 1px solid #C4C4C4 !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+  color: #7e7f9a !important;
+  background: transparent !important;
+}
+
+#ngx-width-75>.ngx-dropdown-container {
+  width: 75% !important;
+  border: 1px solid #C4C4C4 !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+  color: #7e7f9a !important;
+  background: transparent !important;
+}
+
+#ngx-width-75>.ngx-dropdown-container>.ngx-dropdown-list-container {
+  bottom: 100%;
+}
+
+
+#ngx-select-resize>.ngx-dropdown-container {
+  width: 100% !important;
+  border: 1px solid #C4C4C4 !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+  color: #7e7f9a !important;
+  background: transparent !important;
+}
+
+.ngx-dropdown-container .ngx-dropdown-button {
+  background-image: url(assets/img/caret_down.svg) !important;
+  background-position: right center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1.5ex !important;
+  background-origin: content-box !important;
+  color: #7e7f9a !important;
+  border: none !important;
+  padding: 9px 10px 5px 10px !important;
+}
+
+#ngx-select-resize>.ngx-dropdown-container>.ngx-dropdown-button {
+  background-image: url(assets/img/caret_down.svg) !important;
+  background-position: right center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1.5ex !important;
+  background-origin: content-box !important;
+  color: #7e7f9a !important;
+  border: none !important;
+  padding: 5px 10px 5px 10px !important;
+}
+
+#ngx-select-resize-sub>.ngx-dropdown-container {
+  width: 76% !important;
+  border: 1px solid #7E7F9A !important;
+  border-radius: 5px !important;
+  font-size: 14px;
+  color: #7e7f9a !important;
+  background: transparent !important;
+}
+
+
+input:not([type]) {
+  border-bottom: none !important;
+}
+
+.is-clickable {
+  cursor: pointer;
+}
+
+.fin-green {
+  color: #058001;
+}
+
+.btn-small {
+  margin: 0;
+  box-shadow: none;
+  min-height: 25px;
+  min-width: 70px;
+  font-size: 10px;
+}
+
+.text-elips {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.w-30 {
+  width: 35% !important;
+}
+
+.w-70 {
+  width: 65% !important;
+}
+
+/* .form-control {
+  display: block;
+  width: 100% !important;
+  height: calc(2.25rem + 2px) !important;
+  padding: .375rem .75rem ;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff !important;
+  background-clip: padding-box;
+  border: 1px solid #ced4da !important;
+  border-radius: .25rem !important;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+} */
+
+.my-swal {
+  z-index: 999999999999 !important;
+}
+
+.format-pre pre {
+  background: #49483e;
+  color: #f7f7f7;
+  padding: 10px;
+  font-size: 14px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+div .ngx-dropdown-list-container {
+  max-height: 300px !important;
+  overflow: auto !important;
+}
+
+bs-datepicker-container,
+bs-daterangepicker-container {
+  z-index: 9999999 !important;
+}
+
+input.otp-input {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 4px !important;
+  border: 1px solid #158ded !important;
+  text-align: center !important;
+  font-size: 24px !important;
+}
+
+/* CSS to expand button width (do not remove) */
+button.expand-btn {
+  padding-left: 4rem !important;
+  padding-right: 4rem !important;
+}
+
+.received_withd_msg div[dir="ltr"] {
+  /* display: none; */
+}
+
+.received_withd_msg div[dir="ltr"]+div {
+  /* display: none; */
+}
+
+
+/* FLOATING-MENUBAR */
+
+.float-menu-bar {
+  position: fixed;
+  width: 50px;
+  top: 35%;
+  left: 0;
+  z-index: 999999;
+  /* border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px; */
+}
+
+.float-menu-bar.collect {
+  right: 0;
+  left: auto
+}
+
+.float-menu-bar.collect a .content,
+.float-menu-bar.collect div .content {
+  right: 50px;
+  left: auto
+}
+
+.float-menu-bar a,
+.float-menu-bar div {
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  background: #2C85C7;
+  color: #fff;
+  font-size: 14px;
+  margin: 0 0 10px;
+  position: relative;
+  cursor: pointer
+}
+
+.float-menu-bar a .icon,
+.float-menu-bar div .icon {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  display: inherit
+}
+
+.float-menu-bar a .icon .fa,
+.float-menu-bar a .icon .fab,
+.float-menu-bar a .icon .fas,
+.float-menu-bar div .icon .fa,
+.float-menu-bar div .icon .fab,
+.float-menu-bar div .icon .fas,
+.float-menu-bar a svg,
+.float-menu-bar div svg {
+  font-size: 18px;
+  line-height: 50px
+}
+
+.float-menu-bar a .content,
+.float-menu-bar div .content {
+  position: absolute;
+  height: 50px;
+  width: 0px;
+  left: 50px;
+  bottom: 0;
+  background: #039be5;
+  text-align: center;
+  font-size: 0;
+}
+
+.float-menu-bar a:hover,
+.float-menu-bar div:hover {
+  background: #039be5;
+}
+
+.float-menu-bar a:hover .content,
+.float-menu-bar div:hover .content {
+  width: 150px;
+  font-size: 14px;
+  transition: all .3s ease-in-out;
+}
+
+.swal2-container.swal2-shown {
+  z-index: 10005;
+}
+
+.ngx-dropdown-container button .nsdicon-angle-down::before {
+  display: none !important;
+}
+
+.swt-img {
+  width: 30%;
+  height: auto;
+}
+
+/* LOADER 2 */
+.all-loader {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  position: relative;
+  margin: 0;
+}
+
+#loader-4 span {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 100%;
+  background-color: #3498db;
+  margin: 10px 3px;
+  opacity: 0;
+}
+
+#loader-4 span:nth-child(1) {
+  animation: opacitychange 1s ease-in-out infinite;
+}
+
+#loader-4 span:nth-child(2) {
+  animation: opacitychange 1s ease-in-out 0.33s infinite;
+}
+
+#loader-4 span:nth-child(3) {
+  animation: opacitychange 1s ease-in-out 0.66s infinite;
+}
+
+@keyframes opacitychange {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 1;
+  }
+}
+
+.mg-l-20 {
+  margin-left: 0px !important;
+}
+
+.btn-filter {
+  margin: 0;
+  box-shadow: none;
+  height: 25px;
+  width: 70px;
+  font-size: 10px;
+}
+
+.create-filter-btn {
+  border-radius: 0;
+  color: white !important;
+  font-weight: 400 !important;
+  text-transform: capitalize !important;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.filter-list p {
+  font-size: 12.5px !important;
+}
+
+.type_msg textarea {
+  resize: none;
+  height: 55px;
+}
+
+.dot-icon {
+  font-size: 10px;
+}

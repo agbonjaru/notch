@@ -1,0 +1,50 @@
+
+                        <button id="viewDocBtn" class="d-none" data-toggle="modal" data-target=".document"></button>
+                    <ng-container *ngIf="document; else noDoc">
+                        <div class="modal fade document" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                       <div class="modal-dialog modal-lg">
+                           <div class="modal-content" >
+                           <div >
+                           <div class="modal-header"> 
+                               <h6>{{document.name}}</h6> 
+                               <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="closeViewDoc()"><span aria-hidden="true">&times;</span></button>
+                           </div>
+                           <div class="modal-bdy" *ngIf="fileExt.isDoc(document.type)">
+                                   <embed width="100%" height="500px"
+                                   [src]="sanitizer.bypassSecurityTrustResourceUrl(onlineViewer+document.displayURI)">
+                           </div>
+                           <div class="modal-body" *ngIf="fileExt.ImgExt(document.type)">
+                               <img [src]="document.displayURI" [alt]="document.name" width="100%">
+                           </div>
+                           <div class="modal-body" *ngIf="fileExt.pdfExt(document.type)" >
+                                 <iframe  [src]="sanitizer.bypassSecurityTrustResourceUrl(document.displayURI)" width="100%" height="400"></iframe>
+                            </div>
+                           <div class="modal-body" *ngIf="!(fileExt.isDoc(document.type) || fileExt.ImgExt(document.type) || fileExt.pdfExt(document.type))">
+                                <h6>No viewer available for this document</h6>
+                            </div>
+                         
+                            <div class="modal-footer">
+                                <button (click)="deleteFile()"  class="fin-pry-btn btn-danger mr-2">Delete <i class="fa fa-trash"></i></button>
+                                <button [disabled]="downloadLoading" (click)="downloadFile()"  class="fin-pry-btn">Download
+                                    <span *ngIf="!downloadLoading"> <i class="fa fa-download"></i></span>
+                                    <span *ngIf="downloadLoading"> <i class="fa fa-spinner fa-spin"></i></span>
+                                </button>
+                            </div>
+                           </div>  
+                           </div>
+                       </div>
+                       </div>
+               </ng-container>
+               <ng-template #noDoc>
+                  <div class="modal fade view-document-lg" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                      <div class="modal-dialog modal-lg">
+                          <div class="modal-content" >
+                          <div >
+                          <div class="modal-body text-center" >
+                            <h6>No Document</h6>
+                          </div>
+                          </div>
+                          </div>
+                      </div>
+                      </div>
+               </ng-template>

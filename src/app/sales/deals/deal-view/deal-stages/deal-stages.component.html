@@ -1,0 +1,48 @@
+<!-- Modal -->
+<app-deal-modal [closeModalId]="closeModalId" [dealCode]="deal.code" [modalId]="'dealModalStage'" (submitData)="changeDealStage($event)" ></app-deal-modal>
+
+<div class="deal-card" style="padding: 20px"  *ngIf="(stageList$ | async) as stageList;else loadingStage">
+  <div class="right">
+   <span class="deal-close">
+        <h5>Close date</h5>
+        <p>{{deal.closeDate | date}}</p>
+   </span>
+      <span style="font-size: 16px" >
+        <p>DEAL AMOUNT: <span [innerHTML]="deal.amount ? (deal.amount | currency:'code':getCunSymbol(deal.currency)): 'nil'" ></span></p>
+      </span>
+  </div>
+  <a routerLink="/sales/deals-list"  [queryParams]="{view: 'List'}" >< Deal</a>
+  <div  class="container scroll-container" style="overflow: auto; width: 65%">
+    <h6 class="text-center mb-2">{{deal.salesProcessName}}</h6>
+
+      <div class="stepwizard w-50">
+          <ng-container >
+              <div *ngIf="stageList.length" class="stepwizard-row setup-panel">
+                  <div *ngFor="let stage of stageList; let index = index" class="stepwizard-step col-xs-3">
+                    <ng-container *ngIf="stage.name !== 'Won' && stage.name !== 'Lost'">
+                            <button [disabled]="deal.status !== 0" 
+                              (click)="changeStage(stage, stageList)" type="button" class="btn btn-default btn-circle"
+                            [ngClass]="{'stage-notactive': stage.id != deal.stageID, 'stage-active': stage.id == deal.stageID}"  
+                            style="color: #ffffff">{{index + 1}}</button>
+                              <p class="">
+                                  <small>{{stage.name}}</small>
+                              </p>
+                              <button id="auto-click" data-toggle="modal" data-target="#dealModalStage" class="d-none" >Auto-click</button>
+                    </ng-container>
+                  </div> 
+              </div>
+              <div *ngIf="!stageList.length">
+                  <h6 class="text-center">No Stage Available</h6>
+              </div>
+          </ng-container>
+      </div>
+
+   </div>
+
+</div>
+
+<ng-template #loadingStage>
+  <div class="deal-card" style="padding: 20px" >
+    <loading-spinner [spinnerStatus]="'Loading Deal Stages...'" [spinnerType]="'wave'"  ></loading-spinner>
+  </div>
+</ng-template>

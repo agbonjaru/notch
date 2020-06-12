@@ -1,0 +1,889 @@
+<div>
+    <div class="content-body-header">
+        <div class="content-body-nav m-0 col-8">
+            <ul>
+                <li>
+                    <span><img src="/assets/img/ribbon-blue.svg" alt=""></span>
+                    <a (click)="toggleClass('about-contact', 'aboutDp')" class="about-contact-toggler about-within"
+                        id="about-lead">
+                        About Lead
+                        <span class="aboutDp dp-icon" style="padding-left: 10px;">
+                            <i class="fa fa-angle-right"></i>
+                            <i class="fa fa-angle-down d-none"></i>
+                        </span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <span><img src="/assets/img/ribbon-dark.svg" alt="#!" class="deals-within"></span><a
+                        (click)="toggleClass('eng-prediction', 'contacts')">Engagement Predictions
+                        <span class="contacts dp-icon" style="padding-left: 10px;">
+                            <i class="fa fa-angle-right"></i>
+                            <i class="fa fa-angle-down d-none"></i>
+                        </span>
+                    </a>
+                </li> -->
+                <li class="hide-on-med-and-down"><span><img src="/assets/img/ribbon-red.svg" alt=""></span>
+                    <a (click)="toggleClass('leadWorkflowContent', 'documents')">Lead Workflow
+                        <span class="documents dp-icon" style="padding-left: 10px;">
+                            <i class="fa fa-angle-right"></i>
+                            <i class="fa fa-angle-down d-none"></i>
+                        </span>
+                    </a>
+                </li>
+                <!-- <li id="dropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a
+                        href="#!">More
+                        <span style="padding-left: 10px;">
+                            <i class="fa fa-angle-right"></i>
+                            <i class="fa fa-angle-down d-none"></i>
+                        </span></a>
+                </li>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink5">
+                    <a class="dropdown-item " href="#">Tickets</a>
+                    <a class="dropdown-item " href="#">Attachments</a>
+                    <a class="dropdown-item" href="#">Quotes</a>
+                    <a class="dropdown-item" href="#">Product Suggestions</a>
+                </div> -->
+            </ul>
+        </div>
+
+        <div class="float-right col-4">
+            <div>
+                <button (click)="updateLead()" class="fin-pry-btn float-right m-2" *ngIf="editMode">Save</button>
+                <button [disabled]="leadInfo?.clientId" (click)="edit();  toggleClass('about-contact', 'aboutDp')" class="fin-sec-btn float-right m-2"
+                    *ngIf="!editMode">Edit</button>
+                <button (click)="cancel()" class="fin-sec-btn float-right m-2" *ngIf="editMode">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <section class="dropdown-list">
+        <!--About lead-->
+        <div class="about-contact d-none d-block dp-item">
+            <!-- <div>
+                <button (click)="updateLead()" class="fin-pry-btn float-right m-2" *ngIf="editMode">Save</button>
+                <button (click)="edit()" class="fin-sec-btn float-right m-2" *ngIf="!editMode">Edit</button>
+                <button (click)="cancel()" class="fin-sec-btn float-right m-2" *ngIf="editMode">Cancel</button>
+            </div> -->
+            <!---->
+            <div id="lead-info">
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Firstname</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.firstName}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Lastname</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.surName}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Other Names</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.otherName}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Maiden Name</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.maidenName}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Marital Status</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.maritalStatus}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Date of Birth</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.dateOfBirth}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">State of Origin</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.stateOfOrigin}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Official Phone Number</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.officialPhoneNumber}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Personal Phone Number</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.personalPhoneNumber}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Official Email</span>
+                        <br>
+                        <span class="contact-detail"></span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Personal Email</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.otherEmail}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Postal Address</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.postalAddress}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Fax</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.fax}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Address</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.address}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Company Name</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.name}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Company domain name</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.domainName}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Phone Number</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.phoneNumber}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Postal Code</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.postalCode}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Email</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.email}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Fax</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.fax}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Website</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.website}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">VAT Number</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.vatNumber}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Registration Number</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.regNumber}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Registration Date</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.regDate}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Tin</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.tin}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Country</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.country}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">State</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.state}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">City</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.city}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Address</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.address}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Year Of Establishment</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.yearOfEstablishment}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Year Of Incorporation</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.yearOfIncorporation}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Parent Company</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.parentCompany}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Subsidiaries</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.subsidiaries}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Location</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.location}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Staff Strength</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.staffStrength}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Industry</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.industry}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Organisation Type</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.organisationType}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Business Type</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.businessType}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Facebook</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.facebook}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">LinkedIn</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.linkedIn}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Twitter</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.twitter}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Key Contact</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.keyContact}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Trade Address</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.tradeAddress}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">TradeMark</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.tradeMark}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Postal Address</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.postalAddress}}</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Vision Statement</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.visionStatement}}</span>
+                    </div>
+                </div>
+                <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Mission Statement</span>
+                        <br>
+                        <span class="contact-detail">{{leadInfo?.missionStatement}}</span>
+                    </div>
+                </div>
+            </div>
+            <!---->
+            <!---->
+            <div id="lead-info-edit">
+                <form name="leadUpdateForm">
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Firstname</span>
+                            <br>
+                            <input type="text" name="firstName" value="{{leadInfo?.firstName}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Lastname</span>
+                            <br>
+                            <input type="text" name="surName" value="{{leadInfo?.surName}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Other Names</span>
+                            <br>
+                            <input type="text" name="otherName" value="{{leadInfo?.otherName}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Maiden Name</span>
+                            <br>
+                            <input type="text" name="maidenName" value="{{leadInfo?.maidenName}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Marital Status</span>
+                            <br>
+                            <select name="maritalStatus" >
+                                <option class="gen-input browser-default"> Select marital status</option>
+                                <option [selected]="leadInfo?.maritalStatus == 'single'" value="single"
+                                    class="gen-input browser-default"> Single </option>
+                                <option [selected]="leadInfo?.maritalStatus == 'married'" value="married"
+                                    class="gen-input browser-default"> Married </option>
+                                <option [selected]="leadInfo?.maritalStatus == 'divorced'" value="divorced"
+                                    class="gen-input browser-default"> Divorced </option>
+                                <option [selected]="leadInfo?.maritalStatus == 'widowed'" value="widowed"
+                                    class="gen-input browser-default"> Widowed </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Date of Birth</span>
+                            <br>
+                            <input type="text" class="gen-input browser-default" bsDatepicker  name="dateOfBirth"
+                                [bsConfig]="{ adaptivePosition: true}" [maxDate]="max_date_of_birth" data-validation="type:date">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">State of Origin</span>
+                            <br>
+                            <input type="text" name="stateOfOrigin" value="{{leadInfo?.stateOfOrigin}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Official Phone Number</span>
+                            <br>
+                            <input type="text" name="officialPhoneNumber" value="{{leadInfo?.officialPhoneNumber}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Personal Phone Number</span>
+                            <br>
+                            <input type="text" name="personalPhoneNumber" value="{{leadInfo?.personalPhoneNumber}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Email</span>
+                            <br>
+                            <input type="email" name="email" value="{{leadInfo?.email}}"
+                                class="gen-input browser-default" data-validation="required; type:email">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Personal Email</span>
+                            <br>
+                            <input type="email" name="otherEmail" value="{{leadInfo?.otherEmail}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Postal Address</span>
+                            <br>
+                            <input type="text" name="postalAddress" value="{{leadInfo?.postalAddress}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Fax</span>
+                            <br>
+                            <input type="text" name="fax" value="{{leadInfo?.fax}}" class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Address</span>
+                            <br>
+                            <input type="text" name="address" value="{{leadInfo?.address}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Company Name</span>
+                            <br>
+                            <input type="text" name="name" value="{{leadInfo?.name}}" class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Company domain name</span>
+                            <br>
+                            <input type="text" name="domainName" value="{{leadInfo?.domainName}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Phone Number</span>
+                            <br>
+                            <input type="text" name="phoneNumber" value="{{leadInfo?.phoneNumber}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Postal Code</span>
+                            <br>
+                            <input type="text" name="postalCode" value="{{leadInfo?.postalCode}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Website</span>
+                            <br>
+                            <input type="text" name="website" value="{{leadInfo?.website}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">VAT Number</span>
+                            <br>
+                            <input type="text" name="vatNumber" value="{{leadInfo?.vatNumber}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Registration Number</span>
+                            <br>
+                            <input type="text" name="regNumber" value="{{leadInfo?.regNumber}}"
+                                class="gen-input browser-default" >
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Registration Date</span>
+                            <br>
+
+                            <input type="text" class="gen-input browser-default" bsDatepicker  name="regDate"
+                                [bsConfig]="{ adaptivePosition: true}" [maxDate]="max_date_of_birth" data-validation="type:date">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Tin</span>
+                            <br>
+                            <input type="text" name="tin" value="{{leadInfo?.tin}}" class="gen-input browser-default"  data-validation="type:number">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Country</span>
+                            <br>
+                            <input type="text" name="country" value="{{leadInfo?.country}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">State</span>
+                            <br>
+                            <input type="text" name="state" value="{{leadInfo?.state}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">City</span>
+                            <br>
+                            <input type="text" name="city" value="{{leadInfo?.city}}" class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Year Of Establishment</span>
+                            <br>
+                            <input type="text" name="yearOfEstablishment" id="yearOfEstablishment"
+                                value="{{leadInfo?.yearOfEstablishment}}" class="gen-input browser-default"  data-validation="type:number; length:4-4">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Year Of Incorporation</span>
+                            <br>
+                            <input type="text" name="yearOfIncorporation" id="yearOfIncorporation"
+                                value="{{leadInfo?.yearOfIncorporation}}" class="gen-input browser-default"  data-validation="type:number; length:4-4">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Parent Company</span>
+                            <br>
+                            <input type="text" name="parentCompany" value="{{leadInfo?.parentCompany}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Subsidiaries</span>
+                            <br>
+                            <input type="text" name="subsidiaries" value="{{leadInfo?.subsidiaries}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Staff Strength</span>
+                            <br>
+                            <input type="text" name="staffStrength" id="staffStrength"
+                                value="{{leadInfo?.staffStrength}}" class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Industry</span>
+                            <br>
+                            <input type="text" name="industry" value="{{leadInfo?.industry}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Organisation Type</span>
+                            <br>
+                            <input type="text" name="organisationType" value="{{leadInfo?.organisationType}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Business Type</span>
+                            <br>
+                            <input type="text" name="businessType" value="{{leadInfo?.businessType}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Facebook</span>
+                            <br>
+                            <input type="text" name="facebook" value="{{leadInfo?.facebook}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">LinkedIn</span>
+                            <br>
+                            <input type="text" name="linkedIn" value="{{leadInfo?.linkedIn}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Twitter</span>
+                            <br>
+                            <input type="text" name="twitter" value="{{leadInfo?.twitter}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Key Contact</span>
+                            <br>
+                            <input type="text" name="keyContact" value="{{leadInfo?.keyContact}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Trade Address</span>
+                            <br>
+                            <input type="text" name="tradeAddress" value="{{leadInfo?.tradeAddress}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">TradeMark</span>
+                            <br>
+                            <input type="text" name="tradeMark" value="{{leadInfo?.tradeMark}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                    <div class="about-contact-row">
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Vision Statement</span>
+                            <br>
+                            <input type="text" name="visionStatement" value="{{leadInfo?.visionStatement}}"
+                                class="gen-input browser-default">
+                        </div>
+                        <div class="col-sm-6">
+                            <span class="contact-detail-top">Mission Statement</span>
+                            <br>
+                            <input type="text" name="missionStatement" value="{{leadInfo?.missionStatement}}"
+                                class="gen-input browser-default">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--About lead end-->
+
+        <!--Engagement prediction content-->
+        <!-- <div class="eng-prediction d-none p-3 h-auto dp-item">
+            <div class="text-center p-3">
+                <h6 class="m-auto fs-15"><span class="fin-green">Best Medium to Engage: </span><span
+                        class="text-danger">
+                        Call</span></h6>
+            </div>
+            <br>
+            <div class="row"> -->
+        <!--Call engagement-->
+        <!-- <div class="col-lg-6 col-md-12">
+                    <app-chart [data]="callsInfo.data" [label]="callsInfo.labels" [title]="callsInfo.title"></app-chart>
+                </div> -->
+        <!--Meetings engagement-->
+        <!-- <div class="col-lg-6 col-md-12">
+                    <app-chart [data]="meetingInfo.data" [label]="meetingInfo.labels" [title]="meetingInfo.title">
+                    </app-chart>
+                </div> -->
+        <!--Meetings engagement end-->
+        <!-- </div>
+            <hr> -->
+        <!--engagement tables call-->
+        <!-- <div class=" pl-1 pr-1">
+                <div class="w-100 pt-3 pr-3 pl-3 pb-1">
+                    <div class="pb-3">
+                        <h6 class="m-auto fs-15"><span class="fin-green">Best Time to Call: </span><span
+                                class="text-danger">Thursday, 2-4PM</span></h6>
+                    </div>
+                    <table id="dtBasicExample" class="table table-striped table-bordered table-sm w-100 eng-table"
+                        cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="th-sm fin-green">Week day
+
+                                </th>
+                                <th class="th-sm fin-green">8-10AM
+
+                                </th>
+                                <th class="th-sm fin-green">10-12PM
+
+                                </th>
+                                <th class="th-sm fin-green fin-green">12-2PM
+
+                                </th>
+                                <th class="th-sm fin-green">2-4PM
+
+                                </th>
+                                <th class="th-sm fin-green">
+                                    4-6PM
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-row">
+                                <td>Wednesday</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thursday</td>
+                                <td>0%</td>
+                                <td>
+                                    100%
+                                    <br>
+                                    <span class="text-yellow fs-10">1 out of 1</span>
+                                </td>
+                                <td>0%</td>
+                                <td title="Best time to call">
+                                    100%
+                                    <br>
+                                    <span class="text-yellow fs-10">1 out of 1</span>
+                                </td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Friday</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+
+                    </table>
+                </div>
+
+            </div> -->
+        <!--engagement tables call end-->
+        <!-- <hr> -->
+        <!--engagement tables visit-->
+        <!-- <div class=" pl-1 pr-1">
+                <div class="w-100  pt-3 pr-3 pl-3 pb-1">
+                    <div class="pb-3">
+                        <h6 class="m-auto fs-15"><span class="fin-green">Best Time to Visit: </span><span
+                                class="text-danger">N/A</span></h6>
+                    </div>
+                    <table id="dtBasicExample2" class="table table-striped table-bordered table-sm w-100 eng-table"
+                        cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="th-sm fin-green">Week day
+
+                                </th>
+                                <th class="th-sm fin-green">8-10AM
+
+                                </th>
+                                <th class="th-sm fin-green">10-12PM
+
+                                </th>
+                                <th class="th-sm fin-green fin-green">12-2PM
+
+                                </th>
+                                <th class="th-sm fin-green">2-4PM
+
+                                </th>
+                                <th class="th-sm fin-green">
+                                    4-6PM
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-row">
+                                <td>Wednesday</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thursday</td>
+                                <td>0%</td>
+                                <td>
+                                    0% -->
+        <!--<br>-->
+        <!--<span class="text-yellow fs-10">1 out of 1</span>-->
+        <!-- </td>
+                                <td>0%</td>
+                                <td>
+                                    0% -->
+        <!--<br>-->
+        <!--<span class="text-yellow fs-10">1 out of 1</span>-->
+        <!-- </td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Friday</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>0%</td>
+                                <td>
+                                    0%
+                                </td>
+                            </tr>
+
+                    </table>
+                </div>
+
+            </div> -->
+        <!--engagement tables visit end-->
+        <!-- </div> -->
+        <!--Engagement prediction content end-->
+
+        <!--Lead wrokflow content-->
+        <div class="leadWorkflowContent d-none dp-item">
+            <div class="row p-3 m-auto" *ngIf="leadWorkflowIsFetched">
+                <div class="col-sm-12 pt-3 text-center w-100">
+                    <div class="d-flex ">
+                        <div class="w-75 text-center" id="workflow-alert" role="alert">
+                            <p>Check workflow stages that have been successfully passed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-md-12 pb-1">
+                    <div class="temperature-card">
+                        <div class="temp-card-header">
+                            <h3 class="fin-blue">Cold</h3>
+                        </div>
+                        <div class="temp-card-body" id="cold-workflow">
+                            <app-lead-workflow-item *ngFor="let item of leadWorkflow.cold" [item]="item">
+                            </app-lead-workflow-item>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-12 pb-1">
+                    <div class="temperature-card">
+                        <div class="temp-card-header">
+                            <h3 class="orange-text">Warm</h3>
+                        </div>
+                        <div class="temp-card-body" id="warm-workflow">
+                            <app-lead-workflow-item *ngFor="let item of leadWorkflow.warm" [item]="item">
+                            </app-lead-workflow-item>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-12 pb-1">
+                    <div class="temperature-card">
+                        <div class="temp-card-header">
+                            <h3 class="text-danger">Hot</h3>
+                        </div>
+                        <div class="temp-card-body" id="hot-workflow">
+                            <app-lead-workflow-item *ngFor="let item of leadWorkflow.hot" [item]="item">
+                            </app-lead-workflow-item>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-12 text-center pb-3">-->
+            <!--<a href="lead-workflow.html" class="back-link">Setup lead workflow >></a>-->
+            <!--</div>-->
+        </div>
+        <!--Lead wrokflow content end-->
+    </section>
+</div>

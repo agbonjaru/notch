@@ -1,0 +1,126 @@
+.cc--filter .card-header {
+  cursor: pointer !important;
+}
+
+.cc--filter .card-body.body-sm {
+  padding: 0.55rem;
+}
+
+.custom--filters {
+  width: 100%;
+}
+
+.custom--filters .ft--search {
+  height: 35px;
+  padding-left: 10px;
+  padding-right: 24px;
+  border: solid 1px #e9e9e9;
+  position: relative;
+  background-color: #f5f5f5;
+  margin-bottom: 5px;
+}
+
+.custom--filters .ft--search>input {
+  height: 100%;
+  width: 100% !important;
+  border: none 0;
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
+.custom--filters .ft--search>svg {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  color: #555;
+  top: 25%;
+}
+
+input[type=text]:not(.browser-default),
+input[type=text]:not(.browser-default):focus:not([readonly]) {
+  box-shadow: 0 1px 0 0 #ffffff00;
+}
+
+.custom--filters .ft-box-vertical {
+  max-height: 144px;
+  overflow: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  padding-left: 5px;
+}
+
+.custom--filters .ft-box-vertical>.custom-control {
+  cursor: pointer;
+}
+
+.custom--filters .ft-box-vertical>.custom-control label:hover,
+.custom--filters .ft-box-vertical>.custom-control:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.custom--filters .ft-box-vertical>.custom-control label {
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  display: block;
+}
+
+.custom--filters .ft-input-range {
+  float: left;
+  line-height: 24px;
+  width: 70%;
+  padding: 2px 5px 2px 7px;
+  display: block;
+  margin-bottom: 5px;
+  border: 1px solid #7E7F9A;
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: auto;
+  font-size: 14px;
+  color: #7E7F9A;
+  background: transparent;
+}
+
+.custom--filters .ft-input-range:active,
+.custom--filters .ft-input-range:hover,
+.custom--filters .ft-input-range:focus {
+  outline: none !important;
+  border: 1px solid #158DED;
+}
+
+.custom--filters .ft-input-range>input {
+  border: none 0;
+  width: 80% !important;
+  padding: 7px 16px !important;
+
+}
+
+.custom--filters .ft-input-range>svg {
+  padding: 1px !important;
+  display: inline-block;
+  font-size: 13px;
+  color: #555;
+}
+
+span[currency] {
+  display: inline-block;
+}
+
+.list-filter input.list-filter-input {
+  width: 100% !important;
+}
+
+.cc--filter .custom-control-label::before,
+.cc--filter .custom-control-label::after {
+  top: .15rem !important;
+}
+
+.cc--filter .btn-primary.disabled,
+.cc--filter .btn-primary:disabled {
+  color: #fff !important;
+  background-color: #007bff !important;
+  border-color: #007bff;
+}

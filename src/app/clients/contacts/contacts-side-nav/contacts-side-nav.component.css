@@ -1,0 +1,13 @@
+.dateWidth {
+  width: 100% !important
+}
+
+.ngx-dropdown-container {
+  font-size: 11px !important;
+  width: 100% !important;
+}
+
+/* 
+.btn-filter.btn[disabled] {
+  background-color: #04151b !important;
+} */

@@ -1,0 +1,149 @@
+<div class="content settings-content">
+    <div class="row" style="width: 100%; margin: 0;">
+        <div class="col-md-12 settings-wrapper">
+            <app-settings-header></app-settings-header>
+            <div class="row">
+                <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                    <app-settings-sidebar></app-settings-sidebar>
+                </div>
+
+                <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+                    <div class="settings-header">
+                        <h1>Activity Creation</h1>
+                        <!--<p>Set up Roles</p>-->
+                    </div>
+                    <!-- Loader -->
+                    <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless"
+                        (actionState)="onActionState()" *ngIf="loader.showSpinner">
+                    </loading-spinner>
+                    <!-- Loader Ends -->
+                    <div class="settings-label">
+                        <div class="row">
+                            <ng-template [ngIf]="!loader.showSpinner">
+                                <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 20px;">
+                                    <label class="" style="font-size: 18px">Activity</label>
+                                    <div class="list-card">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr
+                                                    *ngFor="let activityType of orgActivityTypes | paginate: { itemsPerPage: 10, currentPage: p}">
+                                                    <th scope="row" style="border-top: none;"> {{ activityType.name }}
+                                                    </th>
+                                                    <td style=" border-top: none; cursor: pointer;">
+                                                        <span class="text-center edit-email-temp"
+                                                            (click)="onFetchSingleActivityType(activityType.name)"
+                                                            data-toggle="modal" data-target="#ModalCenter3"><i
+                                                                class="fas fa-edit"></i></span>
+                                                    </td>
+                                                </tr>
+                                                <br/>
+                                                <div class="center">
+                                                    <pagination-controls *ngIf="orgActivityTypes.length  > 10;" (pageChange)="p = $event">
+                                                    </pagination-controls>
+                                                </div>
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                    <button type="button" class="fin-pry-btn mt-3 right" data-toggle="modal"
+                                        data-target="#ModalCenter2" style="margin-top: -13px;">
+                                        Add Activity
+                                    </button>
+
+                                    <!-- Add Activity Modal -->
+                                    <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog"
+                                        aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ModalCenterTitle">Add Activity</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form [formGroup]="addActivityTypeForm">
+                                                        <div class="form-group">
+                                                            <label for="target-value" class="col-form-label">
+                                                                Enter Activity Name <small style="color: red;">*</small>
+                                                            </label>
+                                                            <input type="text" class="form-control" id="target-value"
+                                                                formControlName="name">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="fin-sec-btn" id="addModal" data-dismiss="modal">Close
+                                                    </button>
+                                                    <button class="fin-pry-btn"
+                                                        [disabled]="(addActivityTypeForm.invalid || showLoading)"
+                                                        (click)="onAddActivityType()">
+                                                        ADD
+                                                        <span *ngIf="showLoading"><i
+                                                                class="fa fa-spinner fa-spin"></i></span>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Add Activity Modal End-->
+
+                                    <!-- Edit Activity Modal -->
+                                    <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog"
+                                        aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ModalCenterTitle">Edit Activity</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form [formGroup]="editActivityTypeForm">
+                                                        <div class="form-group">
+                                                            <label for="target-value" class="col-form-label">Enter
+                                                                Activity
+                                                                Name</label>
+                                                            <input type="text" class="form-control"
+                                                                value={{editedOrgActType.name}} id="target-value"
+                                                                formControlName="name">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="fin-sec-btn" id="updateModal" data-dismiss="modal">Close
+                                                    </button>
+                                                    <button class="fin-pry-btn" [disabled]="showLoading"
+                                                        (click)="onSaveEditedActType(editedOrgActType.id)">
+                                                        Update
+                                                        <span *ngIf="showLoading"><i
+                                                                class="fa fa-spinner fa-spin"></i></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Edit Activity Modal End-->
+
+                                </div>
+                            </ng-template>
+                            <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 role-creation-tab"
+                                style="padding-top: 20px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+    <blockquote>
+        <div class="arrow-left"></div>
+    </blockquote>
+</div>

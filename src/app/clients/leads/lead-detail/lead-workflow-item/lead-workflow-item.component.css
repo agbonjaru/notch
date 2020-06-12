@@ -1,0 +1,17 @@
+.workflow-item-group {
+    margin-bottom: 5px;
+}
+.workflow-item {
+    display: inline-block;
+    width: 17.5px;
+    height: 17.5px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+
+    margin-right: 10px;
+}
+
+.workflow-item-label {
+    display: inline-block;
+    margin-top: -2.5px;
+}

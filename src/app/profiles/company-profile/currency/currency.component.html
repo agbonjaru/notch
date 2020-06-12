@@ -1,0 +1,63 @@
+<div class="row p-3 currency-config-wrapper">
+  <div class="col-5">
+    <div class="form-group">
+      <label for="currency-type">Select Currency</label>
+
+      <ng-multiselect-dropdown name="currency_selector" [placeholder]="'Select Currency'" [data]="all_currencies"
+        [settings]="currency_selector_config" [(ngModel)]="selected_currencies_array" (onSelect)="select_item($event)"
+        (onSelectAll)="select_all($event)" (onDeSelectAll)="unselect_all($event)" (onDeSelect)="unselect_item($event)">
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="currency-type">Select Base Currency</label>
+      <select name="base_currency" [disabled]="transform_object_to_array(selected_currencies).length < 1" [(ngModel)]="base_currency"
+        (change)="change_base_currency()">
+        <option value="">Select Base Currency</option>
+        <option *ngFor="let selection of transform_object_to_array(selected_currencies)" value="{{selection.item_id}}">
+          {{selection.item_text}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="col-7">
+    <div class="currency-table mb-2">
+      <form name="my_currency">
+        <table>
+          <thead>
+            <td> Currency </td>
+            <td> Conversion Rate </td>
+          </thead>
+          <tbody>
+            <tr *ngFor="let selection of transform_object_to_array(selected_currencies)">
+              <div *ngIf="selection.item_id != base_currency" class="w-100">
+                <td>
+                  <span class="pr-2" (click)="unselect_item(selection)">
+                    <span class="fa fa-trash"></span>
+                  </span>
+                  {{selection.item_text}}
+                </td>
+                <td>
+                  <input type="number" name="{{selection.item_id}}" [disabled]="!base_currency" class="currency-input"
+                    [(ngModel)]="selected_currencies[selection.item_id].rate" id="{{selection.item_id}}"
+                    (input)="add_currency_rate(selection.item_id, $event.target.value)" placeholder="1"
+                    data-validation="required:true; type:number" />
+                </td>
+              </div>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div *ngIf="transform_object_to_array(selected_currencies).length > 1" class="currency-actions">
+      <button type="button" class="ml-3 fin-pry-btn float-right" (click)="save_changes()">
+        SAVE CHANGES
+        <span *ngIf="loading">
+          <span class="fa fa-spinner fa-spin"></span>
+        </span>
+      </button>
+      <button type="button" class="fin-sec-btn float-right" (click)="discard_changes()">DISCARD
+        CHANGES</button>
+    </div>
+  </div>
+</div>

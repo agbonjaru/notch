@@ -1,0 +1,434 @@
+<div class="content-body-header">
+  <div class="content-body-nav col-md-12">
+    <ul>
+      <li>
+        <span><img src="/assets/img/ribbon-blue.svg" alt=""></span>
+        <a (click)="toggleClass('about-list', 'aboutDp')" class="about-contact-toggler about-within"> About Deal
+          <span class="aboutDp" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <span><img src="/assets/img/ribbon-dark.svg" alt="#!" class="deals-within"></span><a
+          (click)="toggleClass('invoice-list', 'invoice')">Invoice
+          <span class="invoice" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down"><span><img src="/assets/img/ribbon-red.svg" alt=""></span>
+        <a (click)="toggleClass('sales-order-list', 'sales-order')">Sales Order
+          <span class="sales-order" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down hidden-md hidden-xs hidden-sm"><span><img src="/assets/img/ribbon-pink.svg"
+            alt=""></span><a (click)="toggleClass('quote-list', 'quote')">Quotes</a>
+        <span class="quote" style="padding-left: 10px;">
+          <i class="fa fa-angle-right"></i>
+          <i class="fa fa-angle-down d-none"></i>
+        </span>
+      </li>
+      <li class="hide-on-med-and-down"><span><img src="/assets/img/ribbon-red.svg" alt=""></span>
+        <a (click)="toggleClass('document-list', 'documents')">Documents
+          <span class="documents" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+
+            <li id="dropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><a href="#!">More
+                  <span style="padding-left: 10px;">
+                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-down d-none"></i>
+               </span></a>
+            </li>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink5">
+                <a class="dropdown-item  " (click)="openContent('contacts')">Contacts</a>
+                <a class="dropdown-item  " (click)="openContent('products')">Products</a>
+                <a class="dropdown-item  " (click)="openContent('competitors')">Competitors</a> 
+
+
+                <!-- <a class="dropdown-item " href="#">Attachments</a> -->
+                <!-- <a class="dropdown-item " (click)="openContent('tickets')">Tickets</a> -->
+                <!-- <a class="dropdown-item" >Subsidiaries</a> -->
+                <!-- <a class="dropdown-item" (click)="openContent('quotes')">Quotes</a> 
+                <a class="dropdown-item" (click)="openContent('invoice')">Invoice</a>
+                <a class="dropdown-item" (click)="openContent('salesorder')">Sales order</a> -->
+        <!-- <a class="dropdown-item" href="#">Targets</a>
+                <a class="dropdown-item" href="#">Credit management</a>
+                <a class="dropdown-item" href="#">Product Suggestions</a> -->
+      </div>
+    </ul>
+  </div>
+</div>
+<section class="dropdown-list">   
+  
+  <div  class="about-contact about-list d-none dp-item">
+    <div *ngIf="deal.status ==0">
+      <button *ngIf="!editMode" (click)="edit()" class="fin-sec-btn float-right m-2">Edit</button>
+      <button *ngIf="editMode" (click)="cancel()" class="fin-sec-btn float-right m-2">Cancel</button>
+      <button [disabled]="getFormInvalid || dealUpdateoading" *ngIf="editMode" (click)="updateDeal()" class="fin-pry-btn float-right m-2">
+        Save <span *ngIf="dealUpdateoading"><i class="fa fa-spinner fa-spin"></i></span>
+      </button>
+    </div>
+    <div *ngIf="deal.status == 1" class="about-contact-row">
+      <div class="col-sm-6">
+        <span class="contact-detail-top">Reason for lossing deal</span>
+        <br>
+        <span class="contact-detail">{{deal.comment }}</span>
+      </div>
+      <div class="col-sm-4 text-right">
+      </div>
+    </div>
+    <div>
+    <ng-container [formGroup]="updateDealForm">
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">Deal Client</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{deal.clientName}}</span>
+          <ng-container *ngIf="editMode">
+            <div class="w-75" *ngIf="(clientList$ | async) as clientList;">
+              <ngx-select-dropdown formControlName="clientName"  [config]="clientConfig"
+                [options]="clientList">
+              </ngx-select-dropdown>
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-sm-4 text-right">
+  
+        </div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">Currency</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{deal.currency}}</span>
+          <select *ngIf="editMode" formControlName="currency" class="gen-input browser-default form-control">
+            <option disabled value="">Select Currency</option>
+            <option *ngFor="let cun of (currencyList)" [value]="cun.currency_code">
+              {{cun.currency_code}}
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-4 text-right">
+  
+        </div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">Deal Value ({{updateDealForm.value.currency}})</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail" [innerHTML]="deal.amount ? (deal.amount | currency:'code':getCunSymbol(updateDealForm.value.currency)): 'nil'" ></span>
+          <ng-container *ngIf="editMode">
+            <input formControlName="amount" placeholder="1000000"  type="number" name="cname" class="gen-input browser-default">
+            <p style="margin: 0px !important;" [innerHTML]="updateDealForm.value.amount ?(updateDealForm.value.amount | currency:updateDealForm.value.currency:'symbol-narrow'): ''"></p>
+          </ng-container>
+        </div>
+        <div class="col-sm-4 text-right">
+        </div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-6">
+          <span class="contact-detail-top">Close Date</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{deal.closeDate | date}}</span>
+          <input autocomplete="off" formControlName="closeDate" *ngIf="editMode" type="text" name="cname" [minDate]="tDate"
+            class="gen-input browser-default" placeholder="Enter Close Date"  bsDatepicker>
+        </div>
+        <div class="col-sm-4 text-right">
+  
+        </div>
+      </div> 
+    </ng-container>
+    </div>
+    <div class="about-contact-row">
+      <div class="col-sm-6">
+        <span class="contact-detail-top">Forecast Amount</span>
+        <br>
+        <span class="contact-detail" [innerHTML]="deal.forecastAmount ? (deal.forecastAmount | currency:'code':getCunSymbol(deal.currency)): 'nil'" ></span>
+      </div>
+      <div class="col-sm-4 text-right">
+
+      </div>
+    </div>
+    <div class="about-contact-row">
+      <div class="col-sm-6">
+        <span class="contact-detail-top">Forecast Date</span>
+        <br>
+        <span class="contact-detail">{{deal.forecastDate ? (deal.forecastDate| date) : 'nil' }}</span>
+      </div>
+      <div class="col-sm-4 text-right">
+
+      </div>
+    </div>
+    <div class="about-contact-row">
+      <div class="col-sm-6">
+        <span class="contact-detail-top">Deal process</span>
+        <br>
+        <span class="contact-detail">{{deal.salesProcessName}}</span>
+        <!-- <input readonly formControlName="salesProcessName" *ngIf="editMode" type="text" name="cname" class="gen-input browser-default" > -->
+      </div>
+      <div class="col-sm-4 text-right">
+
+      </div>
+    </div>
+    <div class="about-contact-row">
+      <div class="col-sm-6">
+        <span class="contact-detail-top">Deal stage</span>
+        <br>
+        <span class="contact-detail">{{deal.currStage}}</span>
+        <!-- <input readonly formControlName="currStage" *ngIf="editMode" type="text" name="cname"  class="gen-input browser-default" > -->
+      </div>
+      <div class="col-sm-4 text-right">
+
+      </div>
+    </div>
+
+    <!-- <div class="about-contact-row">
+                    <div class="col-sm-6">
+                        <span class="contact-detail-top">Deal Amount</span>
+                        <br>
+                        <span *ngIf="!editMode" class="contact-detail">$1000</span>
+                        <input *ngIf="editMode" type="number" name="cname" value="1000" class="gen-input browser-default" >
+                    </div>
+                    <div class="col-sm-4 text-right">
+
+                    </div>
+                </div> -->
+  </div>
+  <!--About Deal ends-->
+  <!--Invoice-->
+  <div class="about-contact invoice-list d-none h-auto dp-item">
+    <h6 class="text-center">Invoice for deal</h6>
+    <ng-container *ngIf="invoiceList && !invoiceList.length; else ivoicelength">
+      <p class="text-center">No Invoice</p>
+    </ng-container>
+    <ng-template #ivoicelength>
+      <div class="about-contact-row" *ngFor="let invoice of invoiceList">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">{{invoice.clientName}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Invoice Amount</span>
+          <br>
+          <span class="contact-detail">{{invoice.totalCost | currency:invoice.currency:'symbol-narrow'}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">{{invoice.createdOn | date}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn">
+            <a [routerLink]="['/sales/edit-invoice', invoice.id]">VIEW INVOICE</a></button>
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+  <!--Sales Order-->
+  <div class="about-contact sales-order-list d-none dp-item">
+    <h6 class="text-center">Sales Order for deal</h6>
+    <ng-container *ngIf="salesorderList && !salesorderList.length">
+      <p class="text-center">No Sales Order</p>
+    </ng-container>
+    <ng-container *ngIf="salesorderList && salesorderList.length">
+      <div class="about-contact-row" *ngFor="let salesorder of salesorderList">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">{{salesorder.clientName}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Amount</span>
+          <br>
+          <span class="contact-detail">{{salesorder.totalAmount | currency:salesorder.currency:'symbol-narrow'}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">{{salesorder.createdDate | date}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn">
+            <a [routerLink]="['/sales/create-sales-order']" [queryParams]="{'salesOrder': salesorder.code}">VIEW SALES
+              ORDER</a></button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <!--Quote-->
+  <div class="about-contact quote-list d-none dp-item">
+    <h6 class="text-center">Quote for deal</h6>
+    <ng-container *ngIf="(quotationList$ | async) as quoteList;">
+      <div *ngIf="quoteList.payload.length; else noQuote">
+        <div class="about-contact-row" *ngFor="let quote of quoteList.payload">
+          <div class="col-sm-3">
+            <span class="contact-detail-top">Client Name</span>
+            <br>
+            <span class="contact-detail">{{quote.clientName}}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">Amount</span>
+            <br>
+            <span class="contact-detail">{{quote.totalCost | currency:quote.currency:'symbol-narrow'}}</span>
+          </div>
+          <div class="col-sm-3">
+            <span class="contact-detail-top">Creation Date</span>
+            <br>
+            <span class="contact-detail">{{quote.createdOn | date}}</span>
+          </div>
+          <div class="col-sm-3">
+            <button class="fin-sec-btn">
+              <a [routerLink]="['/sales/edit-quotation', quote.id]">VIEW QUOTATION</a></button>
+          </div>
+        </div>
+      </div>
+      <ng-template #noQuote>
+        <p class="text-center">No Quotation</p>
+      </ng-template>
+    </ng-container>
+  </div>
+  <!--Contacts associated with deal end-->
+
+  <!--Upload Document-->
+  <div class="about-contact document-list d-none dp-item">
+    <ng-container *ngIf="documentList;else loadingDoc">
+    <h6 class="ml-3">Required Documents</h6>
+    <div class="row ml-3" *ngIf="requiredDocument">
+      <div *ngIf="requiredDocument.length;else noreqDoc" class="col-md-12">
+        <table>
+          <thead>
+            <tr>
+              <th colspan="3">Stage Name</th>
+              <th colspan="3">Document Name</th>
+              <th colspan="6"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of requiredDocument; let i = index;">  
+              <td colspan="3">{{doc.stageName}}</td>
+              <td colspan="3">{{doc.document}}</td>
+              <td colspan="6">
+                <span class="w-25"> 
+                  <input (change)="uploadFile($event, i, doc)" class="ml-3" [id]="'dFile' + i" type="file">
+                  <span class="ml-1">{{doc.size}}</span>
+                </span>
+              <button data-toggle="modal" data-target="#libUpload" (click)="openLibUpload(doc)"
+                class="btn btn-small btn-primary ml-2" [id]="'libUploadBtn-' + i">Library Upload</button>
+              <span class="float-right mr-3">
+                <span *ngIf="loading === i">
+                  uploading...<i class="fa fa-spinner fa-spin"></i>
+                </span>
+                <button (click)="upload(i)" class="d-none {{'uploadBtn-'+ i}} btn btn-small btn-primary mr-2">
+                  <i class="fa fa-upload"></i> Upload
+                </button>
+                <button (click)="cancelUpload(i)" class="d-none {{'uploadBtn-'+ i}} btn btn-small btn-danger">
+                  <i class="fa fa-times"></i> cancel
+                </button>
+              </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-template #noreqDoc>
+        <p>No Required Documents</p>
+      </ng-template>
+    </div>
+    <hr>
+    <div class=" p-1">
+      <h6 class="ml-3">Uploaded Documents</h6>
+      <div class="row ml-3"> 
+        <ng-container *ngIf="documentList.length;else noDoc">
+          <div class="col-md-12" *ngFor="let document of documentList">
+            <div class="invoice-card">
+              <p>{{document.name}}
+                <span class="float-right mr-3">
+                  <button  (click)="viewFile(document)"
+                    class="btn btn-small btn-info mr-2"> <i class="fa fa-eye"></i> view</button>
+                    <button (click)="downloadFile(document)" class="btn btn-small btn-primary mr-2"><i
+                      class="fa fa-download"></i> download</button>
+                      <button *ngIf="deal.status===0" (click)="handleChangeDoc(document)" class="btn btn-small btn-amber "><i
+                        class="fa fa-edit"></i> Update</button>
+                </span></p>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noDoc>
+          <p>No Uploaded Documents</p>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loadingDoc>
+    <p>Loading Documents...</p>
+  </ng-template>
+    <!-- View Document Modal -->
+    <!-- Large modal -->
+    <app-view-doc ></app-view-doc>
+   
+    <!-- View Document Modal -->
+    <!--<div class="col-md-12 text-center pb-3">-->
+    <!--<a href="lead-workflow.html" class="back-link">Setup lead workflow >></a>-->
+    <!--</div>-->
+  </div>
+  <!--Upload Document end-->
+</section>
+<!-- Library Upload Modal-->
+<div class="modal fade" id="libUpload" tabindex="-1" role="dialog" aria-labelledby="libUploadLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="libUploadLabel">{{'Upload ' + docName}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-library-upload [data]="libDocData" (onSuccess)="docUploadSucess()"></app-library-upload>
+      </div>
+      <div class="modal-footer">
+        <button id="closelibUpload" type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Change Doc Modal-->
+<button id="ChangeDocBtn" data-target="#changeDocModal" data-toggle="modal" class="d-none">Change</button>
+<div class="modal fade" id="changeDocModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Change File</h5>
+        <button id="closeChangeDocModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="custom-file">
+              <input (change)="browseChangeDoc($event)" type="file" class="custom-file-input" id="uploadedFile">
+              <label class="custom-file-label text-elips" for="uploadedFile">{{seletedChangeFile ? seletedChangeFile.name : 'Choose file'}}</label>
+            </div>
+      </div>
+      <p class="mb-1 text-center">Maximum file size is 15MB</p>
+      <div class="modal-footer">
+        <button (click)="changeDoc()" [disabled]="!seletedChangeFile || disableChangeDocBtn" type="button" class="fin-pry-btn">
+          Upload <span *ngIf="disableChangeDocBtn"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 

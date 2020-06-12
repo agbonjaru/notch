@@ -1,0 +1,55 @@
+html,
+body,
+header,
+.carousel {
+  height: 60vh;
+}
+
+@media (max-width: 740px) {
+
+  html,
+  body,
+  header,
+  .carousel {
+    height: 100vh;
+  }
+
+ body {
+   background: url("../../../assets/img/mobile-bg.png");
+   background-size: cover;
+ }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+
+  html,
+  body,
+  header,
+  .carousel {
+    height: 100vh;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
+  .navbar:not(.top-nav-collapse) {
+    background: #1C2331 !important;
+  }
+}
+
+#steady-spinner {
+  border: 4px solid lightblue;
+  border-top-color: #09e;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  margin: auto;
+  margin-top: 20px;
+  /* border-top-color: green; */
+  animation: spin 1s ease-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

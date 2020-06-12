@@ -1,0 +1,108 @@
+<div class="content settings-content analysis-setting-wrapper">
+    <div class="row" style="width: 100%; margin: 0;">
+
+        <div class="col-md-12 document-wrapper " style="height: 100vh;margin-top: 70px">
+            <div class="" style="margin-top: 40px">
+                <div class=" create-deal-left pr-5 pl-5">
+                    <h4 style="margin: 30px 0;font-weight: 600">Setup Analytics</h4>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="pr-4">
+                                <form name="analysis-form" class="analysis-form">
+                                    <div class="form-group">
+                                        <label for="">Factor</label>
+                                        <select class="w-100" name="analysis-fitness-factor"
+                                            (change)="select_factor($event.target.value)" [(ngModel)]="form_factor">
+                                            <option value="">Select a Fitness factor</option>
+                                            <option *ngFor="let factor of factor_list" value={{factor}}>
+                                                {{default_factors[factor].name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Factor Value</label>
+                                        <select class="w-100" name="analysis-fitness-value" [disabled]="!form_factor"
+                                            [(ngModel)]="form_factor_value">
+                                            <option value="">Select a value</option>
+                                            <option *ngFor="let factor_value of factor_value_list"
+                                                value={{factor_value}}>{{selected_factor_values[factor_value]}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Factor Value Score</label>
+                                        <select name="analysis-fitness-score" [disabled]="!form_factor_value" [(ngModel)]="form_factor_score" class="w-100">
+                                            <option value="1">1 (LOW)</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5 (HIGH)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <div>
+                                    <button class="fin-pry-btn float-right mt-4 w-25 classic-btn"
+                                        (click)="submit()" [disabled]="loading">SAVE</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8 analysis-setting-list">
+                            <div class=" row">
+                                <div class="form-group col-9">
+                                    <form name="selected_actions">
+                                        <select class="w-100" name="analysis-fitness-factor"
+                                        (change)="display_org_factor_selections($event.target.value)" [(ngModel)]="org_selected_factor">
+                                        <option value="">Select a Fitness factor</option>
+                                        <option *ngFor="let factor of org_selected_factors" value={{factor}}>
+                                            {{ factor_selections[factor].name }}</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div *ngIf="org_selected_factor" class="col-3">
+                                    <div class="btn-group">
+                                        <button class="btn btn-info dropdown-toggle dropdown-btn" type="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu mt-1 p-1">
+                                            <div (click)="edit_factor(org_selected_factor)" class="pl-3 pt-2 pb-2">
+                                                Edit
+                                            </div>
+                                            <div (click)="delete_factor(org_selected_factor)" class="pl-3 pt-2 pb-2">
+                                                Delete
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <table class="analysis-factor-list">
+                                        <thead>
+                                            <td>Factor Value</td>
+                                            <td>Factor Score</td>
+                                            <td></td>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let factor_value of org_selected_factor_values[org_selected_factor]">
+                                                <td>{{factor_value.name}}</td>
+                                                <td>{{factor_value.score}}</td>
+                                                <td>
+                                                    <span (click)="delete_factor_value(factor_value.key)">
+                                                        <i class="fas fa-trash"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

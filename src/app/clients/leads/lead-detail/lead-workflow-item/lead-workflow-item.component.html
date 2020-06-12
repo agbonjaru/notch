@@ -1,0 +1,8 @@
+<div *ngIf="item" class="d-flex flex-row justify-content-start workflow-item-group">
+  <span class="workflow-item" id="{{item.id}}" (click)="updateWorkflow()"></span>
+  <div>
+      <span class="workflow-item-label" (click)="updateWorkflow()">{{item.name}} (<span class="text-primary">{{isDone ? duration : '0s'}}</span>)</span>
+      <br>
+      <span class="text-secondary"><b>{{updateMessage}}</b></span>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="text-center contact-welcome ">
+  <div class="add-meeting">
+    <div class="" [formGroup]="addLogActivityForm">
+      <div class="left add-meeting-header brief-select">
+        <label class="text-left mr-2" style="margin-left: 0; margin-top: 9px; float: left;">
+          What activity are you logging?<small style="color: red;">*</small>
+        </label>
+        <select class="form-control left" data-placeholder="Type of task" formControlName="type" style="width: 140px">
+          <option value="" disabled selected> Activity Type </option>
+          <option *ngFor="let activityType of activityLogs" value={{activityType.name}}>{{ activityType.name }}</option>
+        </select>
+      </div>
+      <div class="meeting-text-area">
+        <div style="height: 300px;" class="editor-wrapper">
+          <fate-ui uiId="foo"></fate-ui>
+          <fate-input placeholder="Enter Activity Log" formControlName="content" uiId="foo"></fate-input>
+        </div>
+        <div class="mail-compose-right">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="col-form-label">Date<small style="color: red;">*</small></label>
+              <input style="width: 100% !important;" type="text" name="unknown" formControlName="date"
+                class="gen-input2 browser-default" placeholder="mm - dd - yyyy" bsDatepicker autocomplete="off"
+                [bsConfig]="{ dateInputFormat: 'MM-DD-YYYY', selectFromOtherMonth: true }">
+            </div>
+            <div class="form-group col-md-12">
+              <label class="col-form-label">Time<small style="color: red;">*</small></label>
+              <span class='time-picker-parent '>
+                <input style="width: 100% !important;" #timeAsInput class=' t ' [value]='mytime'>
+                <div id='displayTimePicker' class='time-picker bg-white d-inline-block p-2 border rounded '>
+                  <timepicker name="mytime" [(ngModel)]="mytime" formControlName="time" minuteStep="15"
+                    showMeridian="ismeridian" required></timepicker>
+                </div>
+              </span>
+            </div>
+          </div>
+          <br>
+          <button class="fin-pry-btn" [disabled]="(addLogActivityForm.invalid || showLoading)"
+            (click)="addNewActivityLog()">LOG
+            <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+          </button>
+        </div>
+
+      </div>
+      <div class="meeting-features-row row text-left">
+      </div>
+    </div>
+  </div>
+</div>

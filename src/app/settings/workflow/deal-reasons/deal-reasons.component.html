@@ -1,0 +1,79 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <ng-container  *ngIf="(allReasonList$ | async) as allReasonList; else onloading">
+              <div class="settings-header">
+
+                <h1>Deal Lost Reasons</h1>
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item"><a class="nav-link active" style="background: transparent;"
+                      id="create-lead-source-tab" data-toggle="tab" href="#create-lead-source" role="tab"
+                      aria-controls="email" aria-selected="true">Create Deal Lost Reason</a>
+                  </li>
+                </ul>
+
+              </div>
+              <div class="settings-label tab-pane fade show active" id="create-lead-source" role="tabpanel"
+                aria-labelledby="create-lead-source-tab">
+                <div class="row">
+                  <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 30px;">
+                    <form >
+                      <label id="reasonLabel" for="lead">Deal Lost Reason <span class="text-danger">*</span> </label>
+
+                      <input type="text" ngModel #reason="ngModel"  id="leadx" name="reason" placeholder="Enter Deal Reason"
+                        class="gen-input2 browser-default" required>
+
+                      <button type="button"  [disabled]="(reason.value&&reason.value.trim()) <1 || reason.invalid || loading" (click)="add(reason)"
+                        class="fin-pry-btn mt-3 right" data-toggle="modal" data-target="#ModalCenter2"
+                        style="margin-top: -13px;">
+                        Add  <span *ngIf='loading'><i class="fa fa-spinner fa-spin"></i></span>
+                        <!-- <span *ngIf="leadLoading"><i class="fa fa-spinner fa-spin"></i></span> -->
+                      </button>
+                    </form>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6"
+                    style="padding-top: 20px; border-left: 1px solid #dee2e6">
+                    <div class="list-card" style="box-shadow: none; padding: 0;">
+                      <table class="table" *ngIf="allReasonList.length; else noResult">
+                        <tbody *ngFor="let reason of allReasonList">
+                          <tr>
+                            <th scope="row" style="border-top: none;">{{reason.value}}
+                            </th>
+                            <td (click)="deleteReason(reason)"
+                              style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                              <i class="fas fa-trash"></i>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <ng-template #noResult>
+                         <h6>No Results</h6>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </ng-container>
+        <ng-template #onloading>
+           <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+        </ng-template>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

@@ -1,0 +1,154 @@
+ <!-- Filters -->
+ <div class="list-filter cc--filter">
+   <div class="accordion" *ngIf="accordions.length > 0;">
+     <!-- ACCORDION NAME | TYPE: 'box (includes search)', 'range' -->
+     <div class="card" *ngFor="let accordion of accordions; let i = index;">
+       <div class="card-header" id="{{'headingTop' + i}}" data-toggle="collapse" [attr.data-target]="'#collapseTop' + i"
+         aria-expanded="true" [attr.aria-controls]="'#collapseTop' + i">
+         <h2 class="mb-0">
+           <button class="btn btn-link" type="button">
+             {{ accordion?.name}}
+           </button>
+         </h2>
+       </div>
+       <div id="{{'collapseTop' + i}}" class="collapse" [ngClass]="{'show': i === 0}"
+         [attr.aria-labelledby]="'headingTop' + i">
+         <div class="card-body body-sm">
+           <!-- TYPE: BOX -->
+           <div class="custom--filters" *ngIf="accordion?.type ==='box'">
+             <div class="ft--search" *ngIf="accordion?.search">
+               <input type="text" name="{{filter.search[accordion?.filterKey]}}"
+                 id="{{filter.search[accordion?.filterKey]}}" [(ngModel)]="filter.search[accordion?.filterKey]"
+                 placeholder="Search..." />
+               <i class="fa fa-search"></i>
+             </div>
+             <div class="ft-box-vertical" *ngIf="data.arrayFilterSource[accordion?.filterKey]?.length > 0">
+               <div
+                 *ngFor="let item of data.arrayFilterSource[accordion?.filterKey] | filter: filter.search[accordion?.filterKey] | unique: accordion?.filterKey"
+                 class="custom-control custom-checkbox" [attr.for]="item[accordion?.filterKey]">
+                 <input type="checkbox" class="custom-control-input" id="{{ item[accordion?.filterKey] }}"
+                   value="{{item[accordion?.filterKey]}}"
+                   [checked]="filterCheckBox[accordion?.filterKey + '=' + item[accordion?.filterKey]]"
+                   (change)="onCheckBoxChange(accordion?.filterKey, item)" />
+                 <label class="custom-control-label" for="{{ item[accordion?.filterKey] }}">
+                   {{item[accordion?.filterKey] | titlecase}} </label>
+               </div>
+             </div>
+             <br />
+           </div>
+           <!-- TYPE: RANGE -->
+           <div class="custom--filters" *ngIf="accordion?.type ==='range'">
+             <div class=" d-flex1">
+               <div class="ft-input-range">
+                 <i class="{{accordion?.icon}}"></i>
+                 <input type="text" value="0" placeholder="Minimum" class="browser-default gen-input mr-1"
+                   (change)="onChangeRange(accordion?.filterKey)" [(ngModel)]="filter.minrange[accordion?.filterKey]" />
+               </div>
+               <div></div>
+               <div class="ft-input-range">
+                 <i class="{{accordion?.icon}}"></i>
+                 <input type="text" value="100000" placeholder="Maximum" class="browser-default gen-input"
+                   (change)="onChangeRange(accordion?.filterKey)" [(ngModel)]="filter.maxrange[accordion?.filterKey]" />
+               </div>
+             </div>
+           </div>
+           <!-- TYPE: DATE -->
+           <div class="custom--filters" *ngIf="accordion?.type ==='date'">
+             <div class=" d-flex1">
+               <div class="ft-input-range">
+                 <i class="{{accordion?.icon}}"></i>
+                 <input type="text" id="date" name="date" placeholder='DD/MM/YY' class="browser-default gen-input mr-1"
+                   [bsConfig]="bsConfig" #dp="bsDatepicker" bsDatepicker (input)="onChangeRange(accordion?.filterKey)"
+                   [(ngModel)]="filter.minrange[accordion?.filterKey]" />
+               </div>
+               <div></div>
+               <div class="ft-input-range">
+                 <i class="{{accordion?.icon}}"></i>
+                 <input type="text" id="date2" name="date2" placeholder='DD/MM/YY' class="browser-default gen-input"
+                   [bsConfig]="bsConfig" #dp="bsDatepicker" bsDatepicker (input)="onChangeRange(accordion?.filterKey)"
+                   [(ngModel)]="filter.maxrange[accordion?.filterKey]" />
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- CUSTOM FILTER -->
+     <div class="card">
+       <div class="card-header" id="heading6" data-toggle="collapse" data-target="#collapseTop" aria-expanded="true"
+         aria-controls="#collapseTop">
+         <h2 class="mb-0">
+           <button class="btn btn-link collapsed" type="button">
+             Custom Filters
+           </button>
+         </h2>
+       </div>
+       <div id="collapseTop" class="collapse show" aria-labelledby="heading6">
+         <div class="card-body">
+           <div class="custom-control custom-radio" *ngFor="let filter of customFilters">
+             <input type="radio" id="{{filter.id}}" value="{{filterRadioBox[filter.id]}}"
+               [checked]="filterRadioBox[filter.id]" name="customRadio" class="custom-control-input"
+               (change)="processCustomFilter(filter)">
+             <label class="custom-control-label" for="{{filter.id}}">{{filter.filterName}}</label>
+             <span class="float-right text-danger is-clickable" (click)="removeCustomFilter(filter.id)"><b>x</b></span>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- Clear Filters -->
+     <div class="row mt-4 pr-1 pl-1">
+       <div class="col">
+         <button class="btn btn-warning w-100 rounded-0" (click)="clearFilters()">Clear Filters</button>
+       </div>
+     </div>
+
+     <!-- Create Filters -->
+     <div class="row mt-3 pr-1 pl-1">
+       <div class="col d-flex justify-content-center">
+         <button [disabled]="btn.disabled" class="btn btn-primary w-100 rounded-0 shadow" data-toggle="modal"
+           data-target="#exampleModalCenter">{{btn.create}}</button>
+         <!-- data-target="#exampleModalCenter">{{selectedCustomFilter ? 'Update Filter' : 'Create Filter'}}</button> -->
+       </div>
+
+       <!-- Modal -->
+       <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+           <div class="modal-content">
+             <div class="modal-header">
+               <!-- <h5 class="modal-title" id="exampleModalLongTitle">
+                 {{filterOptions.id === undefined ? 'Save Filter' : 'Update Filter'}}</h5> -->
+               <h5 class="modal-title" id="exampleModalLongTitle">{{btn.create}}</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body">
+               <div class="row">
+                 <div class="col-lg-12">
+                   <!-- <div *ngIf="filterModificationMessage" class="alert alert-secondary">
+                     {{filterModificationMessage}}
+                   </div> -->
+                   <input type="text" placeholder="Filter name" class="browser-default gen-input list-filter-input"
+                     [(ngModel)]="filter.filterName" />
+                 </div>
+               </div>
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="fin-sec-btn" id="closeModal" data-dismiss="modal"
+                 [hidden]="loader.create">Close</button>
+               <button type="button" class="fin-pry-btn" [ladda]="loader.create" data-style="slide-left"
+                 (click)="onCreateCustomFilter()" *ngIf="btn.create === 'Create Filter'">Create</button>
+               <button type="button" class="fin-pry-btn" [ladda]="loader.create" data-style="slide-left"
+                 (click)="onUpdateCustomFilter()" *ngIf="btn.create === 'Update Filter'">Update</button>
+             </div>
+           </div>
+         </div>
+       </div>
+
+     </div>
+
+   </div>
+ </div>

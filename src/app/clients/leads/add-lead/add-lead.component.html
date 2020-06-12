@@ -1,0 +1,88 @@
+<div class="modal fade" id="addLeadModal" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title mt-0" id="addLeadModalTitle">Add Lead</h5>
+      </div>
+      <div class="modal-body">
+        <div [class]="form_message_class">
+          {{form_message}}
+        </div>
+        <div *ngIf="lead_class && !form_message" class="row mb-2">
+          <div class="col">
+            <small>All fields with * are required.</small>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <select class="w-100" id="select-class" [(ngModel)]="lead_class">
+              <option value="">Select Lead Class</option>
+              <option value="contact">Contact</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
+        </div>
+        <div [formGroup]="contact_form" *ngIf="show_contact_form()">
+          <div class="row">
+            <div class="col form-group">
+              <label for="firstname">First Name*</label>
+              <input type="text" class="gen-input browser-default w-100" id="firstname" formControlName="firstName">
+            </div>
+            <div class="col form-group">
+              <label for="surname">Surname* </label>
+              <input type="text" class="gen-input browser-default w-100" id="surname" formControlName="surName">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <label for="email">Email Address</label>
+              <input type="email" class="gen-input browser-default w-100" id="email" formControlName="email">
+            </div>
+            <div class="col form-group">
+              <label for="occupation">Occupation</label>
+              <input type="text" class="gen-input browser-default w-100" id="occupation" formControlName="occupation">
+            </div>
+          </div>
+        </div>
+        <div [formGroup]="company_form" *ngIf="show_company_form()">
+          <div class="row">
+            <div class="col form-group">
+              <label for="name">Company Name*</label>
+              <input type="text" class="gen-input browser-default w-100" id="name" formControlName="name">
+            </div>
+            <div class="col form-group">
+              <label for="industry">Industry*</label>
+              <input type="text" class="gen-input browser-default w-100" id="industry" formControlName="industry">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <label for="email">Email Address*</label>
+              <input type="Email" class="gen-input browser-default w-100" id="email" formControlName="email">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col form-group">
+              <label for="country">Country*</label>
+              <ngx-select-dropdown class="select-input" [config]="config" [options]="nations | async" [multiple]="false"
+                formControlName="country">
+              </ngx-select-dropdown>
+
+            </div>
+            <div class="col form-group">
+              <label for="state">State</label>
+              <input type="text" class="gen-input browser-default w-100" id="state" formControlName="state">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="fin-sec-btn" data-dismiss="modal" id="close-add-lead-form-btn">CANCEL</button>
+        <button *ngIf="show_company_form() || show_contact_form()" type="button" class="ml-3 fin-pry-btn"
+          (click)="create_lead()">CREATE <span *ngIf="loading"><span
+              class="fa fa-spinner fa-spin"></span></span></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="w-100 p-3">
+  <h5 class="">Convert to Company</h5>
+  <hr />
+  <div
+    [ngClass]="{'d-none': alertCode < 0, 'alert': alertCode >= 0, 'alert-success': alertCode == 1, 'alert-danger': alertCode == 0}">
+    {{alertMessage}}
+  </div>
+  <form class="mt-1 p-4 pt-2 leadToCompanyForm" [formGroup]="leadToCompanyForm" (ngSubmit)="submit(leadToCompanyForm)">
+    <div class="row">
+      <div class="col form-group">
+        <label for="name">Company Name</label>
+        <input type="text" class="gen-input browser-default w-100" id="name" formControlName="name">
+      </div>
+      <div class="col form-group">
+        <label for="industry">Industry</label>
+        <input type="text" class="gen-input browser-default w-100" id="industry" formControlName="industry">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col form-group">
+        <label for="email">Email Address</label>
+        <input type="text" class="gen-input browser-default w-100" id="email" formControlName="email">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col form-group">
+        <label for="country">Country</label>
+        <ngx-select-dropdown class="select-input" [config]="config" [options]="nations | async" [multiple]="false"
+          formControlName="country">
+        </ngx-select-dropdown>
+
+      </div>
+      <div class="col form-group">
+        <label for="state">State</label>
+        <input type="text" class="gen-input browser-default w-100" id="state" formControlName="state">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group w-100">
+        <button type="button" class="btn border border-info mr-2 fin-sec-btn float-right w-25" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary float-right w-25 mr-2">
+          Convert
+          <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

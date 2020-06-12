@@ -1,0 +1,155 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>Sales Order Workflow</h1>
+          </div>
+          <div *ngIf="(allSalesStages && allSalesWorkFlow)" class="settings-label">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" style="padding-top: 20px;">
+                <label>Workflows</label>
+                <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+                  [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)" [bodyrows]="allSalesWorkFlow">
+                </app-datatable>
+
+
+
+                <button *ngIf="gs.isAuthorized('ADD_SALESORDER_WORKFLOW')" type="button" class="fin-pry-btn mt-3 right"
+                  style="margin-top: -13px;" (click)="handleCreateNavigation()">
+                  Add Workflow
+                </button>
+                <!-- data-toggle="modal" data-target="#ModalCenter4" -->
+
+                <!-- Add Workflow Modal -->
+                <!-- <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle4">
+                          Add Workflow
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form [formGroup]="salesOrderWorkflowForm">
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">Enter Workflow Name
+                              <small class="text-danger" style="display: block;">Must not contain special characters or
+                                blank characters except
+                                '_' and '-' </small>
+                            </label>
+                            <input type="text" formControlName="salesWorkflowName" class="form-control"
+                              id="target-value" />
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                            Close
+                          </button>
+                          <button type="button" (click)="addWorkflow()" [disabled]="salesOrderWorkflowForm.invalid ||
+                            !salesOrderWorkflowForm.value.salesWorkflowName.trim() ||
+                           salesOrderWorkflowForm.value.salesWorkflowName.startsWith('-') ||
+                           salesOrderWorkflowForm.value.salesWorkflowName.startsWith('_')||
+                            !pattern.test(salesOrderWorkflowForm.value.salesWorkflowName.trim()) || disBtnWorkflow"
+                            class="fin-pry-btn">
+                            Add <span *ngIf="disBtnWorkflow"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div> -->
+                <!-- Add Workflow Modal End-->
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6"
+                style="padding-top: 20px; border-left: 1px solid #C5C5C5;">
+                <label>Stages</label>
+                <div *ngIf="allSalesStages.length" class="list-card">
+                  <table class="table">
+                    <tbody>
+                      <tr *ngFor="let stages of allSalesStages">
+                        <th scope="row" style="border-top: none;">
+                          {{ stages.name }}
+                        </th>
+                        <td style="font-weight: bold !important; border-top: none; cursor: pointer;"
+                          aria-haspopup="true" aria-expanded="false">
+                          <a *ngIf="gs.isAuthorized('DELETE_STAGE_SALESORDER')" (click)="deleteSalesStages(stages)">
+                            <i class="fas fa-trash" title="Delete"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div *ngIf="!allSalesStages.length">
+                  <h6>No Stages</h6>
+                </div>
+                <button *ngIf="gs.isAuthorized('ADD_STAGE_SALESORDER')" type="button" class="fin-pry-btn mt-3 right"
+                  data-toggle="modal" data-target="#ModalCenter2" style="margin-top: -13px;">
+                  Add Stage
+                </button>
+
+                <!-- Add Stage Modal -->
+                <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle">
+                          Add Stage
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form [formGroup]="salesOrderStagesForm">
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="stage-name" class="col-form-label">Enter Stage Name
+                              <small class="text-danger" style="display: block;">Must not contain special characters or
+                                blank characters except
+                                '_' and '-' </small>
+                            </label>
+                            <input type="text" formControlName="salesStagesName" class="form-control" id="stage-name" />
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                            Close
+                          </button>
+                          <button type="button" (click)="addStage()" [disabled]="salesOrderStagesForm.invalid ||
+                             salesOrderStagesForm.value.salesStagesName.startsWith('-') ||
+                             salesOrderStagesForm.value.salesStagesName.startsWith('_')||
+                             !pattern.test(salesOrderStagesForm.value.salesStagesName.trim()) ||
+                            disBtnStage" class="fin-pry-btn">
+                            Add <span *ngIf="disBtnStage"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Stage Modal End-->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!(allSalesStages && allSalesWorkFlow)">
+            <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

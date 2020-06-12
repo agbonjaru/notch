@@ -1,0 +1,23 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+
+      <div class="col-md-12 document-wrapper tab-content" style="min-height: 100vh">
+        <div class="text-center pt-5">
+          <div class="mt-5">
+            <span class="fa fa-exclamation-circle fa-5x text-primary" ></span>
+          </div>
+          <h3>Access Denied</h3>
+         <div *ngIf="privPages.length">
+          <h6>You can only visit this pages</h6>
+          <button *ngFor="let page of privPages" class="fin-pry-btn mx-2 my-2" [routerLink]="[page.route]">{{page.name}}</button>
+         </div>
+         <div *ngIf="!privPages.length">
+          <h6>You don't have access to view any page contact your admin</h6>
+         </div>
+
+        </div>
+      </div>
+
+  </div>
+
+</div>

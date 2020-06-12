@@ -1,0 +1,118 @@
+<div class="content settings-content">
+    <div class="row" style="width: 100%; margin: 0;">
+        <div class="col-md-12 settings-wrapper">
+            <app-settings-header></app-settings-header>
+            <div class="row">
+                <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                    <app-settings-sidebar> </app-settings-sidebar>
+                </div>
+
+                <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+                    <div class="settings-header">
+                        <h1>Bank/Receiving Account Setup</h1>
+                        <p>These enables you to setup your receiving account bank details.</p>
+                    </div>
+
+                    <div class="settings-label" id="create-lead-source" role="tabpanel"
+                        aria-labelledby="create-lead-source-tab">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-lg-4 col-xl-4" style="padding-top: 30px;">
+                                <div *ngIf="form_error.message"
+                                    class="alert {{ form_error.success ? 'alert-success' : 'alert-danger' }}">
+                                    {{form_error.message}}</div>
+                                <form name="bank-setup-form">
+                                    <label>Bank Name</label>
+                                    <br>
+
+                                    <input type="text" id="bank-name" name="bank-name" placeholder="Enter bank name"
+                                        class="gen-input2 browser-default" [(ngModel)]="form_bank_name">
+                                    <br>
+                                    <br>
+                                    <label for="account-number" class="">Account Number</label>
+                                    <input type="text" id="account-number" name="account-number"
+                                        placeholder="Enter account number" class="gen-input2 browser-default"
+                                        [(ngModel)]="form_account_number" [disabled]="!form_bank_name">
+                                    <br>
+                                    <br>
+                                    <label for="account-name">Account Name</label>
+                                    <br>
+                                    <input type="text" id="account-name" name="account-name"
+                                        placeholder="Enter account name" class="gen-input2 browser-default"
+                                        [(ngModel)]="form_account_name" [disabled]="!form_account_number">
+                                    <br>
+                                    <br>
+                                    <label for="account-currency">Account Currency</label>
+                                    <br>
+                                    <select id="account-currency" name="account-currenccy"
+                                        class="gen-input2 browser-default" [(ngModel)]="form_account_currency"
+                                        [disabled]="!form_account_name">
+                                        <option value="">Select account currency</option>
+                                        <option *ngFor="let currency of organisation_currencies"
+                                            value="{{currency.currency_code}}">
+                                            {{currency.currency_name}}
+                                        </option>
+                                    </select>
+
+                                    <br>
+                                    <button *ngIf="general_service.isAuthorized('ADD_BANK')" type="submit"
+                                        class="fin-pry-btn mt-3 right" style="margin-top: -13px;"
+                                        (click)="submit_form()">
+                                        {{ form_bank_id ? 'Update' : 'Add' }}
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-lg-8 col-xl-8"
+                                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+                                <div class="text-left">
+
+                                    <div *ngFor="let account of flatten_bank_accounts()"
+                                        class="text-left about-contact-row">
+                                        <div class="col-10">
+                                            <div class="row">
+
+                                                <div class="col-md">
+                                                    <span class="contact-detail-top">Bank Name</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{account.bank}}</span>
+                                                </div>
+                                                <div class="col-md">
+                                                    <span class="contact-detail-top">Account Number</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{account.number}}</span>
+                                                </div>
+                                                <div class="col-md">
+                                                    <span class="contact-detail-top">Account Name</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{account.name}}</span>
+                                                </div>
+                                                <div class="col-md">
+                                                    <span class="contact-detail-top">Currency</span>
+                                                    <br>
+                                                    <span class="contact-detail">{{account.currency || 'N/A'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2  mt-3 pt-1">
+                                            <div id="dropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true"
+                                                style="cursor: pointer" aria-expanded="false">
+                                                <span><i class="fas fa-ellipsis-v"></i></span>
+                                            </div>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item"
+                                                    (click)="select_account_for_edit(account.id)">Edit</a>
+                                                <a class="dropdown-item"
+                                                    (click)="delete_bank_account(account.id)">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

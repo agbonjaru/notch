@@ -1,0 +1,105 @@
+<div class="left-nav-grp">
+  <div class="nav-menu">
+    <div class="left-nav-header">
+      <p>GENERAL</p>
+    </div>
+    <ul class="nav-menu1">
+      <li *ngIf="gs.isAuthorized('USER_ROLES_ACCESS')">
+        <a [routerLink]="['/settings/User-Roles']" routerLinkActive="nav-menu-active">User and Roles access</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('SUPERVISOR')">
+        <a [routerLink]="['/settings/supervisor']" routerLinkActive="nav-menu-active">Supervisor</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('ROLES')">
+        <a [routerLink]="['/settings/Roles']" routerLinkActive="nav-menu-active">Roles</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('SUBSCRIPTION_BILLING')">
+        <a [routerLink]="['/settings/billing']" routerLinkActive="nav-menu-active">Subscription and Billing</a>
+      </li>
+      <li  *ngIf="gs.isAuthorized('EMAIL_NOTIFICATIONS')">
+        <a [routerLink]="['/settings/notification']" routerLinkActive="nav-menu-active">Notification Setup</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('BANK_SETUP')">
+        <a [routerLink]="['/settings/bank-setup']" routerLinkActive="nav-menu-active">Bank Setup</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('PRODUCT_AND_SERVICES')">
+        <a [routerLink]="['/settings/product-services']" routerLinkActive="nav-menu-active">Products & Services</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('LEAD_SOURCE')">
+        <a [routerLink]="['/settings/lead-customer']" routerLinkActive="nav-menu-active">Lead source</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('TWO_FACTOR_AUTHETICATION')">
+        <a [routerLink]="['/settings/auth']" routerLinkActive="nav-menu-active">Two factor authentication</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('INTEGRATIONS')">
+        <a [routerLink]="['/settings/integration']" routerLinkActive="nav-menu-active">Integrations</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('TICKET_INBOUND_COMMUNICATIONS')">
+        <a [routerLink]="['/settings/ticket-inbound']" routerLinkActive="nav-menu-active">Ticket inbound comms</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('TICKETS_SETTINGS')">
+        <a [routerLink]="['/settings/ticket-settings']" routerLinkActive="nav-menu-active">Ticket Settings</a>
+      </li>
+      <li>
+        <a [routerLink]="['/settings/log-activity']" routerLinkActive="nav-menu-active">Log Activity Settings</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('BULK_MESSAGES')">
+        <a [routerLink]="['/settings/bulk-messages']" routerLinkActive="nav-menu-active">Bulk messages</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="nav-menu">
+    <div class="left-nav-header">
+      <p>WORKFLOW</p>
+    </div>
+    <ul class="nav-menu1">
+      <li *ngIf="gs.isAuthorized('SALES_ORDER_WORKFLOW')">
+        <a [routerLink]="['/settings/sales-workflow']" routerLinkActive="nav-menu-active">Sales Order Workflow</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('DEALS_PIPELINE_WORKFLOW')">
+        <a [routerLink]="['/settings/deals-workflow']" routerLinkActive="nav-menu-active">Deals Pipeline Workflow</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('DEALS_LOST_REASONS')">
+        <a [routerLink]="['/settings/deals-reason']" routerLinkActive="nav-menu-active">Deals Lost Reasons</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('GENERAL_APPROVAL_WORKFLOW')">
+        <a [routerLink]="['/settings/approval-workflow']" routerLinkActive="nav-menu-active">General Approval
+          Workflow</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('LEAD_WORKFLOW')">
+        <a [routerLink]="['/settings/lead-workflow']" routerLinkActive="nav-menu-active">Lead Workflow</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="nav-menu">
+    <div class="left-nav-header">
+      <p>Templates</p>
+    </div>
+    <ul class="nav-menu1">
+      <li *ngIf="gs.isAuthorized('INVOICE_AND_QUOTATION TEMPLATE')">
+        <a [routerLink]="['/settings/invoice-quotation']" routerLinkActive="nav-menu-active">Invoice & Quotation</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('CHAT_SMS_AND_WHATSAPP')">
+        <a [routerLink]="['/settings/messaging']" routerLinkActive="nav-menu-active">Chat, SMS & Whatsapp</a>
+      </li>
+      <li *ngIf="gs.isAuthorized('EMAIL_SEQUENCING')">
+        <a [routerLink]="['/settings/template-sequencing']" routerLinkActive="nav-menu-active">Email templates and
+          sequencing</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="nav-menu" *ngIf="gs.isAuthorized('SALES_COMPETITION_TERRITORY')">
+    <div class="left-nav-header">
+      <p>Sales</p>
+    </div>
+    <ul class="nav-menu1">
+      <li>
+        <a [routerLink]="['/settings/sales-competition']" routerLinkActive="nav-menu-active">Sales competition &
+          territory</a>
+      </li>
+    </ul>
+  </div>
+</div>

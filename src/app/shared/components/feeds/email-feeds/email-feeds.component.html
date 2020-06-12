@@ -1,0 +1,76 @@
+<div class="feed-body-content">
+  <div *ngFor="let message of messages; let i=index">
+    <div *ngIf="message.content"  class="row email-item {{message.status}}" >
+      <span class="col-md-2" style="padding-right: 0"><i class="fas fa-envelope"></i></span>
+      <span class="col-md-10 email-item-body-wrapper" style="padding-left: 0;font-size: 14px">
+        <div (click)="viewMessage(i)" class="is-clickable">
+          <div class="email-feed-item-sender"><b>{{message.subject}}</b></div>
+          <div class="email-feed-item-body">{{message.snippet}}</div>
+        </div>
+        <div class="item-actions">
+          <span class="email-feed-item-time"><small>{{message.date | date }}</small></span>
+          <span class="float-right">
+            <span class="text-primary email-feed-item-action" (click)="reply(i)">reply</span>
+          </span>
+        </div>
+      </span>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div class="veil" id="viewEmailModal">
+    <div class="email-display-wrapper">
+      <div class="pb-2 email-display-header">
+        <h6 class="d-block w-100">{{selectedMessage?.subject}} </h6>
+        <div *ngIf="clientsProcessor.clients_data">
+          <div class="row w-100">
+            <div class="col-12">
+              <small>To: </small> 
+              <small class="is_clickable">
+                <span [routerLink]="clientsProcessor.get_client_page_path(selectedMessage?.recipient)">{{selectedMessage?.recipient}}</span>
+              </small>
+              <small *ngIf="selectedMessage?.cc_recipients?.length || selectedMessage?.bcc_recipients?.length" class="pl-2 is-clickable" (click)="toggleShowRecipients()" > 
+                <span *ngIf="!isShowRecipients"><i  class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                <span *ngIf="isShowRecipients"><i class="fa fa-chevron-up" aria-hidden="true"></i></span>
+              </small>
+            </div>
+          </div>
+          <div class="row w-100" *ngIf="isShowRecipients">
+            <div class="col-12" *ngIf="selectedMessage?.cc_recipients?.length">
+              <small>Cc: </small>
+              <small *ngFor="let email of selectedMessage?.cc_recipients">
+                <span  class="is_clickable" [routerLink]="clientsProcessor.get_client_page_path(email)"> {{email}}</span>
+              </small>
+            </div>
+            <div class="col-12" *ngIf="selectedMessage?.bcc_recipients?.length">
+              <small>Bcc: </small> 
+              <small *ngFor="let email of selectedMessage?.bcc_recipients">
+                <span class="is_clickable" [routerLink]="clientsProcessor.get_client_page_path(email)">{{email}}</span>
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row w-100 pl-3 text-left" *ngIf="!clientsProcessor.clients_data">
+          <small>Loading recipients</small>
+        </div>
+      </div>
+      <div class="email-display-body">
+        {{selectedMessage?.content}}
+      </div>
+      <div class="email-display-attachment mb-3 d-flex"  *ngIf="attachments?.length" >
+        <span *ngFor="let attachment of attachments" class="p-2 mr-2 bg-primary text-white">{{attachment.name}}</span>
+      </div>
+      <div class="email-display-footer">
+        <div *ngIf="selectedMessage?.dealName" class="w-50 deal is-clickable" [routerLink]="['/sales/deals-view', selectedMessage?.dealId]">
+          <span class="title-span">DEAL</span>
+          <span class="deal-name">{{selectedMessage?.dealName}}</span>
+        </div>
+        <div class="w-50">
+          <button (click)="closeEmailView()" class="btn border border-info mr-2 fin-sec-btn float-right">CLOSE</button>
+          <button (click)="reply(selectedMessage?.index)" class="btn btn-primary float-right"> REPLY </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>

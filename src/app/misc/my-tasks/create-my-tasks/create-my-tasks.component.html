@@ -1,0 +1,205 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+  
+</div>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="col-sm-12 content-list-title">
+      <div class="m-auto text-center">
+          <!--<a href="credit-management-list.html" class="text-center left"> < Credit Profile</a>-->
+          <h5 class="text-center fin-pry-color font-weight-bold">Create Task</h5>
+      </div>
+  </div>
+  <div class="row" style="width: 100%; margin: 0;">
+      <div class="col-xl-12 col-lg-12 col-md-12 content-list">
+          <div class="add-meeting">
+              <div class="">
+                  <div class="left add-meeting-header">
+                      <input type="text" class="meeting-input browser-default left"
+                             placeholder="What's the task about">
+                  </div>
+                  <div class="meeting-text-area">
+                      <div class="text-area">
+                                       <textarea name="" class="emoji1" id="txtEditor3" cols="30" rows="10">
+                                              Enter note here...
+                                       </textarea>
+                      </div>
+
+                      <div class="add-clients-meeting">
+
+                          <label>Add Deal</label>
+                          <br>
+                          <select id="mselect9" multiple="" data-placeholder="Select Deals"
+                                  style="width: 100%;">
+                              <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                              <!--Add select all-->
+                              <!--<option value="" disabled selected>Choose your option</option>-->
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">England</option>
+                              <option value="3">Option 4</option>
+                              <option value="3">Tokyo</option>
+                          </select>
+                          <div class="mb-3"></div>
+                          <label>Add client</label>
+                          <br>
+                          <select id="mselect14" multiple="" data-placeholder="Select contacts"
+                                  style="width: 100%;">
+                              <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                              <!--Add select all-->
+                              <!--<option value="" disabled selected>Choose your option</option>-->
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">England</option>
+                              <option value="3">Option 4</option>
+                              <option value="3">Tokyo</option>
+                          </select>
+                          <div class="mb-3"></div>
+                          <label>Assigned to</label>
+                          <br>
+                          <select id="mselect2" data-placeholder="Assign task to" multiple=""
+                                  style="width: 100% !important;">
+                              <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                              <!--Add select all-->
+                              <!--<option value="" disabled selected>Choose your option</option>-->
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">Option 3</option>
+                              <option value="3">Option 4</option>
+                              <option value="3">Option 5</option>
+                          </select>
+                          <div class="mb-3"></div>
+                      </div>
+                  </div>
+
+
+                  <div class="meeting-features-row row text-left">
+                      <div class="col-md-4">
+                          <form action="/file-upload"
+                                class="dropzone mb-3"
+                                id="my-awesome-dropzone">
+                          </form>
+                          <p class="mb-0">Max file size: 2MB</p>
+                          <p class="text-danger">File size exceeded</p>
+                      </div>
+                      <div class="col-md-4">
+                          <label>Start time</label>
+                          <div class="form-group">
+                              <div class='input-group date' id='datetimepicker4'>
+                                  <input type='text' class="form-control"/>
+                                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class='input-group date' id='datetimepicker5'>
+                                  <input type='text' class="form-control"/>
+                                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                      </span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <label>Escalate if task exceeds</label>
+                          <br>
+                          <select id="mselect5" data-placeholder="Duration" class="chosen-single"
+                                  tabindex="-1" style="display: none; width: 100% !important;">
+                              <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                              <!--Add select all-->
+                              <!--<option value="" disabled selected>Choose your option</option>-->
+                              <option value="1">10mins</option>
+                              <option value="2">20 mins</option>
+                              <option value="3">30 mins</option>
+                              <option value="3">1hr</option>
+                              <option value="3">1hr 30mins</option>
+                          </select>
+                          <br>
+                          <br>
+                          <br>
+                      </div>
+                      <!--<div class="col-md-4"></div>-->
+                      <div class="col-md-4">
+                          <label>Set reminder</label>
+                          <div class="form-group">
+                              <div class='input-group date' id='datetimepicker12'>
+                                  <input type='text' class="form-control"/>
+                                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class='input-group date' id='datetimepicker11'>
+                                  <input type='text' class="form-control"/>
+                                  <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                      </span>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <button type="submit" class="fin-pry-btn text-right create-task-btn right">
+                              create task
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              <div class="task-comment-section row">
+                  <div class="col-md-8">
+                      <div class="">
+                          <form action="">
+                              <h5>Comments</h5>
+                              <!--<textarea name="task-comments" id="" cols="30" rows="10"-->
+                              <!--placeholder="Write a comment"></textarea>-->
+                              <!--<button class="fin-pry-btn right">post</button>-->
+                              <textarea name="" id="emoji-task-comments" cols="30" rows="10">
+                                              Enter note here...
+                                       </textarea>
+                          </form>
+                          <div class="task-comments">
+                              <div class="task-comments-header">
+                                  <h6 class="left">10 Responses</h6>
+                              </div>
+                              <div class="task-comments-body">
+                                  <div class="comment-block">
+                                      <img src="img/1.jpg" alt="user image" class="left">
+                                      <span class="user-name-comment">
+                                                      <p><strong>Ola Jones</strong></p>
+                                                      This is a nice task, ma.
+                                                  </span>
+                                      <span class="right">
+                                                      <p><strong>7 days ago</strong></p>
+                                                  </span>
+                                  </div>
+                                  <div class="comment-block">
+                                      <img src="img/1.jpg" alt="user image" class="left">
+                                      <span class="user-name-comment">
+                                                      <p><strong>Ola Jones</strong></p>
+                                                      This is a nice task, ma.
+                                                  </span>
+                                      <span class="right">
+                                                      <p><strong>7 days ago</strong></p>
+                                                  </span>
+                                  </div>
+                                  <div class="comment-block">
+                                      <img src="img/1.jpg" alt="user image" class="left">
+                                      <span class="user-name-comment">
+                                                      <p><strong>Ola Jones</strong></p>
+                                                      This is a nice task, ma.
+                                                  </span>
+                                      <span class="right">
+                                                      <p><strong>7 days ago</strong></p>
+                                                  </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>

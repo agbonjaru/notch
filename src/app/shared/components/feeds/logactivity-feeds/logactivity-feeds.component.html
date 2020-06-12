@@ -1,0 +1,97 @@
+<div class="feed-body-content">
+  <div class="feed-body-content" *ngIf="activityLogs.length < 1">
+    <p class="feed-body-header" style="margin-top: 10px">No Logs Available</p>
+  </div>
+  <ng-container *ngFor="let activity of activityLogs">
+
+    <div class="row">
+      <span class="col-md-2" style="padding-right: 0"><i class="fas fa-plus"></i></span>
+      <div class="col-md-10">
+        <span [innerHTML]="activity.content | truncate:[30, ' ... ']" style="padding-left: 0;font-size: 14px">
+        </span>
+        <span class="feed-response">
+          <p class="bg-amber">
+            <span>{{activity.type}}</span>
+          </p>
+        </span>
+        <p class="feed-body-header" style="margin-top: 10px">{{ activity.date }}</p>
+        <span class="feed-response">
+          <p data-toggle="modal" data-target="#viewActivityModal" (click)="onViewSingleActivity(activity.id)">View</p>
+          <p data-toggle="modal" data-target="#editActivityModal" (click)="onViewSingleActivity(activity.id)">Edit</p>
+        </span>
+        <hr />
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<!-- View Activity Modal -->
+
+<div class="modal fade" id="viewActivityModal" tabindex="-1" role="dialog" aria-labelledby="viewActivityModal"
+  aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Activity Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span *ngIf="showLoading"> Loading Log....<i class="fa fa-spinner fa-spin"></i></span>
+        <span *ngIf="!showLoading" class="col-md-10">
+          <span [innerHTML]="editedOrgAct.content" style="padding-left: 0;font-size: 14px">
+          </span>
+          <span class="feed-response">
+            <p class="bg-amber">{{ editedOrgAct.type }} </p>
+          </span>
+          <p class="feed-body-header" style="margin-top: 10px">{{ editedOrgAct.date }}</p>
+        </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Activity Modal End-->
+
+<!-- Edit Activity Modal -->
+
+<div class="modal fade" id="editActivityModal" tabindex="-1" role="dialog" aria-labelledby="editActivityModal"
+  aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Activity title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <span *ngIf="showLoading"> Loading Log....<i class="fa fa-spinner fa-spin"></i></span>
+      <div *ngIf="!showLoading">
+        <div class="modal-body">
+          <ng-container [formGroup]="editActivityForm">
+            <select class="gen-input2 browser-default" data-placeholder="Type of task" formControlName="type"
+              style="width: 140px">
+              <option value="" disabled selected> Activity Type </option>
+              <option *ngFor="let activityType of activityType" value={{activityType.name}}>{{ activityType.name }}
+              </option>
+            </select><br>
+            <fate-ui uiId="foo2"></fate-ui>
+            <fate-input placeholder="Edit Activity Log" formControlName="content" uiId="foo2"></fate-input>
+          </ng-container>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="closeLogModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" [disabled]="(editActivityForm.invalid || showEditLoading)"
+            (click)="onEditActivity()" data-dismiss="modal">Save
+            changes <span *ngIf="showEditLoading"><i class="fa fa-spinner fa-spin"></i></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Activity Modal End-->

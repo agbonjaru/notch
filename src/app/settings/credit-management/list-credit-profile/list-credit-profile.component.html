@@ -1,0 +1,115 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+
+</div>
+
+
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div class="col-sm-12 content-list-title">
+      <div class="m-auto text-center">
+        <h5 class="text-center fin-pry-color">Credit Profiles</h5>
+      </div>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list">
+      <div class="list" *ngIf="profileList">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+
+          </div>
+
+
+          <!-- Add credit Modal -->
+          <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle2">{{creditProfile.id ? 'Edit': 'Create'}} Credit Profile
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">Profile Name <span
+                            class="text-danger">*</span> </label>
+                        <br>
+                        <input type="text" name="name" placeholder="name" [(ngModel)]="creditProfile.name"
+                          class="gen-input browser-default">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">Period(days) <span
+                            class="text-danger">*</span> </label>
+                        <br>
+                        <input type="number" name="period" placeholder="0" [(ngModel)]="creditProfile.period"
+                          class="gen-input browser-default">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">Minimum Amount <span
+                            class="text-danger">*</span> </label>
+                        <br>
+                        <input type="number" name="minamount" placeholder="0.00" [(ngModel)]="creditProfile.minAmount"
+                          class="gen-input browser-default" (input)="checkAmountValidation()">
+                        <span class="text-danger"> <small style="font-size: 65%;">{{amountValidation}}</small></span>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">Maximum Amount <span
+                            class="text-danger">*</span> </label>
+                        <br>
+                        <input type="number" name="maxamount" placeholder="0.00" [(ngModel)]="creditProfile.maxAmount"
+                          class="gen-input browser-default" (input)="checkAmountValidation()">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Terms &
+                        Condition <span class="text-danger">*</span> </label>
+                      <br>
+                      <textarea type="text" id="date" name="terms" class="gen-input browser-default"
+                        style="width: 100%;height: 100px" [(ngModel)]="creditProfile.termsCondition">
+                      </textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                  </button>
+                  <button type="button" [disabled]="getDisBtn || loading || amountValidation" class="fin-pry-btn"
+                    (click)="handleCreateCreditProfile()">
+                    SAVE <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add credit Modal End-->
+
+          <div class="col-md-6 content-list-buttons">
+            <a><button (click)="clearFormContent()" class="fin-pry-btn" data-toggle="modal"
+                data-target="#ModalCenter4">ADD CREDIT
+                PROFILE </button></a>
+          </div>
+        </div>
+
+
+        <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+          (feedback)="dataFeedBackObsListener($event)" [bodyrows]="profileList"></app-datatable>
+        <a style="visibility: hidden;" class="dropdown-item" data-toggle="modal" data-target="#ModalCenter4">Edit</a>
+      </div>
+
+
+      <div *ngIf="!profileList">
+        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+      </div>
+    </div>
+
+  </div>
+</div>

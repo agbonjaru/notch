@@ -1,0 +1,40 @@
+<!-- IMAP MODAL -->
+<div class="modal fade" id="imap_form_modal" tabindex="-1" role="dialog" aria-labelledby="imap_form_modal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imap_form_title">Connect Imap</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="imap_form">
+          <div class="form-group">
+            <div *ngIf="imap_message" class={{imap_message_class}}>
+              {{imap_message}}
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="imap_username">Username:</label>
+            <input type="text" class="gen-input form-control browser-default w-100" id="imap_username"
+              placeholder="Username" formControlName="imap_username">
+          </div>
+          <div class="form-group">
+            <label for="imap_password">Password</label>
+            <input type="password" class="gen-input form-control browser-default w-100" id="imap_password"
+              placeholder="Enter password" formControlName="imap_password">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="connect_imap_user()" [disabled]="imap_is_connecting"> 
+          Save changes
+          <span *ngIf="imap_is_connecting"><span class="fa fa-spinner fa-spin"></span></span>
+        </button>
+        <button type="button" class="btn border border-info mr-2 fin-sec-btn" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

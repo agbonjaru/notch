@@ -1,0 +1,299 @@
+<div class="p-4">
+    <div class="">
+      <div>
+        <span class="is-clickable email-form-recipient-label recipient-label-btn" data-toggle="modal"
+          data-target="#emailSelectionModal">
+          To*:
+        </span>
+      </div>
+      <input type="text" value="{{currentlyOpenedMail?.from}}" class="browser-default text-left left"
+        [(ngModel)]="emailHelper.inputTo">
+    </div>
+    <div class="">
+      <label]]>Subject*:</label>
+      <input type="text" value="{{currentlyOpenedMail?.subject}}" class="browser-default text-left left"
+        [(ngModel)]="mailSubject">
+    </div>
+    <div class="">
+      <div>
+        <span class="is-clickable email-form-recipient-label recipient-label-btn" data-toggle="modal"
+          data-target="#emailSelectionModal">Cc:</span>
+        <span class="email-form-recipient-list border-0">
+          <span *ngFor="let toRecipient of emailHelper.convertObjectToArray(emailHelper.selectedCcRecipients)"
+            class=" bg-info recipient-list-item">
+            {{toRecipient.name}}
+            <span class="pl-1" (click)="emailHelper.removeRecipient('selectedCcRecipients', toRecipient.email)"> X
+            </span>
+          </span>
+        </span>
+      </div>
+      <input type="text" value="{{currentlyOpenedMail?.cc}}" class="browser-default text-left left" [(ngModel)]="emailHelper.inputCc" (input)="emailHelper.processInputText('selectedCcRecipients', 'inputCc')">
+    </div>
+    <div class="">
+      <div>
+        <span class="is-clickable email-form-recipient-label recipient-label-btn" data-toggle="modal"
+          data-target="#emailSelectionModal">Bcc:</span>
+        <span class="email-form-recipient-list border-0">
+          <span *ngFor="let toRecipient of emailHelper.convertObjectToArray(emailHelper.selectedBccRecipients)"
+            class=" bg-info recipient-list-item">
+            {{toRecipient.name}}
+            <span class="pl-1" (click)="emailHelper.removeRecipient('selectedBccRecipients', toRecipient.email)"> X
+            </span>
+          </span>
+        </span>
+      </div>
+      <input type="text" value="{{currentlyOpenedMail?.bcc}}" class="browser-default text-left left"
+        [(ngModel)]="emailHelper.inputBcc"
+        (input)="emailHelper.processInputText('selectedBccRecipients', 'inputBcc')">
+    </div>
+    <div class="row  editor-wrapper" style="font-weight: 100">
+      <fate-ui uiId="notch-email" style="max-height: 300px"></fate-ui>
+      <fate-input style="max-height: 300px; overflow-y: scroll; width: 100%; white-space: pre-wrap;"
+        uiId="notch-email" [(ngModel)]="mailBody"></fate-input>
+    </div>
+    <div class="row p-2">
+      <div class="alert alert-secondary w-90" *ngIf="connectedAccountError">
+        {{connectedAccountError}}
+      </div>
+    </div>
+    <div class="attachment-list">
+      <span *ngFor="let attachment of emailHelper.convertObjectToArray(attachmentHelper.selectedAttachments)"
+        class="p-2 mr-2 bg-primary text-white">
+        {{attachment.name}} <span class="is-clickable"
+          (click)="attachmentHelper.removeAttachment(attachment.name)">X</span>
+      </span>
+    </div>
+    <div class="email-action-wrapper">
+      <button class="left btn btn-primary" (click)="sendMail()" [disabled]="mailSending">
+        SEND
+        <span *ngIf="mailSending"><span class="fa fa-spinner fa-spin"></span></span>
+      </button>
+      <button class="left btn btn-secondary ml-2" (click)="resetForm()">
+        DISCARD
+      </button>
+      <span class="other-email-actions">
+        <input type="file" name="email-attachment" id="fileUploadBtn" class="d-none"
+          (change)="attachmentHelper.uploadFile($event.target.files)" />
+        <span (click)="openFileUploadDialog()">
+          <i class="fas fa-paperclip fa-lg is-clickable ml-2 mt-3"></i>
+        </span>
+      </span>
+    </div>
+
+    <!-- CONNECT EMAIL -->
+    <div class="mail-compose-right">
+      <p><strong>Checkout all your email activities</strong></p>
+      <!--<br>-->
+      <p>All sent emails are on the pane on the right</p>
+      <p>Kindly connect your email account to begin sending emails</p>
+      <div *ngIf="!aServiceIsConnected">
+        <!--  -->
+        <div *ngIf="!gmailConnected()" class="col-sm-12">
+          <button class="fin-sec-btn" (click)="requestAccessToken('gmail')" [disabled]="gmailConnecting">
+            <span><img src="/assets/img/gmail.svg" width="20" alt=""></span>
+            Connect Gmail
+            <span *ngIf="gmailConnecting"><span class="fa fa-spinner fa-spin"></span></span>
+          </button>
+        </div>
+
+        <div *ngIf="!officeConnected()" class="col-sm-12">
+          <button class="fin-sec-btn" (click)="requestAccessToken('office')" [disabled]="officeConnecting">
+            <span><img src="/assets/img/office.svg" width="16" alt=""></span>
+            <span>
+              Connect Office 365
+              <span *ngIf="officeConnecting"><span class="fa fa-spinner fa-spin"></span></span>
+            </span>
+          </button>
+        </div>
+
+        <div *ngIf="!imapConnected()" class="col-sm-12">
+          <button class="fin-sec-btn" data-toggle="modal" data-target="#imapFormModal">
+            <span><img src="/assets/img/imap.svg" width="16" alt=""></span>
+            <span>Connect IMAP</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="aServiceIsConnected" class="d-flex">
+        <!--  -->
+        <div class="w-65">
+          <div *ngIf="gmailConnected()" class="col-sm-12">
+            <button class="fin-sec-btn w-100 border-success" [disabled]="serviceDisconnecting">
+              <span><img src="/assets/img/gmail.svg" width="20" alt=""></span>
+              <span class="d-inline pt-1 pl-1 text-success">
+                Gmail Connected
+                <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+              </span>
+            </button>
+          </div>
+
+          <div *ngIf="officeConnected()" class="col-sm-12">
+            <button class="fin-sec-btn w-100 border-success" [disabled]="serviceDisconnecting">
+              <span><img src="/assets/img/office.svg" width="16" alt=""></span>
+              <span class="d-inline pt-1 pl-1 text-success">
+                Office 365 Connected
+                <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+              </span>
+            </button>
+          </div>
+
+          <div *ngIf="imapConnected()" class="col-sm-12">
+            <button class="fin-sec-btn w-100 border-success" [disabled]="serviceDisconnecting">
+              <span><img src="/assets/img/imap.svg" width="20" alt=""></span>
+              <span class="d-inline pt-1 pl-1 text-success">
+                IMAP Connected
+                <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+              </span>
+            </button>
+          </div>
+        </div>
+        <button class="w-35 text-left text-danger disconnect-btn" (click)="revokeAccess()"><b>Disconnect</b></button>
+      </div>
+
+      <div class="modal fade" id="imapFormModal" tabindex="-1" role="dialog" aria-labelledby="imapFormModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="imapFormTitle">Connect Imap</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="imapForm" (ngSubmit)="registerImap()">
+                <div class="form-group">
+                  <label for="imapUsername">Usernames:</label>
+                  <input type="text" class="gen-input form-control browser-default w-100" id="imapUsername"
+                    placeholder="Username" formControlName="imapUsername">
+                </div>
+                <div class="form-group">
+                  <label for="imapPassword">Password</label>
+                  <input type="password" class="gen-input form-control browser-default w-100" id="imapPassword"
+                    placeholder="Enter password" formControlName="imapPassword">
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary" [disabled]="imapConnecting || aServiceIsConnected">
+                    Save changes
+                    <span *ngIf="imapConnecting"><span class="fa fa-spinner fa-spin"></span></span>
+                  </button>
+                  <div *ngIf="imapRegistrationStatus">
+                    {{imapRegistrationMessage}}
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="emailSelectionModal" tabindex="-1" role="dialog"
+      aria-labelledby="emailSelectionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header pt-0">
+            <h5 class="modal-title" id="emailSelectionModalTitle">Email Lookup</h5>
+          </div>
+          <hr>
+          <div class="modal-body mt-0">
+            <div *ngIf="emailHelper.alertMessage" class="alert alert-info">
+              {{emailHelper.alertMessage}}
+            </div>
+            <form>
+              <div class="form-row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="loookup-recipient-group" class="w-100 text-left">Recipient Group</label>
+                    <select class="form-control w-100" name="recipient-group" id="loookup-recipient-group"
+                      [(ngModel)]="emailHelper.selectedRecipientGroup">
+                      <option value="to">To</option>
+                      <option value="cc">Cc</option>
+                      <option value="bcc">Bcc</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="loookup-source" class="w-100 text-left">Client Type</label>
+                    <select class="form-control w-100" id="loookup-source" name="client-type"
+                      [(ngModel)]="emailHelper.selectedClientType">
+                      <option value="leads">Lead</option>
+                      <option value="contacts">Contact</option>
+                      <option value="companies">Company</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row mt-2">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" name="search-text" class="form-control pl-2 pr-2 search-btn"
+                      placeholder="Search name" (input)="emailHelper.getSuggestions()"
+                      [(ngModel)]="emailHelper.inputText" autocomplete="off">
+                    <div *ngIf="emailHelper.suggestedUsers.length > 0" class="card shadow email-search-result-list">
+                      <div *ngFor="let suggestedUser of emailHelper.suggestedUsers"
+                        class="p-2 is-clickable text-left email-search-result-list-item"
+                        (click)="emailHelper.addRecipient(suggestedUser, 'inputText')">
+                        {{suggestedUser.name}} <span *ngIf="!suggestedUser.email" class="text-danger"><small> **No
+                            email address</small></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="form-row mt-4 pl-2 pr-2">
+                <div class="form-group w-100">
+                  <div class="recipient-label">To: </div>
+                  <div class="recipient-list">
+                    <span
+                      *ngFor="let toRecipient of emailHelper.convertObjectToArray(emailHelper.temporaryToRecipients)"
+                      class=" bg-info recipient-list-item">
+                      {{toRecipient.name}} <span class="pl-2"
+                        (click)="emailHelper.removeRecipient('temporaryToRecipients', toRecipient.email)"> X </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row pl-2 pr-2">
+                <div class="form-group w-100">
+                  <div class="recipient-label">Cc: </div>
+                  <div class="recipient-list">
+                    <span
+                      *ngFor="let ccRecipient of emailHelper.convertObjectToArray(emailHelper.temporaryCcRecipients)"
+                      class=" bg-info recipient-list-item">
+                      {{ccRecipient.name}} <span class="pl-2"
+                        (click)="emailHelper.removeRecipient('temporaryCcRecipients', ccRecipient.email)"> X </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row pl-2 pr-2">
+                <div class="form-group w-100">
+                  <div class="recipient-label">Bcc: </div>
+                  <div class="recipient-list">
+                    <span
+                      *ngFor="let bccRecipient of emailHelper.convertObjectToArray(emailHelper.temporaryBccRecipients)"
+                      class=" bg-info recipient-list-item">
+                      {{bccRecipient.name}} <span class="pl-2"
+                        (click)="emailHelper.removeRecipient('temporaryBccRecipients', bccRecipient.email)"> X </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer mt-0 border-0">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+              (click)="emailHelper.clearTemporarySelections()">Cancel</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"
+              (click)="emailHelper.consolidateRecipients()">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

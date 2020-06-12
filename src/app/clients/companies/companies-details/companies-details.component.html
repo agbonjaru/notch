@@ -1,0 +1,250 @@
+<div class="row" style="margin-left: auto; margin-right: auto;">
+  <nav class="sub-nav hide-on-med-and-down" *ngIf="!loader.main.showSpinner">
+    <!--<ul class="sub-nav-item waves-effect waves-lights text-center">-->
+    <!---->
+    <!--</ul>-->
+    <div class="contact-actions d-flex">
+      <div class="user-dp">
+        <a data-toggle="modal" data-target="#ModalCenter19">
+          <img [src]="dataSource?.profileImage || 'https://test.notchcx.com/assets/img/default.png'"
+            class="avatar img-circle img-thumbnail" style="width:50px; height: 50px;" alt="avatar">
+        </a>
+      </div>
+      <div class="contact-home-link">
+        <h6 style="margin-top: 25px; font-size: 18px;">{{dataSource?.name | uppercase}}</h6>
+      </div>
+      <div class="actions-btn d-flex">
+        <button class="fin-sec-btn" id="dropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          ACTIONS <span><img src="../../../../assets/img/caret_down_blue.svg" width="13" alt=""></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink6">
+          <a class="dropdown-item" href="#">Enrich</a>
+          <a class="dropdown-item" (click)="handleCreateInvoice()">Create Invoice</a>
+          <a class="dropdown-item" (click)="handleCreateQuotation()">Create Quotation</a>
+          <a class="dropdown-item" (click)="handleCreateSalesOrder()">Create Sales Order</a>
+          <a class="dropdown-item" (click)="handleCreateDeals()">Create Deals</a>
+          <a class="dropdown-item" href="https://www.google.com/search?&q={{dataSource?.name}}" target="_blank">Search
+            in Google</a>
+          <a class="dropdown-item" (click)="getAllCompanies()" data-toggle="modal" data-target="#ModalCenter3">Merge</a>
+          <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter2">Assign Target</a> -->
+          <!-- <a class="dropdown-item" (click)="handleCompanyDeletion(companyId)">Delete</a> -->
+        </div>
+        <!-- <button (click)="handleActivateDashboard()" class="btn btn-blue-grey" style="margin: 0!important;">
+          <a>SHOW: {{viewStatus}}</a>
+        </button>
+        <button (click)="toggleScore()" class="score-btn">
+          <a>SCORE</a>
+        </button> -->
+        <div class="btn-group" (click)="onMouseMenu()" [ngClass]="{'opened': isOpened}">
+          <!-- <label for="">Change View: &nbsp;</label> -->
+          <button type="button" class="btn fin-pry-btn ml-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            {{ navMenu.default | titlecase}}
+          </button>
+          <div class="dropdown-menu">
+            <a *ngFor="let menu of navMenu.list">
+              <span class="dropdown-item" *ngIf="!menu.selected"
+                (click)="onSelectMenu(menu.name)">{{menu.name | titlecase}}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--<a href="" class="sub-nav-link right">Product Suggestions</a>-->
+    </div>
+  </nav>
+
+  <!-- Change Profile Pix -->
+  <div class="modal fade" id="ModalCenter19" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Change Profile Picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="text-left col-sm-12 col-md-6">
+            <img [src]="imgDetails.src" class="avatar img-circle img-thumbnail" alt="avatar">
+            <h6>Upload a photo...</h6>
+            <input type="file" class="text-center center-block file-upload" name="profile"
+              (change)="onFileSelect($event)" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+          </button>
+          <button type="button" (click)="handleProfileImageUpload()" class="fin-pry-btn">Save Picture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Change Profile Pix End-->
+
+  <!-- Merge Modal -->
+  <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog merge modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Select Company to Merge</h5>
+        </div>
+        <div class="modal-body">
+
+          <div class="content-body-contact" id="body2">
+
+            <div class="about-contact-row" *ngFor="let data of companies; let i = index;">
+              <div class="col-sm-3">
+                <span class="contact-detail-top">Company Id</span>
+                <br>
+                <span class="contact-detail">{{data.id}}</span>
+              </div>
+              <div class="col-sm-3">
+                <span class="contact-detail-top">Company Name</span>
+                <br>
+                <span class="contact-detail">{{data.name}}</span>
+              </div>
+              <div class="col-sm-3">
+                <span class="contact-detail-top">Email address</span>
+                <br>
+                <span class="contact-detail">{{data.email}}</span>
+              </div>
+
+              <div class="col-sm-3">
+                <button class="fin-sec-btn" (click)="handleCompanyMerge(data.clientId)">MERGE COMPANY</button>
+              </div>
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Change Profile Pix End-->
+
+  <!-- Assign Target Modal -->
+  <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Assign Target</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="col-form-label">Target available for company</label>
+              <br>
+              <select id="mselect" multiple="" data-placeholder="Pick Target Type" style="width: 100%;">
+                <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                <!--Add select all-->
+                <!--<option value="" disabled selected>Choose your option</option>-->
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">England</option>
+                <option value="3">Option 4</option>
+                <option value="3">Tokyo</option>
+                <option value="3">Tokyo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <p class="mb-1">Total Target value:</p>
+              <h5 class="m-0">$300,000</h5>
+            </div>
+            <div class="form-group">
+              <label for="target-value" class="col-form-label">Set target value:</label>
+              <input type="text" class="form-control" id="target-value">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+          </button>
+          <button type="button" class="fin-pry-btn">Assign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Assign Target Modal End-->
+
+</div>
+
+<!-- Content -->
+<ng-template [ngIf]="!loader.main.showSpinner">
+  <div class="content" style="margin-top: 90px;">
+
+    <div class="row" style="width: 100%; margin: 0;">
+      <div class="col-lg-8 col-xl-9 col-md-12 content-body">
+        <div class="company-header-nav my-3">
+          <a href="/clients/companies-list">
+            &#60; Companies </a>
+        </div>
+
+        <!-- DashBoard View -->
+        <ng-template [ngIf]="(display.dashboard===true) && (loader.content.showSpinner===false)">
+          <app-company-dashboard [companyClientId]="dataSource">
+          </app-company-dashboard>
+        </ng-template>
+        <!-- DashBoard View Ends -->
+
+        <!-- Detailed View -->
+        <ng-template [ngIf]="(display.details===true) && (loader.content.showSpinner===false)">
+          <app-companies-inner-details [dataSource]="dataSource"></app-companies-inner-details>
+        </ng-template>
+        <!-- Detailed View Ends -->
+
+        <!-- Score View -->
+        <div data-toggle="modal" data-target=".bd-score-modal-lg" id="open-score-modal"></div>
+        <div class="modal fade bd-score-modal-lg" tabindex="-1" role="document" aria-labelledby="myLargeConversionModal"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered lead-score-modal">
+            <div class="modal-content p-3">
+              <app-score></app-score>
+            </div>
+          </div>
+        </div>
+        <!-- Score View Ends-->
+
+        <!-- Content Loader -->
+        <loading-spinner [spinnerType]="loader.content.spinnerType" [spinnerStyle]="loader.content.spinnerStyle"
+          (reloadSpinner)="onActionState()" *ngIf="loader.content.showSpinner"></loading-spinner>
+        <!-- Content Loader End -->
+
+        <!-- <ng-container *ngIf="showScore">
+          <app-score></app-score>
+        </ng-container> -->
+
+        <!-- Detailed View -->
+        <!-- <ng-template #detailed>
+          <app-companies-inner-details [dataSource]="dataSource">
+          </app-companies-inner-details>
+        </ng-template> -->
+        <!-- Detailed View -->
+
+        <!-- DashBoard View -->
+        <!-- <app-company-dashboard *ngIf="viewStatus !== 'Dashboard'; else detailed" [companyClientId]="dataSource">
+        </app-company-dashboard> -->
+        <!-- DashBoard View  End-->
+
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-xl-3 col-md-12 feeds-card">
+      <app-feeds></app-feeds>
+    </div>
+
+  </div>
+</ng-template>
+
+<!-- Main Loader -->
+<loading-spinner [spinnerType]="loader.main.spinnerType" [spinnerStyle]="loader.main.spinnerStyle"
+  [dataless]="loader.dataless" (actionState)="mainActionState()" *ngIf="loader.main.showSpinner"></loading-spinner>
+<!-- Loader End -->

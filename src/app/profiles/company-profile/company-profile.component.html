@@ -1,0 +1,254 @@
+<div class="settings-header">
+  <!--<div class="row">-->
+  <!--<div class="col-xl-3 col-sm-12">-->
+  <h1>Organisation Profile</h1>
+
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+        aria-selected="true">Company Details</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="termConditions-tab" data-toggle="tab" href="#termConditions" role="tab"
+        aria-controls="termConditions" aria-selected="false">Terms and Conditions </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+        aria-selected="false">Tax</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+        aria-selected="false">Currency</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="creditprofile-tab" data-toggle="tab" href="#creditprofile" role="tab"
+        aria-controls="creditprofile" aria-selected="false">Credit Profile</a>
+    </li>
+
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="container">
+        <div class="row">
+          <!--<input type="file" class="filepond" name="filepond"-->
+          <!--accept="image/png, image/jpeg, image/gif"/>-->
+          <div class="col-sm-12 pt-3 d-flex mt-3">
+            <div class="avatar-upload left">
+              <span (click)="handleBrowse()" class=" is-clickable">
+                <div class="avatar-edit fa fa-edit">
+                </div>
+                <input class="d-none" (change)="browseFile($event)" type='file' id="photo" accept=".png, .jpg, .jpeg" />
+              </span>
+
+              <div class="avatar-preview">
+                <div id="imagePreview" [ngStyle]="{'background-image': 'url(' + imgUrl + ')'}">
+                </div>
+              </div>
+            </div>
+            <div class="d-block pt-3" *ngIf="org">
+              <span class="avatar-username">{{org.name}}</span>
+              <br>
+              <span class="username-des">{{org.email || 'No email'}}</span>
+              <br>
+              <!-- <span class="username-des user-role-profile">{{infos.roleName}}</span> -->
+            </div>
+          </div>
+          <div class="col-sm-12 mt-3" *ngIf="userImg">
+            <span> {{userImg ? userImg.name : ''}}</span>
+            <button [disabled]="imgLoading" (click)="upload()" class="ml-3 fin-pry-btn">
+              Upload <span *ngIf="imgLoading"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+            <button (click)="cancelUpload()" class="ml-2 btn btn-danger">Cancel</button>
+          </div>
+
+        </div>
+        <ng-container [formGroup]="companyForm">
+          <div class="row mt-3 pt-3">
+            <div class="col-sm-12">
+              <h6 class="fw-500 fin-pry-color">Company Information</h6>
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="cname">Company Name</label>
+              <br>
+              <input type="text" id="cname" name="cname" class="w-100 gen-input browser-default" formControlName="name">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label>Industry</label>
+              <br>
+              <ngx-select-dropdown formControlName="industry" [options]="industries" [config]="config">
+              </ngx-select-dropdown>
+            </div>
+          </div>
+          <div class="row mt-3 pt-3">
+            <div class="col-md-5 pt-3" *ngIf="!org.email">
+              <label for="email">Company Email</label>
+              <br>
+              <input type="email" id="email" name="email" class="w-100 gen-input browser-default"
+                formControlName="email">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="website">Date of Establishment</label>
+              <br>
+              <input type="date" id="website" name="website" class="w-100 gen-input browser-default"
+                formControlName="dateOfEstablishment">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="phone">Phone</label>
+              <br>
+              <input type="number" id="phone" name="phone" class="w-100 gen-input browser-default"
+                formControlName="phone">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="website">Website</label>
+              <br>
+              <input type="url" id="website" name="website" class="w-100 gen-input browser-default"
+                formControlName="website">
+            </div>
+
+          </div>
+          <div class="row mt-3 pt-3">
+            <div class="col-sm-12">
+              <h6 class="fw-500 fin-pry-color">Address Information</h6>
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="address">Street</label>
+              <br>
+              <input type="text" id="address" name="address" class="w-100 gen-input browser-default"
+                formControlName="street">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label for="city">City</label>
+              <br>
+              <input type="text" id="city" name="city" class="w-100 gen-input browser-default" formControlName="city">
+            </div>
+          </div>
+          <div class="row mt-3 pt-3">
+            <div class="col-md-5 pt-3">
+              <label for="state">State</label>
+              <br>
+              <input type="text" id="state" name="state" class="w-100 gen-input browser-default"
+                formControlName="state">
+            </div>
+            <div class="col-md-5 pt-3">
+              <label>Country</label>
+              <br>
+              <ngx-select-dropdown formControlName="country" [options]="countries" [config]="config">
+              </ngx-select-dropdown>
+            </div>
+          </div>
+        </ng-container>
+        <div class="row mt-3">
+          <div class="col-sm-5 offset-sm-5 pt-3">
+            <button (click)="save()" type="submit" class="fin-pry-btn right">save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="termConditions" role="tabpanel" aria-labelledby="termConditions-tab">
+      <br>
+      <div class="ml-5">
+        <div class="row">
+          <div class="row pt-3">
+            <div class="col-sm-12">
+              <h6 class="fw-500 fin-pry-color">Terms and Conditions</h6>
+            </div>
+            <div class="col-md-12 pt-3">
+              <textarea name="terms" [(ngModel)]="termsAndConditions" class="w-100 gen-input browser-default" cols="6"
+                rows="10"></textarea>
+            </div>
+            <div class="col-sm-5 offset-sm-7 pt-3">
+              <button (click)="handleTermsConditions()" type="submit" class="fin-pry-btn right">save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <loading-spinner *ngIf="loading" [spinnerType]="'notch-loader'"></loading-spinner>
+    </div>
+
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="">
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5">
+            <form [formGroup]="taxForm" (ngSubmit)="addTax()">
+              <div class="form-group">
+                <label for="taxName">Tax</label>
+                <input type="text" id="taxName" name="tax" placeholder="Enter Tax Name"
+                  class="gen-input2 browser-default" formControlName="name">
+                <div class="mt-2" *ngIf="(f.name.dirty || f.name.touched) && f.name.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.name.errors.required">
+                    Tax name is required.
+                  </span>
+                </div>
+              </div>
+              <br>
+              <div class="form-group">
+                <label for="lead">Tax Rate (%)</label>
+                <input type="number" id="lead" name="lead" placeholder="Enter 0.00" class="gen-input2 browser-default"
+                  formControlName="rate" (input)="validateInput($event.target.value)">
+                <div class="mt-2" *ngIf="(f.rate.dirty || f.rate.touched) && f.rate.invalid">
+                  <span class="text-danger" style="font-size: 13px;" *ngIf="f.rate.errors.required">
+                    Tax rate is required.
+                  </span>
+                </div>
+                <div class="mt-2" class="text-danger" style="font-size: 13px;" *ngIf="error?.tax">
+                  Tax rate is invalid.
+                </div>
+              </div>
+
+              <button [disabled]="taxForm.invalid || taxLoading || error?.tax" type="submit"
+                class="fin-pry-btn mt-3 right" style="margin-top: -13px;">
+                Add Tax <span *ngIf="taxLoading"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </form>
+          </div>
+
+
+
+          <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" style="padding-top: 20px; border-left: 1px solid #dee2e6;">
+            <!-- Tax Table -->
+            <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+              [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)" [bodyrows]="arrayTax">
+            </app-datatable>
+            <!-- Tax Table Ends -->
+            <div class="list-card" style="box-shadow: none; padding: 0;display: none;">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Currency -->
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+      <app-currency></app-currency>
+    </div>
+    <div class="tab-pane fade" id="creditprofile" role="tabpanel" aria-labelledby="creditprofile-tab">
+      <br>
+      <br>
+      <div>
+
+        <div class="row">
+          <div class="col-md-2">
+            <h6 style="font-size: 14px;">Activate Credit Profile?</h6>
+
+          </div>
+          <div class="col-md-4">
+            <form [formGroup]="creditProfileForm">
+              <div class="custom-control custom-checkbox" style="margin-top: -8px;">
+                <input type="checkbox" (change)="handleCreditProfile()"
+                  class="custom-control-input text-center checkbox-all" id="creditProfileId" name="c"
+                  [value]="creditProfileStatus" formControlName="status">
+                <label class="custom-control-label" for="creditProfileId"></label>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+      <loading-spinner *ngIf="loading" [spinnerType]="'notch-loader'"></loading-spinner>
+    </div>
+  </div>
+</div>

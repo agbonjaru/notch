@@ -1,0 +1,302 @@
+<div class="content-body-contact" id="body2">
+  <div class="feed-header contact-interaction" style="border-bottom: 1px solid #E4E4E4;">
+    <ul class="nav nav-tabs nav-tabs-2" role="tablist">
+      <!-- <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav active" id="companies-tab" data-toggle="tab" href="#companies" role="tab"
+          aria-controls="companies" aria-selected="true" (click)="getCompanies()">Companies</a>
+      </li> -->
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="attachments-tab" data-toggle="tab" href="#attachments" role="tab"
+          aria-controls="attachments" aria-selected="false">Attachments</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="subsidiaries-tab" data-toggle="tab" href="#subsidiaries" role="tab"
+          aria-controls="subsidiaries" aria-selected="false">Subsidiaries</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="tickets-tab" data-toggle="tab" href="#tickets" role="tab"
+          aria-controls="tickets" aria-selected="false">Tickets</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="quotes-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes"
+          aria-selected="false" (click)="getQuotes()">Quotes</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="invoice-tab" data-toggle="tab" href="#invoice" role="tab"
+          aria-controls="invoice" aria-selected="false" (click)="getInvoices()">Invoice</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="salesorder-tab" data-toggle="tab" href="#salesorder" role="tab"
+          aria-controls="targets" aria-selected="false" (click)="getSalesOrder()">Sales Order</a>
+      </li>
+      <!-- <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="targets-tab" href="#targets" data-toggle="tab" role="tab"
+          aria-controls="targets" aria-selected="false">Targets</a>
+      </li> -->
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="creditmanagement-tab" href="#creditmanagement" data-toggle="tab" role="tab"
+          aria-controls="creditmanagement" aria-selected="false">Credit Management</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link moreNav" id="productsuggestion-tab" href="#productsuggestion" data-toggle="tab" role="tab"
+          aria-controls="productsuggestion" aria-selected="false">Product</a>
+      </li>
+
+    </ul>
+  </div>
+  <div class="tab-content company-within-inter comp-within-int">
+    <!-- <div class="contact-welcome tab-pane morePanel fade show active" style="padding-top: 0;" id="companies"
+      role="tabpanel" aria-labelledby="companies-tab">
+
+      <div class="about-contact-row" *ngFor="let data of dataSources; let i = index">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Full name</span>
+          <br>
+          <span class="contact-detail">{{data.name}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Email address</span>
+          <br>
+          <span class="contact-detail">{{data.email}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Company Website</span>
+          <br>
+          <span class="contact-detail">{{data.website}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn" [routerLink]="['/clients/companies-view/', data.id]">VIEW COMPANY</button>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="text-left  tab-pane morePanel fade" id="attachments" role="tabpanel" aria-labelledby="attachments-tab">
+      <div class="about-contact-row">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Full name</span>
+          <br>
+          <span class="contact-detail">Mary Doe</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Email address</span>
+          <br>
+          <span class="contact-detail">mary@leadway.com.ng</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Contact domain name</span>
+          <br>
+          <span class="contact-detail">leadway.com.ng</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-left  tab-pane morePanel fade" id="subsidiaries" role="tabpanel"
+      aria-labelledby="subsidiaries-tab">
+      <div class="about-contact-row">
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Full name</span>
+          <br>
+          <span class="contact-detail">Joe Doe</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Email address</span>
+          <br>
+          <span class="contact-detail">thomas@leadway.com.ng</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Contact domain name</span>
+          <br>
+          <span class="contact-detail">leadway.com.ng</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-left  tab-pane morePanel fade" id="tickets" role="tabpanel" aria-labelledby="tickets-tab">
+      <div class="about-contact-row">
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Full name</span>
+          <br>
+          <span class="contact-detail">Tickets Doe</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Email address</span>
+          <br>
+          <span class="contact-detail">thomas@leadway.com.ng</span>
+        </div>
+        <div class="col-sm-4">
+          <span class="contact-detail-top">Contact domain name</span>
+          <br>
+          <span class="contact-detail">leadway.com.ng</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-left  tab-pane morePanel fade" id="quotes" role="tabpanel" aria-labelledby="quotes-tab">
+
+      <div class="about-contact-row" *ngFor="let data of dataSources; let i = index">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client</span>
+          <br>
+          <span class="contact-detail">{{data.clientName}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Total Price</span>
+          <br>
+          <span class="contact-detail">{{data.totalCost | currency: ' NGN '}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">{{data.createdOn | date: 'longDate'}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn" [routerLink]="['/sales/edit-quotation/', data.id]">VIEW QUOTE</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="text-left  tab-pane morePanel fade" id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+      <!--Invoice-->
+
+      <div class="about-contact-row" *ngFor="let data of dataSources; let i = index">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">{{data.clientName}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Invoice Amount</span>
+          <br>
+          <span class="contact-detail">{{data.totalCost | currency: ' NGN '}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">{{data.createdOn | date: 'longDate'}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn" [routerLink]="['/sales/edit-invoice/', data.id]">VIEW INVOICE</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-left tab-pane morePanel fade" id="salesorder" role="tabpanel" aria-labelledby="salesorder-tab">
+
+      <div class="about-contact-row" *ngFor="let data of dataSources; let i = index">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">{{data.clientName}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Amount</span>
+          <br>
+          <span class="contact-detail">{{data.totalAmount | currency : ' NGN '}}</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">{{data.createdDate | date: 'longDate'}}</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn" (click)="navigateRouter(data)">VIEW SALESORDER</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="text-left tab-pane morePanel fade" id="targets" role="tabpanel" aria-labelledby="targets-tab">
+
+      <div class="about-contact-row">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">Lorum Ipsum</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Amount</span>
+          <br>
+          <span class="contact-detail">$50,000.00</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">27/09/2019</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn">VIEW TICKETS</button>
+        </div>
+      </div>
+      <div class="about-contact-row">
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Client Name</span>
+          <br>
+          <span class="contact-detail">Lorum Ipsum</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Amount</span>
+          <br>
+          <span class="contact-detail">$50,000.00</span>
+        </div>
+        <div class="col-sm-3">
+          <span class="contact-detail-top">Creation Date</span>
+          <br>
+          <span class="contact-detail">27/09/2019</span>
+        </div>
+        <div class="col-sm-3">
+          <button class="fin-sec-btn">VIEW TICKETS</button>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="text-left tab-pane morePanel fade" id="creditmanagement" role="tabpanel"
+      aria-labelledby="creditmanagement-tab">
+
+
+      <div class="whatsapp-integration">
+        <div class="text-center">
+          <i class="fas fa-comments"></i>
+        </div>
+        <p class="text-center">
+          Click the button below to integrate your social media accounts
+          <br>
+          Very easy!
+        </p>
+        <div class="row m-auto">
+          <div class="col-sm-12 text-center">
+            <a class="fin-sec-btn" href="settings.html">
+              INTEGRATE your Social media accounts
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-left tab-pane morePanel fade" id="productsuggestion" role="tabpanel"
+      aria-labelledby="productsuggestion-tab">
+
+
+      <div class="whatsapp-integration">
+        <div class="text-center">
+          <i class="fas fa-comments"></i>
+        </div>
+        <p class="text-center">
+          Click the button below to integrate your social media accounts
+          <br>
+          Very easy!
+        </p>
+        <div class="row m-auto">
+          <div class="col-sm-12 text-center">
+            <a class="fin-sec-btn" href="settings.html">
+              INTEGRATE your Social media accounts
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

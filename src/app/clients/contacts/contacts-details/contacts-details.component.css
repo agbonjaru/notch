@@ -1,0 +1,205 @@
+.contact-header-nav {
+  font-weight: 300;
+}
+
+/* AVATAR */
+.user__profile {
+  width: 50%;
+  /* flex-direction: column; */
+}
+
+.user__profile .avatar-upload {
+  position: relative;
+  max-width: 205px;
+  margin-right: 18px;
+}
+
+.user__profile .avatar-upload .avatar-edit-contact {
+  position: absolute;
+  right: -3px;
+  z-index: 1;
+  top: 4px;
+}
+
+.user__profile .avatar-edit-contact input {
+  display: none;
+}
+
+.user__profile .avatar-edit-contact label {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 0;
+  border-radius: 100%;
+  background: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font-weight: normal;
+  transition: all .2s ease-in-out;
+}
+
+.user__profile .avatar-edit-contact label:hover {
+  background: #f1f1f1;
+  border-color: #d6d6d6;
+}
+
+.user__profile .avatar-edit-contact label i,
+.user__profile .avatar-edit-contact label svg {
+  color: #757575;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: auto;
+}
+
+.user__profile .avatar-preview {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  border-radius: 100%;
+  border: 0;
+  box-shadow: 0px 1px 4px 0px rgb(156, 163, 169);
+}
+
+.user__profile .avatar-preview>img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.user__profile .user-name {
+  margin: auto 10px;
+  padding-right: 44px;
+  border-right: 1px solid #bfbfbf;
+}
+
+/* SELECt */
+.user__profile .menu__link {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 33%;
+}
+
+.user__profile .menu__link .wrapper-dropdown-menu {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  user-select: none;
+}
+
+.user__profile .menu__link .selected-view {
+  position: relative;
+  color: #2C85C7;
+  /* font-size: 1.4em; */
+  font-size: 1.25em;
+  font-weight: 300;
+  width: 130px;
+  padding: 0 22px;
+  line-height: 60px;
+  cursor: pointer;
+}
+
+.user__profile .menu__link .selected-view:hover {
+  padding: 20px 22px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+}
+
+.user__profile .menu__link .selected-view:after {
+  display: inline-block;
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin-left: 14px;
+  border-bottom: 1px solid #6e6e6e;
+  border-right: 1px solid #6e6e6e;
+  transform: rotate(45deg) translateY(-50%);
+  transition: all .4s ease-in-out;
+  transform-origin: 50% 0;
+}
+
+.user__profile .menu__link .wrapper-dropdown-menu.opened .selected-view:after {
+  margin-top: 3px;
+  transform: rotate(-135deg) translateY(-50%);
+}
+
+.user__profile .menu__link .custom-options {
+  position: absolute;
+  display: block;
+  top: 100%;
+  left: 6%;
+  right: 0;
+  min-width: 100%;
+  margin: 15px 0;
+  border: 1px solid #b5b5b5;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, .07);
+  background: #fff;
+  transition: all .4s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-15px);
+  z-index: 9999;
+}
+
+.user__profile .menu__link .wrapper-dropdown-menu.opened .custom-options {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.user__profile .menu__link .custom-options:before {
+  position: absolute;
+  display: block;
+  content: '';
+  bottom: 100%;
+  right: 25px;
+  width: 7px;
+  height: 7px;
+  margin-bottom: -4px;
+  border-top: 1px solid #b5b5b5;
+  border-left: 1px solid #b5b5b5;
+  background: #fff;
+  transform: rotate(45deg);
+  transition: all .4s ease-in-out;
+}
+
+.user__profile .menu__link .option-hover:before {
+  background: #f9f9f9;
+}
+
+.user__profile .menu__link .custom-option {
+  position: relative;
+  display: block;
+  border-bottom: 1px solid #b5b5b5;
+  padding: 0 22px;
+  /* font-size: 18px; */
+  line-height: 47px;
+  color: #b5b5b5;
+  cursor: pointer;
+  transition: all .4s ease-in-out;
+  font-size: 1em;
+  font-weight: 300;
+}
+
+.user__profile .menu__link .custom-option:first-of-type {
+  border-radius: 4px 4px 0 0;
+}
+
+.user__profile .menu__link .custom-option:last-of-type {
+  border-bottom: 0;
+  border-radius: 0 0 4px 4px;
+}
+
+.user__profile .menu__link .custom-option:hover,
+.user__profile .menu__link .custom-option.selection {
+  background: #f9f9f9;
+}

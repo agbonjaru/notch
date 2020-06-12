@@ -1,0 +1,67 @@
+#email-lookup-modal {
+    color: #333333;
+    line-height: 20px;
+}
+
+#email-lookup-modal input, #email-lookup-modal select {
+    border-radius: 0;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+        
+    margin: 0px;
+
+    padding: 0 5px;
+    padding: 10px;
+
+    height: auto;
+    width: auto;
+}
+
+#email-lookup-modal input {
+    width: 100%;
+}
+
+.email-search-result-list{
+    position: absolute;
+    left: 0;
+    top: 35px;
+    display: inline-block;
+    z-index: 100;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.email-search-result-list-item {
+    border-bottom: 1px solid #dddddd;
+}
+
+.email-search-result-list-item:last-child {
+    border: none;
+}
+
+.email-search-result-list-item:hover {
+    background-color: cadetblue;
+}
+
+.recipient-list {
+    padding: 7.5px 0;
+    border-bottom: 1px solid #dedede;
+}
+
+.recipient-list-item{
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 50px;
+
+    margin: 2.5px;
+    padding: 3.5px 15px;
+
+    border: 1px solid #008cff; 
+    color: #008cff;
+}
+
+.invalid-recipient-list-item{
+    border: 1px solid #ff6d6d; 
+    color: #ff6d6d;
+}

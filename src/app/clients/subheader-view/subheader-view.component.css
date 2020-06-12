@@ -1,0 +1,15 @@
+nav ul a {
+  -webkit-transition: background-color .3s;
+  transition: background-color .3s;
+  font-size: 1rem;
+  color: #474847;
+  /* color: #fff; */
+  display: block;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+.sub-nav-items .active {
+  color: #2C85C7;
+  font-weight: bolder;
+}

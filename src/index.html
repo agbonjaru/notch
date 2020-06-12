@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Notch Angular</title>
+  <base href="/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="icon" type="image/x-icon" href="favicon.ico"> -->
+
+  <!-- FAVICONS -->
+  <link rel="shortcut icon" href="assets/img/notch-fav-icon.png" type="image/x-icon">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/img/notch-fav-icon.png">
+
+  <!--font-->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Material+Icons" rel="stylesheet">
+  <link href="assets/css/all.min.css" rel="stylesheet">
+  <!-- <script src="https://cdn.zingchart.com/zingchart.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://js.paystack.co/v1/paystack.js"></script>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <style>
+    div.loader-container {
+      padding-top: 10%;
+    }
+
+    div.loader-container div {
+      /* height: 10em; */
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <app-root>
+      <div class="loader-container">
+        <div>
+          <img src="assets/img/notch-logo.svg" alt="notch-logo" width="20%">
+        </div>
+        <div>
+          <img src="assets/img/loading-dots.gif" height="0%" alt="dot-loader" width="15%">
+        </div>
+      </div>
+      <!-- <loading-spinner [spinnerType]="'logoLoader'"></loading-spinner> -->
+    </app-root>
+  </div>
+  <script src="./assets/js/modules/jquery-3.3.1.min.js"></script>
+  <script src="./assets/js/modules/popper.min.js"></script>
+  <script src="./assets/js/modules/all.js"></script>
+  <script src="./assets/js/modules/bootstrap.min.js"></script>
+  <script src="./assets/js/modules/mdb.js"></script>
+  <script src="./assets/js/modules/chosen.jquery.js"></script>
+  <script src="./assets/js/modules/materialize.js"></script>
+  <!-- <script src="./assets/js/modules/additionsUpgrade.js"></script> -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/monokai-sublime.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="./assets/js/modules/zingchart.min.js"></script>
+  <script>
+    hljs.configure({
+      languages: ['javascript', 'ruby', 'bash']
+    });
+  </script>
+
+</body>
+
+</html>

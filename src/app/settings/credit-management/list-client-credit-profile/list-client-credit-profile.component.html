@@ -1,0 +1,120 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+
+</div>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div class="col-sm-12 content-list-title">
+      <div class="m-auto text-center">
+        <a style="color: #039be5!important;" routerLink="/settings/list-credit-profile" class="text-center left">
+          < Credit Profile</a> <h5 class="text-center fin-pry-color">Credit Profile Clients</h5>
+      </div>
+    </div>
+
+
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list">
+      <div *ngIf="profileClients" class="list">
+        <div class="row content-list-header">
+          <div class="col-12 text-center my-2">
+            <h6>{{profile.name}}</h6>
+          </div>
+          <div class="col-md-6 text-left filter-actions-top">
+
+
+            <!-- Assign Target Modal -->
+            <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Assign Target</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label class="col-form-label">Target available for company</label>
+                        <br>
+                        <select id="mselect" data-placeholder="Pick Target Type" style="width: 100%;">
+
+                          <option value="1">Product target</option>
+                          <option value="2">Revenue target</option>
+                          <option value="3">Company/contact target</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <p class="mb-1">Total unassigned target:</p>
+                        <h5 class="m-0">$300,000</h5>
+                      </div>
+                      <div class="form-group">
+                        <label for="target-value" class="col-form-label">Set target
+                          value:</label>
+                        <input type="text" class="form-control" id="target-value">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                    </button>
+                    <button type="button" class="fin-pry-btn">Assign</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Assign Target Modal End-->
+          </div>
+
+
+          <!-- Add Client Modal -->
+          <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle2">Add Client</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form *ngIf="(clientList$ | async ) as ClientList;">
+                    <ngx-select-dropdown [config]="config" [options]="ClientList" [multiple]="false" name="clients"
+                      [(ngModel)]="selectedClients"></ngx-select-dropdown>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                  </button>
+                  <button [disabled]="!selectedClients || loading" (click)="saveClients()" type="button"
+                    class="fin-pry-btn">
+                    SAVE <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add credit Modal End-->
+
+          <div class="col-md-6 content-list-buttons">
+
+            <a>
+              <button class="fin-pry-btn" data-toggle="modal" data-target="#ModalCenter4">ADD
+                Client
+              </button>
+            </a>
+          </div>
+        </div>
+        <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+          (feedback)="dataFeedBackObsListener($event)" [bodyrows]="profileClients"></app-datatable>
+
+      </div>
+      <div *ngIf="!profileClients">
+        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+      </div>
+    </div>
+
+  </div>
+</div>

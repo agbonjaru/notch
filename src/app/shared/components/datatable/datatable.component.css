@@ -1,0 +1,51 @@
+.cursor{
+    cursor: pointer;
+}
+.data-table-container{
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+.btn-small-l{
+    height: 30px !important;
+    width: auto !important;
+    padding: 5px 10px !important;
+    font-size: 12px;
+}
+.sort-button{
+    cursor: pointer;
+    border: none;
+
+
+}
+/*
+th > .sort-button{
+    visibility: hidden;
+
+
+}
+th:hover > .sort-button{
+    visibility: visible;
+
+
+}
+*/
+.search{
+    height: 30px;
+    border: 1px solid #9e9e9e !important;
+    width: 96%;
+}
+.fa-spinner{
+    animation-name: spin;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}

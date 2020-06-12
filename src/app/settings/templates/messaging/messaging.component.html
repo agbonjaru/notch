@@ -1,0 +1,441 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <!-- Loader -->
+        <loading-spinner [spinnerStyle]="spinnerStyle" [spinnerType]="spinnerType" (reloadSpinner)="retry($event)"
+          *ngIf="showSpinner">
+        </loading-spinner>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content" *ngIf="!showSpinner">
+
+          <div class="settings-header">
+            <h1>Chat, SMS, & WhatsApp Templates</h1>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="chat-temp-tab"
+                  data-toggle="tab" href="#chat-temp" role="tab" aria-controls="email" aria-selected="true">Chat
+                  Templates</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" style="background: transparent;" id="sms-temp-tab"
+                  data-toggle="tab" href="#sms-temp" role="tab" aria-controls="call" aria-selected="false">SMS
+                  Templates</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" style="background: transparent;" id="whatsapp-temp-tab"
+                  data-toggle="tab" href="#whatsapp-temp" role="tab" aria-controls="call" aria-selected="false">WhatsApp
+                  Templates</a>
+              </li>
+            </ul>
+          </div>
+
+          <!--Chat templates-->
+          <div class="settings-label tab-pane fade show active" id="chat-temp" role="tabpanel"
+            aria-labelledby="chat-temp-tab">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12 d-flex email-temp-nav">
+                <span class="text-center" data-toggle="modal" data-target="#ModalCenter">
+                  <i class="fas fa-plus"></i> <br>
+                  Add CHAT Template
+                </span>
+              </div>
+
+              <!-- Add Chat Template Modal -->
+              <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle">Add Chat Template</h5>
+                      <button type="button" #closeModal class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <form [formGroup]="chatForm">
+                      <div class="modal-body">
+
+                        <div class="form-group">
+                          <label for="target-value" class="col-form-label">
+                            Enter Chat Template Name
+                          </label>
+                          <input type="text" formControlName="chatName" class="form-control" id="target-value">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Description">CHAT FORMAT</label>
+                          <br>
+                          <textarea name="Description" maxlength="5000" formControlName="chatDiscription"
+                            id="Description" cols="30" rows="10" class="gen-input2 h-25 pt-3"
+                            placeholder="Enter Chat Format"></textarea>
+                        </div>
+
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" (click)="submitChat()" [disabled]="(chatForm.invalid || isLoading)"
+                          class="fin-pry-btn" [ladda]="isLoading" data-style="slide-right">Add
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+              <!-- Add Email Template Modal End-->
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5 email-temp-left" style="padding-top: 30px;"
+                id="selectable">
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <table class="table">
+                      <tbody>
+                        <tr *ngFor="let allChat of allChat">
+                          <th scope="row" style="border-top: none;" class="notch-settings">
+                            {{allChat.name}}
+                          </th>
+                          <td (click)="loadChatById(allChat.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-edit" title="Edit"></i>
+                          </td>
+                          <td (click)="cloneMessage(allChat.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-clone" title="Clone"></i>
+                          </td>
+                          <td (click)="deleteMessageConfirm(allChat.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash" title="Remove"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" *ngIf="idLoadChat == true"
+                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+
+                <form [formGroup]="changeForm">
+                  <div class="modal-body">
+
+                    <div class="form-group">
+                      <label for="target-value" class="col-form-label">
+                        Enter Chat Template Name
+                      </label>
+                      <input type="text" formControlName="changeName" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <input type="hidden" readonly formControlName="changeId" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="Description">CHAT FORMAT</label>
+                      <br>
+                      <textarea name="Description" maxlength="5000" formControlName="changeDiscription" id="Description"
+                        cols="30" rows="10" class="gen-input2 h-25 pt-3" placeholder="Enter Chat Format"></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" (click)="updateMessage()" [disabled]="(changeForm.invalid || isLoading)"
+                      class="fin-pry-btn right mt-4 save-email-temp" [ladda]="isLoading" data-style="slide-right">Update
+                    </button>
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+          <!--Chat templates end-->
+
+          <!--sms templates-->
+          <div class="settings-label tab-pane fade" id="sms-temp" role="tabpanel" aria-labelledby="sms-temp-tab">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12 d-flex email-temp-nav">
+                <span class="text-center" data-toggle="modal" data-target="#ModalCenter2">
+                  <i class="fas fa-plus"></i> <br>
+                  Add SMS Template
+                </span>
+              </div>
+
+              <!-- Add SMS Template Modal -->
+              <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle2"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle2">Add SMS Template</h5>
+                      <button type="button" #closeModal class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <form [formGroup]="smsForm">
+
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="target-value" class="col-form-label">
+                            Enter SMS Template Name
+                          </label>
+                          <input type="text" formControlName="smsName" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Description">SMS FORMAT</label>
+                          <br>
+                          <textarea name="Description" maxlength="5000" formControlName="smsDiscription"
+                            id="Description" cols="30" rows="10" class="gen-input2 h-25 pt-3"
+                            placeholder="Enter SMS Format"></textarea>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" (click)="submitSms()" [disabled]="(smsForm.invalid || isLoading)"
+                          class="fin-pry-btn" [ladda]="isLoading" data-style="slide-right">Add
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+              <!-- Add SMS Template Modal End-->
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5 email-temp-left" style="padding-top: 30px;"
+                id="selectable2">
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <table class="table">
+                      <tbody>
+                        <tr *ngFor="let allSms of allSms">
+                          <th scope="row" style="border-top: none;" class="notch-settings">
+                            {{allSms.name}}
+                          </th>
+                          <td (click)="loadSmsById(allSms.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-edit" title="Edit"></i>
+                          </td>
+                          <td (click)="cloneMessage(allSms.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-clone" title="Clone"></i>
+                          </td>
+                          <td (click)="deleteMessageConfirm(allSms.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash" title="Remove"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" *ngIf="idLoadSms == true"
+                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+                <form [formGroup]="changeForm">
+                  <div class="modal-body">
+
+                    <div class="form-group">
+                      <label for="target-value" class="col-form-label">
+                        Enter SMS Template Name
+                      </label>
+                      <input type="text" formControlName="changeName" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <input type="hidden" readonly formControlName="changeId" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="Description">SMS FORMAT</label>
+                      <br>
+                      <textarea name="Description" maxlength="5000" formControlName="changeDiscription" id="Description"
+                        cols="30" rows="10" class="gen-input2 h-25 pt-3" placeholder="Enter Chat Format"></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" (click)="updateMessage()" [disabled]="changeForm.invalid"
+                      class="fin-pry-btn right mt-4 save-email-temp">
+                      save
+                    </button>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+          <!--sms templates end-->
+
+          <!--Whatsapp template-->
+          <div class="settings-label tab-pane fade" id="whatsapp-temp" role="tabpanel"
+            aria-labelledby="whatsapp-temp-tab">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12 d-flex email-temp-nav">
+                <span class="text-center" data-toggle="modal" data-target="#ModalCenter3">
+                  <i class="fas fa-plus"></i> <br>
+                  Add WHATSAPP Template
+                </span>
+              </div>
+
+              <!-- Add Whatsapp Template Modal -->
+              <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle3"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle3">Add WhatsApp Message
+                        Template</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <form [formGroup]="whatsappForm">
+                      <div class="modal-body">
+
+                        <div class="form-group">
+                          <label for="target-value" class="col-form-label">
+                            Enter WhatsApp Message Template Name
+                          </label>
+                          <input type="text" formControlName="whatsappName" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Description">EMAIL FORMAT</label>
+                          <br>
+                          <textarea name="Description" maxlength="5000" formControlName="whatsappDiscription"
+                            id="Description" cols="30" rows="10" class="gen-input2 h-25 pt-3"
+                            placeholder="Enter Whatsapp Format"></textarea>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" (click)="submitWhatsapp()"
+                          [disabled]="(whatsappForm.invalid || isLoading)" class="fin-pry-btn" [ladda]="isLoading"
+                          data-style="slide-right">Add
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+              <!-- Add Whatsapp Template Modal End-->
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5 email-temp-left" style="padding-top: 30px;"
+                id="selectable3">
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <table class="table">
+                      <tbody>
+                        <tr *ngFor="let allWhatsapp of allWhatsapp">
+                          <th scope="row" style="border-top: none;" class="notch-settings">
+                            {{allWhatsapp.name}}
+                          </th>
+                          <td (click)="loadWhatsappById(allWhatsapp.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-edit" title="Edit"></i>
+                          </td>
+                          <td (click)="cloneMessage(allWhatsapp.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-clone" title="Clone"></i>
+                          </td>
+                          <td (click)="deleteMessageConfirm(allWhatsapp.id)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash" title="Remove"></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" *ngIf="idLoadWhatsapp == true"
+                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+                <form [formGroup]="changeForm">
+                  <div class="modal-body">
+
+                    <div class="form-group">
+                      <label for="target-value" class="col-form-label">
+                        Enter Chat Template Name
+                      </label>
+                      <input type="text" formControlName="changeName" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <input type="hidden" readonly formControlName="changeId" class="form-control" id="target-value">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="Description">CHAT FORMAT</label>
+                      <br>
+                      <textarea name="Description" maxlength="5000" formControlName="changeDiscription" id="Description"
+                        cols="30" rows="10" class="gen-input2 h-25 pt-3" placeholder="Enter Chat Format"></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button" (click)="updateMessage()" [disabled]="changeForm.invalid"
+                      class="fin-pry-btn right mt-4 save-email-temp">
+                      save
+                    </button>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+
+          </div>
+          <!--Whatsapp template end-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

@@ -1,0 +1,11 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+  <nav class="sub-nav">
+      <ul class="sub-nav-items-target text-center">
+          <li *ngIf="gs.isAuthorized('PERIOD')"><a routerLink="/target/period" routerLinkActive="active">Periods</a></li>
+          <li *ngIf="gs.isAuthorized('COMPANY_TARGET')"><a routerLink="/target/targets" routerLinkActive="active">Company Targets</a></li>
+          <li *ngIf="gs.isAuthorized('ASSIGNED_TARGET')"><a routerLink="/target/dashboard" routerLinkActive="active">Assigned Targets</a></li>
+          <li *ngIf="gs.isAuthorized('COMMISSION_PROFILES')"><a routerLink="/target/commission-profiles" routerLinkActive="active">Commission Profiles</a></li>
+          <li *ngIf="gs.isAuthorized('COMMISSIONS')"><a routerLink="/target/commissions" routerLinkActive="active">Commissions</a></li>
+      </ul>
+  </nav>
+</div>

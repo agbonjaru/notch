@@ -1,0 +1,322 @@
+<ng-template [ngIf]="display.main.default && !display.org.default">
+  <!-- Account Login -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-8 left-div">
+        <div class="login-header">
+          <a href="" id="logo-container"><img src="/assets/img/finultimate-logo.svg" width="60" alt="" /></a>
+          <div class="login-alternate d-flex float-right hidden-md hidden-sm hidden-xs"
+            *ngIf="display.main.login && !display.main.otp">
+            <p>Not a member yet</p>
+            <a routerLink="/reg/register" style="font-weight: bold; margin-left: 10px;">Sign Up</a>
+          </div>
+        </div>
+
+        <!-- Loader -->
+        <ng-template [ngIf]="display.main.showSpinner">
+          <div class="pt-4"></div>
+
+          <div class="mb-3 animated" style="padding-top: 200px !important;"
+            [ngClass]="{ fadeIn: display.main.showSpinner }">
+            <h4 style="font-size: 27px; color: #a0a0a0;">
+              {{ display.main.header }}
+            </h4>
+          </div>
+
+          <div class="all-loader animated" id="loader-4" [ngClass]="{ 'fadeIn faster': display.main.login === false }">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </ng-template>
+
+        <!-- Login -->
+        <div *ngIf="display.main.login && !display.main.otp">
+          <h2>Welcome!</h2>
+          <div class="pt-4"></div>
+
+          <form method="POST" (ngSubmit)="handleLogin()" [formGroup]="loginForm" class="form" role="form">
+            <div class="speck-login animated" [ngClass]="{ 'fadeIn faster': display.main.login }">
+              <div class="mb-3" *ngIf="loginStatus.error.status">
+                <p class="text-danger">{{ loginStatus.error.msg }}</p>
+              </div>
+              <label for="validationCustom01 email">Email</label>
+              <br />
+              <input type="email" id="email validationCustom01" name="email"
+                class="gen-input browser-default form-control" style="width: 400px;" formControlName="email" required />
+
+              <div class="mt-2" *ngIf="(email.dirty || email.touched) && email.invalid">
+                <span class="text-danger" style="font-size: 13px;" *ngIf="email.errors.required">
+                  Email is required.
+                </span>
+                <span class="text-danger" style="font-size: 13px;" *ngIf="email.errors.pattern">
+                  Email is invalid.
+                </span>
+              </div>
+              <div class="space-30"></div>
+              <label for="password">Password</label>
+              <br />
+              <input type="password" id="password" name="password" formControlName="password"
+                class="form-control gen-input browser-default" style="width: 400px;" required />
+              <div class="mt-2" *ngIf="(password.dirty || password.touched) && password.invalid">
+                <span class="text-danger" style="font-size: 13px;" *ngIf="password.errors.required">
+                  Password cannot be empty.
+                </span>
+              </div>
+              <br />
+            </div>
+
+            <div class="d-flex fgt-pswrd">
+              <button type="submit" class="fin-pry-btn expand-btn" [disabled]="loginForm.invalid || loading"
+                [ladda]="loading" data-style="slide-right">
+                Login
+              </button>
+              <a routerLink="/forgot-password" style="margin-left: 20px;">Forgot Password?</a>
+            </div>
+          </form>
+
+          <div class="row hidden-lg hidden-xg">
+            <div class="col-md-12 text-center">
+              <div class="login-alternate text-center d-flex m-auto" style="padding-top: 25px;">
+                <p>Not a member yet</p>
+                <a routerLink="/reg/register" style="font-weight: bold; margin-left: 10px;">Sign Up</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OTP -->
+        <ng-template [ngIf]="display.main.otp && !display.main.login">
+          <h2>OTP Verification</h2>
+          <div class="pt-4"></div>
+
+          <form class="form" role="form">
+            <div class="speck-login animated" [ngClass]="{ 'fadeIn faster': display.main.otp }">
+              <p style="font-size: 17px; color: #a0a0a0;">
+                Please enter the <b>OTP</b> sent to your mailbox
+              </p>
+
+              <div class="mb-3" *ngIf="loginStatus.error.status">
+                <p class="text-danger">{{ loginStatus.error.msg }}</p>
+              </div>
+              <br />
+              <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{ length: 4 }"></ng-otp-input>
+              <br />
+            </div>
+
+            <div class="d-flex fgt-pswrd">
+              <button type="button" class="fin-pry-btn mr-3" [disabled]="" [ladda]="loading" data-style="slide-right"
+                (click)="verifyOtp()">
+                Verify OTP
+              </button>
+              <button type="button" class="fin-sec-btn" [disabled]="" [ladda]="loading" data-style="slide-right"
+                (click)="sendOTP()">
+                Resend OTP
+              </button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+
+      <div class="col-sm-4 login-bg">
+        <!--<img src="img/login-bg.jpg" alt="">-->
+        <h3>
+          Login to Charge up
+          <br />
+          your sales for more Profit
+        </h3>
+      </div>
+    </div>
+  </div>
+  <!-- Account Login Ends -->
+</ng-template>
+
+<ng-template [ngIf]="!display.main.default && display.org.default">
+  <!-- NavBar -->
+  <nav class="white-bg" role="navigation" *ngIf="!loader.org.showSpinner">
+    <div class="nav-wrapper">
+      <a id="logo-container" href="login" class="brand-logo hide-on-med-and-down">
+        <img src="assets/img/notch-logo.svg" width="150px" alt="" />
+      </a>
+    </div>
+  </nav>
+
+  <!-- Organization Settings: VIEW -->
+  <ng-template [ngIf]="
+      !display.main.default &&
+      display.org.default &&
+      !display.org.switch &&
+      !loader.org.showSpinner
+    ">
+    <div class="content_2">
+      <div class="container">
+        <div class="space-60"></div>
+        <a href="login">&laquo; Back</a>
+        <br />
+        <div class="row">
+          <div class="col-lg-7">
+            <div *ngIf="display.org.default && display.org.type==='INACTIVE_PLAN'">
+              <h2 class="py-2">
+                Hi {{ user.storage?.firstName | titlecase }}!
+              </h2>
+              <p style="font-size: 16px;">
+                It appears that your current organization <strong>{{user.currentOrganization.name}}</strong>, has no
+                active plan.
+                <!-- It appears that your current organization
+                <strong>ATB IP</strong> has no active plan. -->
+                <br />
+                To continue, please purchase a license, switch organization or
+                create a new organization.
+                <br />
+                <br />
+                Thank you.
+                <br />
+              </p>
+            </div>
+            <div *ngIf="display.org.default && display.org.type==='USER_DEACTIVATED'">
+              <h2 class="py-2">
+                Hi {{ user.storage?.firstName | titlecase }}!
+              </h2>
+              <p style="font-size: 16px;">
+                It appears that your account has been deactivated in <strong>{{user.currentOrganization.name}}</strong>.
+                <br />
+                <span *ngIf="user.arrayOrg?.length > 1">To continue, please switch organization or
+                  create a new organization.</span>
+                <span *ngIf="user.arrayOrg?.length === 1">To continue, please contact your organization
+                  administrator.</span>
+                <br />
+                <br />
+                Thank you.
+                <br />
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-10">
+            <div class="row" style="margin-top: 50px;" *ngIf="user.arrayOrg?.length >= 1">
+              <label (click)="onSelectOption('switch')">
+                <div class="analysis col-xl-3 col-md-4 col-sm-12">
+                  <input type="radio" name="product" class="card-input-element" />
+                  <div class="analysis-card-white text-center">
+                    <i class="fa fa-check-circle" [ngClass]="{
+                        'display: block': selectedOption === 'switch'
+                      }"></i>
+                    <img src="assets/img/helpdesk-icon.svg" />
+                    <div class="analysis-card-header">
+                      <p>Switch Organization</p>
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <label (click)="onSelectOption('plan')"
+                *ngIf="user.arrayOrg?.length > 1 && display.org.type==='INACTIVE_PLAN'">
+                <div class="analysis col-xl-3 col-md-4 col-sm-12">
+                  <input type="radio" name="product" class="card-input-element" />
+                  <div class="analysis-card-white text-center">
+                    <i class="fa fa-check-circle"></i>
+                    <img src="assets/img/helpdesk-icon.svg" />
+                    <div class="analysis-card-header">
+                      <p>Purchase A License</p>
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <label (click)="onSelectOption('create')">
+                <div class="analysis col-xl-3 col-md-4 col-sm-12">
+                  <input type="radio" name="product" class="card-input-element" />
+                  <div class="analysis-card-white text-center">
+                    <i class="fa fa-check-circle"></i>
+                    <img src="assets/img/helpdesk-icon.svg" />
+                    <div class="analysis-card-header">
+                      <p>Create Organization</p>
+                    </div>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <a class="float" (click)="onSetView()" *ngIf="selectedOption!==null">
+              <i class="fa fa-arrow-right my-float" style="color: white;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Organization Settings Ends -->
+
+  <!-- Switch Tenant: VIEW -->
+  <ng-template [ngIf]="
+      display.org.default &&
+      display.org.switch &&
+      !loader.org.showSpinner &&
+      user.arrayOrg?.length > 0
+    ">
+    <div class="content_2">
+      <div class="container">
+        <div class="space-60"></div>
+        <a href="login">&laquo; Back</a>
+        <br />
+        <div class="row">
+          <div class="col-lg-5">
+            <h2 class="py-2">Switch Organization</h2>
+            <p style="font-size: 16px;">
+              To proceed, select your preferred organization from the list
+              provided, confirm your login credentials, and submit.
+              <br />
+              <br />
+              <span style="font-size: 13px;" class="text-muted">NB: All organizations listed have an active plan. So you
+                won't
+                be able to select organizations without active plans.</span>
+              <br />
+            </p>
+          </div>
+          <div class="col-lg-7">
+            <div class="row" style="margin-top: 50px;">
+              <div class="col-lg-12">
+                <div class="analysis mx-auto mb-4 col-md-4 col-sm-12">
+                  <div class="analysis-card-white selected text-center m-auto">
+                    <i class="fa fa-check-circle" style="display: inline-block;"></i>
+                    <img src="assets/img/helpdesk-icon.svg" />
+                    <div class="analysis-card-header">
+                      <p>Switch Organization</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-7 mx-auto" style="margin-bottom: 30px;">
+                  <div class="form-group">
+                    <label for="">Select an organization<sup class="text-danger">*</sup></label>
+                    <select name="" id="selectOrg" class="gen-input browser-default w-100"
+                      [(ngModel)]="user.selectedOrg" (change)="onChangeOrganization()">
+                      <option selected disabled value=0>Select organization</option>
+                      <option value="{{ org.id }}" *ngFor="let org of user.arrayOrg">{{ org.orgName }}
+                      </option>
+                    </select>
+                    <div class="text-center mt-2" *ngIf="user.error.isActive">
+                      <span class="text-danger" style="font-size: 13px;">
+                        Account deactivated! Please try another organization.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group text-center">
+                  <button [disabled]="(user.selectedOrg <= 0) || user.error.isActive" class="fin-pry-btn expand-btn"
+                    [ladda]="display.btnloader" data-style="slide-right" (click)="onSwitchOrganization()">
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Switch Tenants Ends -->
+
+  <!-- Content Loader -->
+  <loading-spinner [spinnerType]="loader.org.spinnerType" [spinnerStyle]="loader.org.spinnerStyle"
+    *ngIf="loader.org.showSpinner"></loading-spinner>
+  <!-- Content Loader End -->
+</ng-template>

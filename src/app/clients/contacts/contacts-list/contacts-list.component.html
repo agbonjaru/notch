@@ -1,0 +1,234 @@
+<app-client-header></app-client-header>
+
+
+<div class="" style="margin-top: 90px;padding: 0 1%; display: none;">
+  <!-- Flow Template -->
+  <flow-template [options]="template.options" (feedback)="fbListener($event)" *ngIf="template.id.importContact">
+    <!-- FORM -->
+    <div class="import--container text-center">
+      <div class="mb-4" style="font-weight: 400; font-size: 1.25rem;">
+        Drag and Drop your
+        <br>
+        Excel File Here
+      </div>
+      <div style="border: 1px solid rgb(124, 124, 124);">or</div>
+      <br><br>
+      <!-- Button -->
+      <!-- <span id="file-upload-btn" class="fin-pry-btn">Select a file</span> -->
+      <button class="fin-pry-btn">Select a file</button>
+
+      <!-- Supported File -->
+    </div>
+  </flow-template>
+  <!-- Flow Template Ends -->
+</div>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <!-- Filters -->
+      <app-data-filter [dataChanged]="dataFilter.dataChangedObs" [accordions]="dataFilter.accordions"
+        [dataSource]="contacts" [customFilters]="customFilters" (filteredSource)="dataSourceListener($event)">
+      </app-data-filter>
+
+      <app-contacts-side-nav #sidebar (getClearFilter)="handleClearAllFilter()"
+        (getContactNameFilter)="handleContactNameFilter(sidebar.contactForm)"
+        (getDOBFilter)="handleDOBFilter(sidebar.dateOfBirthForm)"
+        (getCompanyFilter)="handleCompanyFilter(sidebar.companyForm)" (getMaritalStatusFilter)="
+          handleMaritalStatusFilter(sidebar.maritalStatusForm)
+        " (getGenderFilter)="handleGenderFilter(sidebar.genderForm)" (getCustomFilter)="handleCustomFilter($event)"
+        style="display: none;">
+      </app-contacts-side-nav>
+
+    </div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+
+            <!-- Assign Contact Modal -->
+            <div class="modal fade" id="assignContact" tabindex="-1" role="dialog" aria-labelledby="assignContact"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="assignContact">
+                      Assign Contact
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="pl-3">
+                      <form class="col-lg-12">
+                        <div class="form-group">
+                          <label for="" class="col-form-label">Sales Person<sup class="text-danger">*</sup></label>
+                          <br />
+                          <select (change)="onChangeSalesPerson()" [(ngModel)]="arrayContact.salesPersonId"
+                            name="salesPerson" class="gen-input browser-default form-control w-100" required>
+                            <option value="" disabled selected>Select SalesPerson</option>
+                            <option *ngFor="let member of salesPersonList" [value]="member.id">
+                              {{ member.name }}</option>
+                          </select>
+                        </div>
+
+                        <!-- Small Loader -->
+                        <div class="col-sm-12 col-lg-6 pt-2 pb-4" *ngIf="showSmallSpinner">
+                          <loading-spinner [spinnerType]="'fadingCircle'" [spinnerStyle]="{
+                    margin: '15px auto',
+                    left: '50%'
+                  }">
+                          </loading-spinner>
+                        </div>
+
+                        <!-- Show Notification: no team(s) available for salesPerson -->
+                        <div class="row col-sm-12 col-lg-12 pt-2"
+                          *ngIf="(arrayContact.salesPersonId !== 0 && !showSmallSpinner && teamList?.length == 0)">
+                          <p class="text-danger">No team(s) available fo this SalesPerson.
+                            <br>
+                            Kindly add SalesPerson to a team and try again!</p>
+                        </div>
+
+                        <div class="form-group" *ngIf="
+                  arrayContact.salesPersonId !== 0 &&
+                  !showSmallSpinner &&
+                  teamList.length > 0
+                ">
+                          <label class="col-form-label">Teams<sup class="text-danger">*</sup></label>
+                          <br />
+                          <select [(ngModel)]="arrayContact.teamId" name="team"
+                            class="gen-input browser-default form-control w-100" required>
+                            <option selected disabled value="">Select Team</option>
+                            <option *ngFor="let team of teamList" [value]="team.teamID">{{ team.teamName }}</option>
+                          </select>
+                        </div>
+                      </form>
+                      <!-- hidden-->
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#assignContact">Assign
+                          Target</a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" [hidden]="loadingBtn" class="fin-sec-btn" data-dismiss="modal">
+                      Close
+                    </button>
+                    <button type="button" class="fin-pry-btn" (click)="assignContact()"
+                      [disabled]="(arrayContact.salesPersonId === 0 || arrayContact.teamId === 0 || loadingBtn || showSmallSpinner)"
+                      [ladda]="loadingBtn" data-style="slide-left">
+                      Assign
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Assign Contact Modal End-->
+
+            <!-- Import Contact Modal -->
+            <div class="modal fade" id="importContact" tabindex="-1" role="dialog" aria-labelledby="importContact"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="importContact">
+                      Import Contact
+                    </h5>
+                    <button type="button" id="closeImportModal" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div class="container-fluid py-3">
+                      <form id="file-upload-form" class="uploader">
+                        <input id="file-upload" type="file" (change)="onImportContact($event.target.files)"
+                          name="fileUpload" accept=".xlsx,.xls,.csv" />
+                        <label for="file-upload" id="file-drag file-upload" *ngIf="!loader.import.showSpinner">
+                          <div id="start">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            <p class="mb-4">Select a file or drag here</p>
+                            <div id="notimage" class="hidden">
+                              Please select an image
+                            </div>
+                            <span id="file-upload-btn" class="fin-pry-btn mb-4">Select a file</span>
+                          </div>
+                        </label>
+
+                        <label id="file-drag" *ngIf="loader.import.showSpinner">
+                          <div id="start" style="opacity: 0.1;">
+                            <i class="fa fa-download" aria-hidden="true"></i>
+                            <p class="mb-4">Select a file or drag here</p>
+                            <div id="notimage" class="hidden">
+                              Please select an image
+                            </div>
+                            <span id="file-upload-btn" class="fin-pry-btn">Select a file</span>
+                          </div>
+                          <!-- <loading-spinner [spinnerType]="'jsBin'" [spinnerStyle]="{ left: '45%', top: '45%' }">
+                          </loading-spinner> -->
+                          <!-- Import Loader -->
+                          <loading-spinner [spinnerType]="loader.import.spinnerType"
+                            [spinnerStyle]="loader.import.spinnerStyle">
+                          </loading-spinner>
+                          <!-- Import Loader End -->
+                        </label>
+                      </form>
+                      <div class="clear"></div>
+                    </div>
+                    <div class="container text-center" *ngIf="!loader.import.showSpinner">
+                      <br><br>
+                      <div class="py-2">
+                        <a href="https://sales.notchcx.io/samples/contacts_template.csv"><strong>Download sample
+                            template</strong></a>
+                      </div>
+                      <span>Supported file type: <strong>.csv </strong></span><br>
+                      <span>Max file size: <strong>1MB</strong></span>
+                    </div>
+                    <br><br>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Import Contact End-->
+          </div>
+
+          <!-- Hide content list while loading -->
+          <ng-template [ngIf]="!loader.showSpinner">
+            <div class="col-md-6 content-list-buttons">
+              <button *ngIf="genSer.isAuthorized('CLIENT_ACTIONS')" class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+              <button *ngIf="genSer.isAuthorized('CLIENT_ACTIONS')" class="fin-sec-btn" data-toggle="modal" data-target="#importContact">
+                IMPORT
+              </button>
+              <!-- <button class="fin-pry-btn" (click)="openTemplateById()">
+                IMPORT CONTACT
+              </button> -->
+              <button *ngIf="genSer.isAuthorized('CLIENT_ACTIONS')" class="fin-pry-btn" id="add-contact"
+                routerLink="/clients/create-contacts">
+                ADD CONTACT
+              </button>
+            </div>
+          </ng-template>
+          <!-- End Hide content list while loading -->
+        </div>
+
+        <!-- Contact Table -->
+        <ng-template [ngIf]="!loader.showSpinner">
+          <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+            [heads]="dataTable.heads" (feedback)="dataFeedBackObsListener($event)" [bodyrows]="contacts">
+          </app-datatable>
+        </ng-template>
+        <!-- Contact Table Ends -->
+
+        <!-- Loader -->
+        <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless" (actionState)="onActionState()"
+          *ngIf="loader.showSpinner">
+        </loading-spinner>
+        <!-- Loader Ends -->
+
+      </div>
+    </div>
+  </div>
+</div>

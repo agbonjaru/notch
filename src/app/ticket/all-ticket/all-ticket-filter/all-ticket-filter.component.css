@@ -1,0 +1,21 @@
+input[type=date]{
+    width: 100% !important;
+    border-radius: 0px;
+}
+input.form-control{
+    border: 1px solid lightgrey !important;
+    border-radius: 5px !important;
+    height: 25px !important;
+    width: 95% !important;
+    padding-left: 7px !important;
+    font-size: 13px !important;
+  }
+  .list-filter h2 button.create-filter-btn {
+    color: white !important;
+}
+.edit-icon{
+  font-size: 15px;
+  /* display: none; */
+  padding-top: 5px;
+  padding-right: 5px;
+}

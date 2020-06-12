@@ -1,0 +1,76 @@
+<div class="card agent-mentions" *ngIf="showAgentSuggestions">
+    <!-- <em class="pl-3"><em>Agents suggestions</em></p> -->
+     <div >
+       <ul class="list-group" >
+         <li (mouseover)="OnMouseOver(index)" (click)="selectAgentSug(agent)"  *ngFor="let agent of filteredsearchAgentList; let index = index"
+         class="list-group-item  {{index==0 ? 'active': ''}} " >
+           <span class="name">{{agent.name}}</span>
+           <span class="email">{{agent.email}}</span>
+         </li>
+       </ul>
+     </div>
+   </div>  
+   <div class="input_msg_write pt-4">
+     <!-- <div contenteditable="true"   [textContent]="noteValue" class="write_msg textarea"  placeholder="Notify agent or create note"
+     (input)="noteTyping($event)" >
+
+     </div> -->
+     <form (ngSubmit)="createNote()" >
+       <textarea (keydown.enter)="handleAgentClick($event)" ngModel [(ngModel)]="noteValue" class="write_msg textarea" name="noteMsg" placeholder="Notify agent or create note"
+           (input)="noteTyping($event)" [disabled]="selectedTicket.closed" >
+        </textarea>
+        <button *ngIf="!noteLoading"  class="msg_send_btn " type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+        <span  *ngIf="noteLoading" class="note-loading"><i class="fa fa-spinner fa-spin"></i></span>
+     </form>
+   </div>
+   <div class="chat-icons">
+       <ul>
+           <li data-toggle="modal" data-target="#showNotes"  (click)="viewNotes()" title="view notes"><button class="fin-sec-btn">View Notes</button></li>
+       </ul>
+   </div>
+
+
+     <!-- NoteList Modal -->
+  <div class="modal fade" id="showNotes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Notes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12" style="margin-top: 10px">
+                <div  style="width: 100%"> 
+                <ng-container *ngIf="notesList; else note_loading">
+                <ng-container *ngIf="notesList.length">
+                  <div  class="" style="margin-left: 25px;">
+                     <ul *ngFor="let note of notesList">
+                       
+                       <li>
+                         <span class="dot-icon"><i class="fa fa-circle"></i></span>
+                        <span class="ml-2 text-info">{{'@'+note.creatorName}}:</span> <span class="ml-1 multi-line" [innerHTML]="transformText(note.content)"></span>
+                      </li>
+                     </ul>
+                  </div>
+                  </ng-container>
+                  <ng-container *ngIf="!notesList.length">
+                    <h6 class="text-center">No Notes</h6>
+                </ng-container>
+              </ng-container>
+              <ng-template #note_loading>
+                <h6 class="text-center">Loading Notes...</h6>
+              </ng-template>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="fin-pry-btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

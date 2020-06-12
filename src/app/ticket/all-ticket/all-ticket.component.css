@@ -1,0 +1,27 @@
+.card-view{
+    cursor: pointer;
+}
+select.gen-input{
+    font-weight: 500;
+}
+/* .modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  @media (min-width: 992px){
+    .modal-lg {
+      max-width: 90%;
+    }
+  }
+   */
+  
+  nav.pagination{
+    background: white;
+    color: black;
+  }
+  .pagination li.active {
+    background-color: transparent;
+}

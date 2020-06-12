@@ -1,0 +1,74 @@
+<div class="feed-body-content">
+  <div class="feed-body-content" *ngIf="userNotes.length < 1">
+    <p class="feed-body-header" style="margin-top: 10px">No Note Available</p>
+  </div>
+  <div class="row" *ngFor="let note of userNotes">
+    <span *ngIf="!deleteLoading" class="col-md-2" style="padding-right: 0"><i class="fas fa-edit"
+        (click)="onViewNotes()"></i></span>
+    <h1 *ngIf="deleteLoading && note.id === id">Deleting .......<span><i class="fa fa-spinner fa-spin"></i></span></h1>
+    <span *ngIf="!deleteLoading" class="col-md-10" style="padding-left: 0;font-size: 14px">
+      <strong>
+        <span [innerHTML]="note.content | truncate:[25, ' ... ']"></span>
+      </strong>
+      <span class="feed-response">
+        <p data-toggle="modal" data-target="#viewNoteModal" (click)="onViewSingleNote(note.id)">View</p>
+        <p data-toggle="modal" data-target="#editNoteModal" (click)="onViewSingleNote(note.id)">Edit</p>
+        <p class="danger" (click)="onDeleteNote(note.id)">Delete</p>
+      </span>
+      <hr />
+    </span>
+  </div>
+</div>
+
+<!-- View Note Modal -->
+<div class="modal fade" id="viewNoteModal" tabindex="-1" role="dialog" aria-labelledby="viewNoteModal"
+  aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Note Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span style="overflow-wrap: break-word;" [innerHTML]="note.content"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- View Note Modal End-->
+
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editNoteModal" tabindex="-1" role="dialog" aria-labelledby="editNoteModal"
+  aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Note Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-container [formGroup]="editNoteForm">
+          <div class="editor-wrapper">
+            <fate-ui uiId="foo"></fate-ui>
+            <fate-input placeholder="Edit Note" formControlName="content" uiId="foo"></fate-input>
+          </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="closeNoteModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" [disabled]="(editNoteForm.invalid || showLoading)"
+          (click)="onEditNote(note.id)" data-dismiss="modal">
+          Save changes <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Note Modal End-->

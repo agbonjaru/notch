@@ -1,0 +1,11 @@
+  <div class="row" style="margin-left: auto; margin-right: auto">
+      <nav class="sub-nav">
+        <ul class="sub-nav-items-sales text-center">
+            <li *ngIf="gs.isAuthorized('TICKETS_DASHBOARD')"><a routerLink="/ticket/ticket-dashboard" routerLinkActive="active">Dashboard</a></li>
+            <li *ngIf="gs.isAuthorized('ALL_TICKETS')"><a routerLink="/ticket/all-ticket" routerLinkActive="active">All Tickets</a></li>
+            <li *ngIf="gs.isAuthorized('TICKETS_REPORTS')"><a routerLink="/ticket/ticket-reports" routerLinkActive="active">Client Service Reports</a></li>
+            <li *ngIf="gs.isAuthorized('AGENTS')"><a routerLink="/ticket/ticket-agents" routerLinkActive="active">Agents</a></li>
+            <li *ngIf="gs.isAuthorized('GROUPS')"><a routerLink="/ticket/ticket-groups" routerLinkActive="active">Groups</a></li>
+            </ul>
+      </nav>
+    </div>

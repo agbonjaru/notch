@@ -1,0 +1,200 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+
+          <div class="settings-header">
+            <h1>Edit Email Sequencing</h1>
+
+            <div *ngIf="editSequence == false">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" style="background: transparent;" id="email-seq-tab" data-toggle="tab"
+                    role="tab" aria-controls="call" aria-selected="false">
+                    {{sequenceName | uppercase}}
+                    <span class="pl-2 pt-1" (click)="editSequenceInput()" id="edit-role-name" style="display: inline;">
+                      <i class="far fa-edit"></i>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div *ngIf="editSequence == true" class="nav nav-tabs" style="padding-left: 30px;">
+              <form [formGroup]="editSequenceForm">
+                <div class="form-group">
+                  <div class="row">
+                    <div>
+                      <input type="text" formControlName="editSequenceName" class="form-control">
+                    </div>
+                    <div>
+                      <input type="hidden" formControlName="editSequenceId" class="form-control">
+                    </div>
+                    <div>
+                      <span class="pl-2 pt-1" (click)="updtaeSequencing()" id="save-role-name" style="display: inline;">
+                        <i class="far fa-save"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+          </div>
+
+          <div class="settings-label  show fade" id="email-seq" role="tabpanel" aria-labelledby="email-seq-tab">
+            <div class="row">
+              <div class="col-lg-12 col-sm-12 email-temp-nav">
+                <div class="row">
+                  <div class="col-md-4 col-sm-12">
+                    <a [routerLink]="['/settings/template-sequencing']" class="left">
+                      < Back </a> </div> <div class="col-md-4 col-sm-12">
+                        <p class="text-center m-auto"><b>3 Steps</b></p>
+                  </div>
+                  <div class="col-md-4 col-sm-12">
+                    <button type="button" class="fin-pry-btn right" data-toggle="modal" data-target="#ModalCenter">
+                      + Add Steps
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" style="padding-top: 30px;">
+
+                <div class="emailSeq-step" *ngFor="let mailSeq of allMailSequencebyId">
+                  Step {{mailSeq.position}}
+                  <div class="emailSeq-stepCard"
+                    [ngClass]="{'locked': mailSeq.position == '1', 'inactive-card': mailSeq.position > '1'}">
+                    <p>{{mailSeq.title}}</p>
+                    <span>
+                      <i *ngIf="mailSeq.position == '1'" class="fas fa-lock"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Add Sequence Steps Modal -->
+                <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle">New Sequence Steps</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+
+                      <div class="modal-body">
+                        <form [formGroup]="sequenceStepForm">
+                          <div class="form-group">
+                            <label class="col-form-label">Enter Sequence Step Title</label>
+                            <input formControlName="sequenceStepTitle" name="title" type="text" class="form-control">
+                          </div>
+
+                          <div class="">
+                            <div class="switch text-center">
+                              <span class="mb-2">
+                                <b>Send mail</b>
+                              </span>
+                              <br>
+                              <label>
+                                At intervals
+                                <input type="checkbox" (change)="getFrequency()" formControlName="sequenceStepFrequency"
+                                  checked class="browser-default">
+                                <span class="lever"></span> On specific day
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="col-form-label">Send on</label>
+                            <div class="d-flex">
+                              <input type="date" formControlName="sequenceStepDate" class="form-control notch"
+                                placeholder="Date">
+
+                              <input type="time" formControlName="sequenceStepTime" class="form-control"
+                                placeholder="Time">
+                            </div>
+                          </div>
+
+                          <div class="form-group" id="tunji">
+                            <label class="col-form-label">Send every</label>
+                            <div class="d-flex">
+                              <input type="number" formControlName="sequenceStepDays" class="form-control w-50"
+                                placeholder="2"> <span class="ml-2">days</span>
+                            </div>
+                          </div>
+                        </form>
+
+                        <form [formGroup]="sequenceStepTemplateForm">
+                          <div class="form-group">
+                            <div class="mail-compose-input">
+                              <fate-ui uiId="foo"></fate-ui>
+                              <fate-input style="height: 200px" uiId="foo" formControlName="sequenceStepTemplate">
+                              </fate-input>
+                            </div>
+                          </div>
+
+                          <button class="fin-sec-btn right use-temp-dropdwn mt-2" id="dropdownMenuLink8"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Use sms template
+                          </button>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink8">
+                            <ul>
+                              <li *ngFor="let allEmail of allEmail">
+                                <a class="dropdown-item" (click)="loadEmailById(allEmail.id)">{{allEmail.name}}</a>
+                              </li>
+                            </ul>
+
+                          </div>
+                        </form>
+                      </div>
+
+                      <div class="modal-footer">
+
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+
+                        <button type="button" (click)="submitSeq()" class="fin-pry-btn">Save</button>
+
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Sequence Steps Modal End-->
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6"
+                style="padding-top: 20px; border-left: 1px solid #dee2e6">
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

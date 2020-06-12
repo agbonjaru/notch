@@ -1,0 +1,151 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Invoice & Quotation Set up</h1>
+            <p>Easily customize all your invoices and quotation templates from the templates below.</p>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="invoice-temp-tab"
+                  data-toggle="tab" href="#invoice-temp" role="tab" aria-controls="email" aria-selected="true">Invoice
+                  Templates</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" style="background: transparent;" id="quotation-temp-tab"
+                  data-toggle="tab" href="#quotation-temp" role="tab" aria-controls="call"
+                  aria-selected="false">Quotation Templates</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="settings-label tab-pane fade show active" id="invoice-temp" role="tabpanel"
+            aria-labelledby="invoice-temp-tab">
+            <div class="row">
+              <div class="col-md-12 pt-3">
+                <p class="text-center">Simply select Invoice Template to use.
+                  <br>
+                  Click to view invoice template and then select how you intend to use it.</p>
+                <!-- <p>{{templatePayload.invoiceTemplateId}}</p> -->
+              </div>
+            </div>
+            <div class="container">
+              <div class="row pt-4">
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.invoiceTemplateId" class="custom-control-input"
+                      id="invoiceTemplateOne" name="defaultExampleRadios" [value]=1>
+                    <label class="custom-control-label" for="invoiceTemplateOne">Use this invoice template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/invoice1.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.invoiceTemplateId" class="custom-control-input"
+                      id="invoiceTemplateTwo" name="defaultExampleRadios" [value]=2>
+                    <label class="custom-control-label" for="invoiceTemplateTwo">Use this invoice template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/invoice2.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.invoiceTemplateId" class="custom-control-input"
+                      id="invoiceTemplateThree" name="defaultExampleRadios" [value]=3>
+                    <label class="custom-control-label" for="invoiceTemplateThree">Use this invoice template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/invoice3.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-sm-12 text-center">
+                <button type="button" (click)="onSubmitInvoice()"
+                  [disabled]="((!templatePayload.invoiceTemplateId) || btnLoading)" [ladda]="btnLoading"
+                  data-style="slide-right" class="fin-pry-btn expand-btn mt-5">
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-label tab-pane fade" id="quotation-temp" role="tabpanel"
+            aria-labelledby="quotation-temp-tab">
+            <div class="row">
+              <div class="col-md-12 pt-3">
+                <p class="text-center">Simply select Quotation Template to use.
+                  <br>
+                  Click to view quote template and then select how you intend to use it.</p>
+                <!-- <p>{{templatePayload.quotationTemplateId}}</p> -->
+              </div>
+            </div>
+
+            <div class="container">
+              <div class="row pt-4">
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.quotationTemplateId" class="custom-control-input"
+                      id="quotationTemplateOne" name="quotationTemplateDefault" [value]=1>
+                    <label class="custom-control-label" for="quotationTemplateOne">Use this quote template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/quote1.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.quotationTemplateId" class="custom-control-input"
+                      id="quotationTemplateTwo" name="quotationTemplateDefault" [value]=2>
+                    <label class="custom-control-label" for="quotationTemplateTwo">Use this quote template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/quote2.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" [(ngModel)]="templatePayload.quotationTemplateId" class="custom-control-input"
+                      id="quotationTemplateThree" name="quotationTemplateDefault" [value]=3>
+                    <label class="custom-control-label" for="quotationTemplateThree">Use this quote template for
+                      all users</label>
+                  </div>
+                  <span class="invoice-card">
+                    <img src="assets/img/quote3.png" class="img-fluid" alt="">
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-sm-12 text-center">
+                <button type="button" (click)="onSubmitQuotation()"
+                  [disabled]="((!templatePayload.quotationTemplateId) || btnLoading)" [ladda]="btnLoading"
+                  data-style="slide-right" class="fin-pry-btn expand-btn mt-5">
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

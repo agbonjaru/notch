@@ -1,0 +1,7 @@
+<app-datatable
+[dataChanged]="dataTable.dataChangedObs"
+[options]="dataTable.options"
+[heads]="dataTable.heads"
+(feedback)="dataFeedBackObsListener($event)"
+[bodyrows]="dealList"
+></app-datatable>

@@ -1,0 +1,119 @@
+/* .container {
+  width: 1180px;
+  margin-top: 3em;
+} */
+#accordion .panel {
+  border-radius: 0;
+  border: 0;
+  margin-top: 0px;
+}
+
+#accordion a {
+  display: block;
+  padding: 10px 15px;
+  border-bottom: 1px solid #2e84c6;
+  text-decoration: none;
+}
+
+#accordion .panel-title {
+  /* font-size: 1.25rem !important; */
+  font-size: 1.05rem !important;
+}
+
+#accordion .panel-heading a.collapsed:hover,
+#accordion .panel-heading a.collapsed:focus {
+  background-color: #2e84c6;
+  color: white;
+  transition: all 0.2s ease-in;
+}
+
+#accordion .panel-heading a.collapsed:hover::before,
+#accordion .panel-heading a.collapsed:focus::before {
+  color: white;
+}
+
+#accordion .panel-heading {
+  padding: 0;
+  border-radius: 0px;
+  font-size: 18px;
+  text-align: left;
+}
+
+#accordion .panel-heading a:not(.collapsed) {
+  color: white;
+  background-color: #2e84c6;
+  transition: all 0.2s ease-in;
+}
+
+/* Add Indicator fontawesome icon to the left */
+#accordion .panel-heading .accordion-toggle::before {
+  font-family: 'FontAwesome';
+  content: '\f067';
+  /* content: '\f00d'; */
+  float: left;
+  color: white;
+  font-weight: lighter;
+  transform: rotate(0deg);
+  transition: all 0.2s ease-in;
+  margin-right: 10px;
+}
+
+#accordion .panel-heading .accordion-toggle.collapsed::before {
+  color: #444;
+  transform: rotate(-135deg);
+  transition: all 0.2s ease-in;
+}
+
+/* MODAL */
+.modal-dialog-slideout {
+  /* min-height: 20%; */
+  /* background: #fff; */
+  margin: 0 0 0 auto;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.modal-dialog-slideout .modal-content {
+  border: 0;
+  border-radius: 0.125rem !important;
+  /* width: 92%; */
+  /* height: 60%; */
+}
+
+.modal-dialog-slideout .modal-header,
+.modal-dialog-slideout .modal-footer {
+  height: 69px;
+  display: block;
+}
+
+.modal-dialog-slideout .modal-header h5 {
+  float: left;
+}
+
+.modal.fade .modal-dialog.modal-dialog-slideout {
+  -webkit-transform: translate(100%, 0)scale(1);
+  transform: translate(100%, 0)scale(1);
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slideout .modal-body {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modal.fade.show .modal-dialog.modal-dialog-slideout {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+  display: flex;
+  align-items: stretch;
+  -webkit-box-align: stretch;
+  /* height: 100%; */
+}
+
+.modal .modal-dialog-slideout .gen-input2 {
+  padding: 15px;
+}
+
+.modal .modal-dialog-slideout .ngx-dropdown-button {
+  padding: 16px !important;
+}

@@ -1,0 +1,51 @@
+.currency-table {
+    border: 1px solid #dddddd;
+}
+
+.currency-table thead {
+    display: block;
+
+
+    background-color: #dddddd;
+    font-size: 1.05rem;
+    font-weight: bold;
+}
+
+
+.currency-table tbody {
+    display: block;
+
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.currency-table td {
+    display: inline-block;
+    padding: 5px 10px;
+}
+
+.currency-table tr {
+    display: block;
+    width: 100%;
+}
+
+.currency-table tr:last-child {
+    border-bottom: none;
+}
+
+.currency-table td:nth-child(even) {
+    width: 60%;
+}
+
+.currency-table td:nth-child(odd) {
+    width: 40%
+}
+
+.currency-table input {
+    box-sizing: border-box;
+    border: 1px solid #dddddd;
+    height: auto;
+    width: 100%;
+    padding: 5px 10px;
+    margin: 0;
+}

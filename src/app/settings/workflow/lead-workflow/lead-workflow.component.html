@@ -1,0 +1,155 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Lead Workflow</h1>
+            <p>Lead Workflow is always either <b>Cold, Warm or Hot</b></p>
+          </div>
+          <div *ngIf="workflowList" class="row">
+            <div class="col-xl-4 col-md-12">
+              <div class="temperature-card">
+                <div class="temp-card-header">
+                  <h3 class="fin-blue">Cold</h3>
+                </div>
+                <div class="temp-card-body">
+
+                  <div *ngFor="let cold of workflowList.cold" class="lead-options d-flex form-group">
+                    <p class="m-0 role-name-edit">{{cold.name}}</p>
+                    <span (click)="openUpdateStep(cold)" data-toggle="modal" data-target="#addStep" class="pl-3 edit-role-name">
+                      <i class="far fa-edit"></i>
+                    </span>
+                    <span (click)="deleteStep(cold)" class="pl-2 hov-pointer trash"><i class="fas fa-trash"></i></span>
+                  </div>
+                  <a (click)="openAddStep('cold')" data-toggle="modal" data-target="#addStep" class="lw-add-btn">+ Add Step</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-12">
+              <div class="temperature-card">
+                <div class="temp-card-header">
+                  <h3 class="orange-text">Warm</h3>
+                </div>
+                <div class="temp-card-body">
+                  <div *ngFor="let warm of workflowList.warm" class="lead-options d-flex form-group">
+                    <p class="m-0">{{warm.name}}</p>
+                    <span (click)="openUpdateStep(warm)" data-toggle="modal" data-target="#addStep" class="pl-3 edit-role-name"><i class="far fa-edit"></i></span>
+                    <span (click)="deleteStep(warm)" class="pl-2 hov-pointer trash"><i class="fas fa-trash"></i></span>
+                  </div>
+                  <a (click)="openAddStep('warm')" data-toggle="modal" data-target="#addStep" class="lw-add-btn">+ Add Step</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-12">
+              <div class="temperature-card">
+                <div class="temp-card-header">
+                  <h3 class="text-danger">Hot</h3>
+                </div>
+                <div class="temp-card-body">
+                  <div *ngFor="let hot of workflowList.hot" class="lead-options d-flex form-group">
+                    <p class="m-0">{{hot.name}}</p>
+                    <span (click)="openUpdateStep(hot)" data-toggle="modal" data-target="#addStep" class="pl-3 edit-role-name"><i class="far fa-edit"></i></span>
+                    <span (click)="deleteStep(hot)" class="pl-2 hov-pointer trash"><i class="fas fa-trash"></i></span>
+                  </div>
+                  <a (click)="openAddStep('hot')" data-toggle="modal" data-target="#addStep" class="lw-add-btn">+ Add Step</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!workflowList">
+              <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+          </div>
+<!-- 
+          <div class="row">
+            <div class="col-md-8 m-auto">
+              <form action="">
+                <div class="form-group pt-3" id="welcome-by-email">
+                  <h4>Enter Welcome mail</h4>
+                  <textarea name="" class="emoji1" id="txtEditor4" cols="30" rows="10">
+                                                  Enter mail here...
+                                  </textarea>
+                  <button class="fin-pry-btn right mt-2 ml-2">Send
+                  </button>
+                  <button class="fin-sec-btn right mt-2" id="dropdownMenuLink9" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#">Use email template
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink9">
+                    <a class="dropdown-item" href="#">Client welcome mail</a>
+                    <a class="dropdown-item" href="#">Invoice overdue mail</a>
+                    <a class="dropdown-item" href="#">Your head is not correct mail</a>
+                  </div>
+                </div>
+                <div class="form-group pt-3" id="welcome-by-sms">
+                  <h4>Enter Welcome SMS</h4>
+                  <textarea name="" class="emoji1" id="txtEditor2" cols="30" rows="10">
+                                                  Enter SMS here...
+                                           </textarea>
+                  <button class="fin-pry-btn right mt-2 ml-2">Send
+                  </button>
+                  <button class="fin-sec-btn right mt-2" id="dropdownMenuLink8" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" href="#">Use sms template
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink8">
+                    <a class="dropdown-item" href="#">Client welcome sms</a>
+                    <a class="dropdown-item" href="#">Invoice overdue sms</a>
+                    <a class="dropdown-item" href="#">Your head is not correct sms</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div> -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addStep" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Add/Update Step To {{category}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" [formGroup]="workflowForm" >
+        <div class="form-group">
+          <input  type="text"  class="form-control" formControlName="name"
+              name="step"  placeholder="Enter Step" required>
+        </div>  
+        <div class="ml-2 mb-2">
+          <div class="custom-control custom-checkbox ">
+            <input type="checkbox" class="custom-control-input" formControlName="convertsToDeal" id="dealID">
+            <label class="custom-control-label" for="dealID">Convert To Deal</label>
+          </div>
+          <div class="custom-control custom-checkbox mr-sm-2">
+            <input type="checkbox" class="custom-control-input" formControlName="convertsToClient" id="clientID">
+            <label class="custom-control-label" for="clientID">Convert To Client</label>
+          </div>
+        </div>
+
+      <div class="modal-footer">
+        <button *ngIf="!(workflowForm.value.id)" [disabled]="workflowForm.invalid || disBtn" (click)="addStep()" type="button" class="fin-pry-btn">
+          Save <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        <button *ngIf="(workflowForm.value.id)" [disabled]="workflowForm.invalid || disBtn" (click)="updateStep()" type="button" class="fin-pry-btn">
+          update <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

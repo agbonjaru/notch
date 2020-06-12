@@ -1,0 +1,228 @@
+<div class="tab-content company-within-inter">
+  <div class="contact-welcome tab-pane fade show active w-100 p-3 pt-0" id={{html_ids.email_area}} role="tabpanel"
+    aria-labelledby="email-tab">
+
+    <!--
+      DISCONNECTED SERVICES
+     -->
+    <div *ngIf="!user_data.service" class="email-overlay">
+      <div class="d-block w-100 text-center mb-4">Kindly connect your email account to begin sending emails</div>
+      <div class="d-flex">
+        <div *ngIf="!gmailConnected()" class="pr-2">
+          <button class="fin-sec-btn" (click)="requestAccessToken('gmail')" [disabled]="gmailConnecting">
+            <span><img src="/assets/img/gmail.svg" width="20" alt=""></span>
+            Connect Gmail
+            <span *ngIf="gmailConnecting"><span class="fa fa-spinner fa-spin"></span></span>
+          </button>
+        </div>
+
+        <div *ngIf="!officeConnected()" class="pr-2">
+          <button class="fin-sec-btn" (click)="requestAccessToken('office')" [disabled]="officeConnecting">
+            <span><img src="/assets/img/office.svg" width="16" alt=""></span>
+            <span>
+              Connect Office 365
+              <span *ngIf="officeConnecting"><span class="fa fa-spinner fa-spin"></span></span>
+            </span>
+          </button>
+        </div>
+
+        <div *ngIf="!imapConnected()">
+          <button class="fin-sec-btn" data-toggle="modal" data-target="#imap_form_modal">
+            <span><img src="/assets/img/imap.svg" width="16" alt=""></span>
+            <span>Connect IMAP</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--
+      CONNECTED SERVICES
+     -->
+    <div class="row d-block pl-3 pr-3" *ngIf="user_data.service">
+      <span class="float-right d-inline-block text-danger pl-2 is-clickable" (click)="revokeAccess()"> -
+        <b>Disconnect</b>
+      </span>
+
+      <span *ngIf="gmailConnected()" class=" d-inline-block float-right">
+        <span><img src="/assets/img/gmail.svg" width="20" alt=""></span>
+        <span class="d-inline pt-1 pl-1 text-success">
+          Gmail Connected
+          <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+        </span>
+      </span>
+
+      <span *ngIf="officeConnected()" class=" d-inline-block float-right">
+        <span><img src="/assets/img/office.svg" width="16" alt=""></span>
+        <span class="d-inline pt-1 pl-1 text-success">
+          Office 365 Connected
+          <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+        </span>
+      </span>
+
+      <span *ngIf="imapConnected()" class=" d-inline-block float-right">
+        <span><img src="/assets/img/imap.svg" width="20" alt=""></span>
+        <span class="d-inline pt-1 pl-1 text-success">
+          IMAP Connected
+          <span *ngIf="serviceDisconnecting"><span class="fa fa-spinner fa-spin"></span></span>
+        </span>
+      </span>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="input-group">
+          <div class="input-group-prepend is-clickable">
+            <div class="input-group-text hover-blue" data-toggle="modal" data-target="#email-lookup-modal">To:</div>
+          </div>
+          <input tabindex="1" name="to" class="form-control" type="text" value="{{currentlyOpenedMail?.from}}" autocomplete="off"
+            [(ngModel)]="emailHelper.inputTo">
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-group">
+          <input tabindex="2" type="text" value="{{currentlyOpenedMail?.subject}}" class="form-control"
+            [(ngModel)]="mailSubject" placeholder="Enter subject">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="input-group">
+          <div class="input-group-prepend is-clickable hover-blue">
+            <div class="input-group-text hover-blue" data-toggle="modal" data-target="#email-lookup-modal">Cc:</div>
+          </div>
+          <input tabindex="3" type="text" id={{html_ids.input_cc}} value="{{currentlyOpenedMail?.cc}}"
+            class="form-control" [(ngModel)]="emailHelper.inputCc"
+            placeholder="{{emailAnimations.determine_placeholder('cc', emailHelper)}}"
+            (input)="emailHelper.processInputText('selectedCcRecipients', 'inputCc')" autocomplete="off"
+            (keydown)="emailHelper.processInputText('selectedCcRecipients', 'inputCc', $event)"
+            (blur)="emailHelper.processInputResidue()"
+            >
+        </div>
+        <div id={{html_ids.input_cc_list}} class="recipient-list-wrapper">
+          <div *ngIf="emailAnimations.show_list('cc') " class="card shadow border-0 p-2">
+            <div class="w-100 p-1">
+              Selected recipients:
+              <span (click)="emailAnimations.hide_list($event, 'cc')" class="d-inline-block float-right is-clickable"><i
+                  class="fa fa-times"></i></span>
+            </div>
+            <span *ngIf="emailHelper.convertObjectToArray(emailHelper.selectedCcRecipients).length">
+              <span *ngFor="let toRecipient of emailHelper.convertObjectToArray(emailHelper.selectedCcRecipients)"
+              
+                class={{emailHelper.determineItemClass(toRecipient.is_valid)}}>
+                <span (click)="emailHelper.editSelectedRecipient(toRecipient.name, 'inputCc')"> {{toRecipient.name}} </span>
+                <span class="pl-1 is-clickable"
+                  (click)="emailHelper.removeRecipient('selectedCcRecipients', toRecipient.email)"> X
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="input-group">
+          <div class="input-group-prepend is-clickable">
+            <div class="input-group-text hover-blue" data-toggle="modal" data-target="#email-lookup-modal">Bcc:</div>
+          </div>
+          <input tabindex="4" type="text" id={{html_ids.input_bcc}} value="{{currentlyOpenedMail?.bcc}}"
+            class="form-control" [(ngModel)]="emailHelper.inputBcc" autocomplete="off"
+            placeholder="{{emailAnimations.determine_placeholder('bcc', emailHelper)}}"
+            (input)="emailHelper.processInputText('selectedBccRecipients', 'inputBcc')"
+            (keydown)="emailHelper.processInputText('selectedBccRecipients', 'inputBcc', $event)"
+            (blur)="emailHelper.processInputResidue()"
+            >
+        </div>
+        <div id={{html_ids.input_bcc_list}} class="recipient-list-wrapper">
+          <div *ngIf="emailAnimations.show_list('bcc') " class="card shadow border-0 p-2">
+            <div class="w-100 p-1">
+              Selected recipients:
+              <span (click)="emailAnimations.hide_list($event, 'bcc')"
+                class="d-inline-block float-right  is-clickable"><i class="fa fa-times"></i></span>
+            </div>
+            <span *ngIf="emailHelper.convertObjectToArray(emailHelper.selectedBccRecipients).length">
+              <span *ngFor="let toRecipient of emailHelper.convertObjectToArray(emailHelper.selectedBccRecipients)"
+                class={{emailHelper.determineItemClass(toRecipient.is_valid)}}>
+                <span (click)="emailHelper.editSelectedRecipient(toRecipient.name, 'inputBcc')"> {{toRecipient.name}} </span>
+                <span class="pl-1 is-clickable"
+                  (click)="emailHelper.removeRecipient('selectedBccRecipients', toRecipient.email)"> X
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="editor-wrapper">
+          <quill-editor [(ngModel)]="mailBody" class="quill-editor" format="text" [modules]="emailAnimations.modules"
+            [preserveWhitespace]="true" placeholder="Type mail here"></quill-editor>
+        </div>
+      </div>
+    </div>
+    <div class="row pt-2" *ngIf="emailHelper.convertObjectToArray(attachmentHelper.selectedAttachments).length">
+      <div class="col-12">
+        <div class="attachment-list">
+          <span *ngFor="let attachment of emailHelper.convertObjectToArray(attachmentHelper.selectedAttachments)"
+            class="d-inline-block p-2 mr-2 bg-primary text-white">
+            {{attachment.name}} <span class="d-inline-block is-clickable pl-3"
+              (click)="attachmentHelper.removeAttachment(attachment.name)">X</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="formMessage.class">
+      <div class="col-12">
+        <div class={{formMessage.class}}>
+          {{formMessage.message}}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <span class="modal-footer-btn float-right">
+          <button *ngIf="has_sales_item" class="btn border border-info pl-2 mr-2 fin-sec-btn" (click)="removeSalesItem()">
+            REMOVE {{ sales_item.type.toUpperCase() }}
+          </button>
+          <button class="btn border border-info mr-2 fin-sec-btn" (click)="resetForm()">
+            DISCARD
+          </button>
+          <button class="btn btn-primary fin-pry-btn" (click)="sendMail()" [disabled]="mailSending">
+            SEND
+            <span *ngIf="mailSending"><span class="fa fa-spinner fa-spin"></span></span>
+          </button>
+        </span>
+
+        <div *ngIf="!has_sales_item" class=" d-inline-block float-right">
+          <input type="file" name="email-attachment" id={{html_ids.file_upload_btn}} class="d-none"
+            (change)="attachmentHelper.uploadFile($event.target.files)" />
+          <span (click)="openFileUploadDialog()">
+            <i class="fa fa-paperclip fa-lg is-clickable mr-3 mt-3"></i>
+          </span>
+        </div>
+        <div *ngIf="!has_sales_item" class="input-group float-left mr-3 w-65 pr-2 pt-1">
+          <div class="input-group-prepend">
+            <div class="input-group-text">DEAL:</div>
+          </div>
+          <input type="text" class="form-control" id={{html_ids.email_deal}} [(ngModel)]="emailDeals.mailDeal"
+            placeholder="Type deal name..." (input)="emailDeals.getSuggestions($event.target.value)"
+            autocomplete="off" />
+          <!--  -->
+          <div *ngIf="emailDeals.suggested_deals.length > 0" class="card shadow deal-search-result-list">
+            <div *ngFor="let suggestedDeal of emailDeals.suggested_deals"
+              class="p-2 is-clickable text-left email-search-result-list-item"
+              (click)="emailDeals.selectDeal(suggestedDeal)">
+              {{suggestedDeal.name}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="has_sales_item" class="input-group float-left mr-3 w-50 pr-2 pt-1">
+          <div class="input-group-prepend">
+            <div class="input-group-text">{{sales_item.type.toUpperCase()}}:</div>
+          </div>
+          <div class="form-control h-100">
+            {{sales_item.id}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

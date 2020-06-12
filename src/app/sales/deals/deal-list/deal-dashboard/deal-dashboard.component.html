@@ -1,0 +1,84 @@
+<div class="br-pagebody"  style="padding: 0px 43px;">
+  <div class="row row-sm">
+
+    <div class="col-sm-3">
+      <div class="rounded overflow-hidden pb-3" style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <!-- <i class="fa fa-credit-card" aria-hidden="true"></i> -->
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10 text-secondary" style="font-size: 18px">
+            Total Deals
+            </p>
+            <p class="tx-24 mg-b-0 lh-1" style="font-size: 25px">
+              {{dealList.length}}
+            </p>
+            <span class="tx-11 mt-5" style="font-size: 16px">{{dashBoardResult?.noOfInvoices}}
+            </span>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 text-secondary" style="font-size: 30px"></i>
+      </div>
+    </div><!-- col-3 -->
+
+    <div class="col-sm-3 ">
+      <div class=" rounded overflow-hidden pb-3" style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold tx-teal mg-b-10" style="font-size: 18px">
+           Deals Won
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{dealWon}}
+            </p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-teal" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3" style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1  tx-semibold tx-danger  mg-b-10" style="font-size: 18px">
+              Deals Lost
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px">
+              {{dealLost}}</p>
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-danger" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+
+    <div class="col-sm-3 ">
+      <div class="rounded overflow-hidden pb-3" style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <i class="ion ion-monitor tx-60 lh-0 tx-white op-7"></i>
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-primary tx-semibold  mg-b-10" style="font-size: 18px">
+            Pipeline Value
+            </p>
+            <p class="tx-24  mg-b-0 lh-1" style="font-size: 25px" [innerHTML]="totalPipelineVal | currency:baseCun:'symbol-narrow'  " ></p>
+
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 tx-primary" style="font-size: 30px"></i>
+        <!-- <div id="ch2" class="ht-50 tr-y-1"></div> -->
+      </div>
+    </div>
+
+  </div>
+  <app-dash-stats></app-dash-stats>
+<br>
+  <div class="eng-prediction p-1 h-auto dp-item"  style="box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.12);border: none">
+    <app-pipeline [showWorkflowList]="true" [moveDeal]="true" [teamID]="teamId" (updateDashboard)="updateProcess($event)"></app-pipeline>
+ 
+  </div>
+
+
+</div>

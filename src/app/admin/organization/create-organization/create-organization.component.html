@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8 left-div">
+      <div class="login-header">
+        <a href="" id="logo-container"><img src="/assets/img/finultimate-logo.svg" width="240" alt=""></a>
+      </div>
+
+
+      <h2 class="">Organization Setup</h2>
+      <div class="pt-4">
+
+      </div>
+      <div *ngIf="createOrgStatus.error.status">
+        <h6 class="text-danger">{{createOrgStatus.error.msg}}</h6>
+      </div>
+      <form class="form" [formGroup]="createOrgForm">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="companyName">Organization Name<sup class="text-danger">*</sup></label>
+            <br>
+            <input type="text" id="companyName" name="companyName" formControlName="companyName"
+              class="gen-input browser-default">
+            <div class="mt-2" *ngIf="(f.companyName.dirty || f.companyName.touched) && f.companyName.invalid">
+              <span class="text-danger" style="font-size: 13px;" *ngIf="f.companyName.errors?.required">
+                Organization name is required.
+              </span>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="companyEmail">Organization Email<sup class="text-danger">*</sup></label>
+            <br>
+            <input type="email" id="companyEmail" name="companyEmail" formControlName="companyEmail"
+              class="gen-input browser-default">
+            <div class="mt-2" *ngIf="(f.companyEmail.dirty || f.companyEmail.touched) && f.companyEmail.invalid">
+              <span class="text-danger" style="font-size: 13px;" *ngIf="f.companyEmail.errors?.required">
+                Organization email is required.
+              </span>
+              <span class="text-danger" style="font-size: 13px;" *ngIf="f.companyEmail.errors?.pattern">
+                Please enter a valid email (e.g. staff@company.com)
+              </span>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="industry">Industry<sup class="text-danger">*</sup></label>
+            <br>
+            <select formControlName="industry" class="gen-input browser-default form-control" id="industry">
+              <option value="" disabled selected>Select industry</option>
+              <option *ngFor="let industry of industries" [value]="industry">{{industry}}</option>
+            </select>
+            <div class="mt-2" *ngIf="(f.industry.dirty || f.industry.touched) && f.industry.invalid">
+              <span class="text-danger" style="font-size: 13px;" *ngIf="f.industry.errors?.required">
+                Select industry.
+              </span>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <label for="timezone">Timezone<sup class="text-danger">*</sup></label>
+            <br>
+            <select formControlName="timezone" class="gen-input browser-default form-control" id="timezone">
+              <option value="" disabled selected>Select timezone</option>
+              <option value="-3">GMT - 3</option>
+              <option value="-2">GMT - 2</option>
+              <option value="-1">GMT - 1</option>
+              <option value="1">GMT + 1</option>
+              <option value="2">GMT + 2</option>
+              <option value="3">GMT + 3</option>
+              <option value="4">GMT + 4</option>
+              <option value="5">GMT + 5</option>
+              <option value="6">GMT + 6</option>
+              <option value="7">GMT + 7</option>
+            </select>
+            <div class="mt-2" *ngIf="(f.timezone.dirty || f.timezone.touched) && f.timezone.invalid">
+              <span class="text-danger" style="font-size: 13px;" *ngIf="f.timezone.errors?.required">
+                Select Timezone.
+              </span>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+            <div class="custom-control custom-checkbox">
+              <input class="custom-control-input text-center" type="checkbox" checked="checkbox" name="default"
+                id="default" disabled>
+              <label class="custom-control-label" for="default">Set as default</label>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+        <div class="d-flex fgt-pswrd">
+          <button class="submit-button" type="button" (click)="handleOrganizationCreation()"
+            [disabled]="createOrgForm.invalid || loadingPage" [ladda]="loadingPage" data-style="slide-right">
+            CREATE ORGANIZATION
+          </button>
+        </div>
+
+      </form>
+    </div>
+    <div class="col-sm-4 login-bg hidden-xs hidden-sm signup-bg">
+      <h3>
+        A CRM that helps you <strong>really</strong> sell more
+      </h3>
+    </div>
+  </div>
+</div>

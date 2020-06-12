@@ -1,0 +1,71 @@
+<nav class="white-bg" role="navigation">
+  <div class="nav-wrapper">
+    <a id="logo-container" href="#" class="brand-logo hide-on-med-and-down">
+      <img src="/assets/img/finultimate-logo.svg" width="150px" alt="">
+    </a>
+  </div>
+</nav>
+
+<div class="content_2">
+  <div class="container">
+    <div class="space-60"></div>
+   
+    <div *ngIf="show.welcomePage" class="row">
+      <div class="col-lg-6 text-justify">
+        <h2 class="fin-pry-color">
+          Welcome!
+        </h2>
+        <h6 class="fw-600 mb-3">Notch Customer Experience</h6>
+        <br>
+        <p>
+          <span>
+            <b>An email has been sent to your registered email address - "{{userDetails ? userDetails.email : ''}}". Kindly verify your
+              email.</b>
+          </span>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <img src="../../../assets/img/notch-illustration.svg" alt="">
+      </div>
+    </div>
+    <ng-container *ngIf="show.confirmPage">
+    <div *ngIf="confirmStatus.success"  class="row" >
+      <div class="col-lg-6 text-justify">
+        <h2 class="fin-pry-color">
+          Verified!
+        </h2>
+        <h6 class="fw-600 mb-3">Notch Customer Platform</h6>
+        <span>
+          <br>
+          <p>
+            <b>
+              Your Email has been Verified. You have two options.
+            </b>
+            <br>
+            <b>
+              Kindly select one to proceed
+            </b>
+            <br>
+            <br>
+          </p>
+          <button class="fin-pry-btn" (click)="handleCreateOrganization()">Set up
+            organisation</button>
+          <button class="fin-sec-btn" routerLink="/login">Login</button>
+        </span>
+      </div>
+      <div class="col-md-6">
+        <img src="../../../assets/img/mail-checked.svg" alt="">
+      </div>
+    </div>
+    <div *ngIf="loading" class="row">
+      <div class="col-12 text-center">
+          <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+      </div>
+    </div>
+  </ng-container>
+
+
+  </div>
+
+
+</div>

@@ -1,0 +1,27 @@
+<div class="row row-sm">
+  <ng-container *ngIf="dataSource.length; else noData">
+    <div class="col-sm-3" *ngFor="let data of dataSource">
+      <div class="rounded overflow-hidden pb-3" style="background-color: white;box-shadow: -1px 9px 23px rgba(0, 0, 0, 0.1);">
+        <div class="pd-x-20 pd-t-20 d-flex align-items-center">
+          <!-- <i class="fa fa-credit-card" aria-hidden="true"></i> -->
+          <div class="mg-l-20">
+            <p class="tx-10 tx-spacing-1 tx-semibold mg-b-10 {{data.colorClass}}" style="font-size: 18px">
+            {{data.title}}
+            </p>
+            <p class="tx-24 mg-b-0 lh-1" style="font-size: 25px">
+              <span *ngIf="data.pipe==='currency'">{{data.figure | currency:baseCurrency:'symbol-narrow'}}</span>
+              <span *ngIf="!data.pipe">{{data.figure | number}}</span>
+            </p>
+            <!-- <span class="tx-11 mt-5" style="font-size: 16px">{{data?.noOfInvoices}}</span> -->
+          </div>
+        </div>
+        <i class="fa fa-signal float-right mr-4 {{data.colorClass}}" style="font-size: 30px"></i>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #noData>
+    <div class="col-12 text-center">
+      <h6>No Data</h6>
+    </div>
+  </ng-template>
+</div>

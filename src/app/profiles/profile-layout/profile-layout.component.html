@@ -1,0 +1,36 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+      <div class="col-md-12 settings-wrapper">
+          <header class="settings-header">
+              <!--<p>Atbtechsoft Company</p>-->
+
+              <h1>Profile Settings</h1>
+          </header>
+          <div class="row">
+              <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+                  <div class="left-nav-grp">
+                      <div class="nav-menu">
+                          <!--<div class="left-nav-header">-->
+                          <!--<p>GENERAL</p>-->
+                          <!--</div>-->
+                          <ul class="nav-menu1" style="border: none !important;">
+                              <li>
+                                  <a routerLink="/profile/user"  routerLinkActive="nav-menu-active">Personal Profile</a>
+                              </li>
+                              <li *ngIf="gs.isAuthorized('COMPANY_PROFILE')">
+                                  <a routerLink="/profile/company" routerLinkActive="nav-menu-active">Company Details</a>
+                              </li>
+                              <li>
+                                  <a routerLink="/profile/change-pwd" routerLinkActive="nav-menu-active">Change Password</a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+                <router-outlet></router-outlet>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

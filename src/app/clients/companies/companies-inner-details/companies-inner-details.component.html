@@ -1,0 +1,627 @@
+<div class="content-body-header">
+  <div class="content-body-nav col-md-12">
+    <ul>
+      <li>
+        <span><img src="../../../../assets/img/ribbon-blue.svg" alt=""></span>
+        <a (click)="toggleClass('about-contact', 'aboutDp')" class="about-contact-toggler about-within"> About Company
+          <span class="aboutDp dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li>
+        <span><img src="../../../../assets/img/ribbon-dark.svg" alt="#!" class="deals-within"></span><a
+          (click)="toggleClass('eng-prediction', 'contacts')">Engagement Predictions
+          <span class="contacts dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down"><span><img src="../../../../assets/img/ribbon-red.svg" alt=""></span>
+        <a (click)="toggleClass('viewDeals', 'deals')">Deals
+          <span class="deals dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li class="hide-on-med-and-down"><span><img src="../../../../assets/img/ribbon-blue.svg" alt=""></span>
+        <a (click)="toggleClass('addContact', 'contactDropdown')">Add Contacts
+          <span class="contactDropdown dp-icon" style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span>
+        </a>
+      </li>
+      <li id="dropdownMenuLink5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a href="#!">More
+          <span style="padding-left: 10px;">
+            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-down d-none"></i>
+          </span></a>
+      </li>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink5">
+        <a class="dropdown-item more-link" (click)="handleMoreButton('#contacts-tab')">Contacts</a>
+        <a class="dropdown-item more-link2" (click)="handleMoreButton('#attachments-tab')">Attachments</a>
+        <a class="dropdown-item more-link3" (click)="handleMoreButton('#subsidiaries-tab')">Subsidiaries</a>
+        <a class="dropdown-item more-link4" (click)="handleMoreButton('#tickets-tab')">Tickets</a>
+        <a class="dropdown-item more-link5" (click)="handleMoreButton('#quotes-tab')">Quotes</a>
+        <a class="dropdown-item more-link6" (click)="handleMoreButton('#invoice-tab')">Invoice</a>
+        <a class="dropdown-item more-link7" (click)="handleMoreButton('#salesorder-tab')">Sales
+          order</a>
+        <a class="dropdown-item more-link8" (click)="handleMoreButton('#targets-tab')">Targets</a>
+        <a class="dropdown-item more-link9" (click)="handleMoreButton('#creditmanagement-tab')">Credit management</a>
+        <a class="dropdown-item more-link10" (click)="handleMoreButton('#productsuggestion-tab')">Product
+          Suggestions</a>
+      </div>
+    </ul>
+  </div>
+</div>
+
+
+<section class="dropdown-list">
+
+  <!-- About Company -->
+  <div class="about-contact d-none dp-item">
+
+    <div *ngIf="!viewButtonStatus[1]">
+      <div>
+        <button *ngIf="!editMode" (click)="edit()" class="fin-sec-btn float-right m-2">Edit</button>
+        <button *ngIf="editMode" (click)="cancel()" class="fin-sec-btn float-right m-2">Cancel</button>
+        <button *ngIf="editMode" (click)="saveChanges()" class="fin-pry-btn float-right m-2">Save</button>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-6 col-md-6">
+          <span class="contact-detail-top">Name</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.name}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.name"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <span class="contact-detail-top">Phone Number</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.phoneNumber}}</span>
+          <input *ngIf="editMode" type="tel" name="phoneNumber" [(ngModel)]="companyDetails.phoneNumber"
+            class="gen-input browser-default" placeholder="(234)23456789" (keydown)="validateNumber($event)">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-6 col-md-6">
+          <span class="contact-detail-top">Company domain name</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.domainName}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.domainName"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <span class="contact-detail-top">Postal Code</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.postalCode}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.postalCode"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Email</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.email}}</span>
+          <input *ngIf="editMode" type="text" name="email" [(ngModel)]="companyDetails.email"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Fax</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.fax}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.fax"
+            class="gen-input browser-default">
+        </div>
+
+
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Website</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.website}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.website"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">VAT Number</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.vatNumber}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.vatNumber"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Registration Number</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.regNumber}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.regNumber"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Registration Date</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyRegDateArranged}}</span>
+          <!-- <input *ngIf="editMode" type="date" name="cname" [(ngModel)]="companyDetails.regDate"
+            class="gen-input browser-default"> -->
+          <input *ngIf="editMode" type="text" [(ngModel)]="companyDetails.regDate" name="regDate"
+            class="gen-input browser-default" placeholder="dd/mm/yyyy" bsDatepicker [bsConfig]="bsConfig"
+            [maxDate]="today" />
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Tin</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.tin}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.tin"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Country</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.country}}</span>
+          <!-- <input type="text" name="cname" [(ngModel)]="companyDetails.country" class="gen-input browser-default"> -->
+          <ngx-select-dropdown class="styleFool" [config]="countryConfig" [options]="nations | async" [multiple]="false"
+            *ngIf="editMode" [(ngModel)]="companyDetails.country" id="ngx-width-75">
+          </ngx-select-dropdown>
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">State</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.state}}</span>
+          <!-- <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.state"
+            class="gen-input browser-default"> -->
+          <ngx-select-dropdown *ngIf="editMode" class="styleFool" [config]="stateConfig" [options]="states | async"
+            [multiple]="false" [(ngModel)]="companyDetails.state" id="ngx-width-75">
+          </ngx-select-dropdown>
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">City</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.city}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.city"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Address</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.address}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.address"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Year Of Establishment</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.yearOfEstablishment}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.yearOfEstablishment"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Year Of Incorporation</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.yearOfIncorporation}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.yearOfIncorporation"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Parent Company</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.parentCompany}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.parentCompany"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Subsidiaries</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.subsidiaries}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.subsidiaries"
+            class="gen-input browser-default">
+        </div>
+
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Location</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.location}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.location"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Staff Strength</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.staffStrength}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.staffStrength"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Industry</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.industry}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.industry"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Organisation Type</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.organisationType}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.organisationType"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Business Type</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.businessType}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.businessType"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Facebook</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.facebook}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.facebook"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">LinkedIn</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.linkedIn}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.linkedIn"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Twitter</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.twitter}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.twitter"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Key Contact</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.keyContact}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.keyContact"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Trade Address</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.tradeAddress}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.tradeAddress"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">TradeMark</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.tradeMark}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.tradeMark"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Postal Address</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.postalAddress}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.postalAddress"
+            class="gen-input browser-default">
+        </div>
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Vision Statement</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.visionStatement}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.visionStatement"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+      <div class="about-contact-row">
+        <div class="col-sm-8 col-md-6">
+          <span class="contact-detail-top">Mission Statement</span>
+          <br>
+          <span *ngIf="!editMode" class="contact-detail">{{companyDetails?.missionStatement}}</span>
+          <input *ngIf="editMode" type="text" name="cname" [(ngModel)]="companyDetails.missionStatement"
+            class="gen-input browser-default">
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-12 text-right">
+      <button (click)="handleChangeView()" class="fin-sec-btn m-2">{{viewButtonStatus[0]}}</button>
+    </div>
+  </div>
+  <!-- About Company -->
+
+
+  <!--Engagement prediction content-->
+  <div class="eng-prediction d-none p-3 h-auto dp-item">
+    <div class="text-center p-3">
+      <h6 class="m-auto fs-15"><span class="fin-green">Best Medium to Engage: </span><span class="text-danger">
+          Call</span></h6>
+    </div>
+    <br>
+    <div class="row">
+      <!--Call engagement-->
+      <div class="col-lg-6 col-md-12">
+        <app-chart [data]="callsInfo.data" [label]="callsInfo.labels" [title]="callsInfo.title"></app-chart>
+      </div>
+      <!--Meetings engagement-->
+      <div class="col-lg-6 col-md-12">
+        <app-chart [data]="meetingInfo.data" [label]="meetingInfo.labels" [title]="meetingInfo.title"></app-chart>
+      </div>
+      <!--Meetings engagement end-->
+    </div>
+    <hr>
+    <!--engagement tables call-->
+    <div class=" pl-1 pr-1">
+      <div class="w-100 pt-3 pr-3 pl-3 pb-1">
+        <div class="pb-3">
+          <h6 class="m-auto fs-15"><span class="fin-green">Best Time to Call: </span><span class="text-danger">Thursday,
+              2-4PM</span></h6>
+        </div>
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm w-100 eng-table" cellspacing="0"
+          width="100%">
+          <thead>
+            <tr>
+              <th class="th-sm fin-green">Week day
+
+              </th>
+              <th class="th-sm fin-green">8-10AM
+
+              </th>
+              <th class="th-sm fin-green">10-12PM
+
+              </th>
+              <th class="th-sm fin-green fin-green">12-2PM
+
+              </th>
+              <th class="th-sm fin-green">2-4PM
+
+              </th>
+              <th class="th-sm fin-green">
+                4-6PM
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-row">
+              <td>Wednesday</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>
+                0%
+              </td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>0%</td>
+              <td>
+                100%
+                <br>
+                <span class="text-yellow fs-10">1 out of 1</span>
+              </td>
+              <td>0%</td>
+              <td title="Best time to call">
+                100%
+                <br>
+                <span class="text-yellow fs-10">1 out of 1</span>
+              </td>
+              <td>
+                0%
+              </td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>
+                0%
+              </td>
+            </tr>
+
+        </table>
+      </div>
+
+    </div>
+    <!--engagement tables call end-->
+    <hr>
+    <!--engagement tables visit-->
+    <div class=" pl-1 pr-1">
+      <div class="w-100  pt-3 pr-3 pl-3 pb-1">
+        <div class="pb-3">
+          <h6 class="m-auto fs-15"><span class="fin-green">Best Time to Visit: </span><span
+              class="text-danger">N/A</span></h6>
+        </div>
+        <table id="dtBasicExample2" class="table table-striped table-bordered table-sm w-100 eng-table" cellspacing="0"
+          width="100%">
+          <thead>
+            <tr>
+              <th class="th-sm fin-green">Week day
+
+              </th>
+              <th class="th-sm fin-green">8-10AM
+
+              </th>
+              <th class="th-sm fin-green">10-12PM
+
+              </th>
+              <th class="th-sm fin-green fin-green">12-2PM
+
+              </th>
+              <th class="th-sm fin-green">2-4PM
+
+              </th>
+              <th class="th-sm fin-green">
+                4-6PM
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-row">
+              <td>Wednesday</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>
+                0%
+              </td>
+            </tr>
+            <tr>
+              <td>Thursday</td>
+              <td>0%</td>
+              <td>
+                0%
+                <!--<br>-->
+                <!--<span class="text-yellow fs-10">1 out of 1</span>-->
+              </td>
+              <td>0%</td>
+              <td>
+                0%
+                <!--<br>-->
+                <!--<span class="text-yellow fs-10">1 out of 1</span>-->
+              </td>
+              <td>
+                0%
+              </td>
+            </tr>
+            <tr>
+              <td>Friday</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>0%</td>
+              <td>
+                0%
+              </td>
+            </tr>
+
+        </table>
+      </div>
+
+    </div>
+    <!--engagement tables visit end-->
+  </div>
+  <!--Engagement prediction content end-->
+
+
+  <!--Deals content-->
+  <div class="viewDeals d-none dp-item">
+    <div class="about-contact-row" *ngFor="let deal of companyDeals ">
+      <div class="col-md-2">
+        <span class="contact-detail-top">Deal Name</span>
+        <br>
+        <span class="contact-detail">{{deal.name}}</span>
+      </div>
+      <div class="col-md-2">
+        <span class="contact-detail-top">Deal Stage</span>
+        <br>
+        <span class="contact-detail">{{deal.currStage}}</span>
+      </div>
+      <div class="col-md-2">
+        <span class="contact-detail-top">Deal Source</span>
+        <br>
+        <span class="contact-detail">{{deal.source}}</span>
+      </div>
+      <div class="col-md-2">
+        <span class="contact-detail-top">Deal Worth</span>
+        <br>
+        <span class="contact-detail">{{deal.amount | currency:'NGN '}}</span>
+      </div>
+      <div class="col-md-2 text-right mt-2 pt-1">
+        <a class="" style="color: #2C85C7;" [routerLink]="['/sales/deals-view/', deal.code]">
+          View deal
+        </a>
+      </div>
+    </div>
+  </div>
+  <!--Deals content end-->
+
+  <!--Add Contact content-->
+  <div class="addContact d-none dp-item">
+    <!-- Add Contact Page -->
+
+    <button (click)="handleAddContact()" class="fin-pry-btn float-right m-2">Save</button>
+    <div class="row" style="padding: 0 22px">
+
+      <div class="col-md-6">
+        <form>
+          <div class="row">
+
+            <div class="col-md-12 col-sm-12 create-deal-right" style="margin-top:10px !important;">
+              <label>Add Contact to Company</label>
+              <br>
+              <ngx-select-dropdown class="styleFool" [config]="config" [(ngModel)]="addedContacts"
+                [options]="contactDropdownOptions | async" [multiple]="true" name="contacts">
+              </ngx-select-dropdown>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Add Contact content end-->
+
+
+</section>
+
+
+<app-integration [clientID]="companyClientId"></app-integration>
+
+
+<!--body for contacts, attachments, etc,-->
+<app-companies-more [selectedSection]="locationInfo" [companyClientId]="companyClientId"></app-companies-more>
+<!--body for contacts, attachments, etc, end-->

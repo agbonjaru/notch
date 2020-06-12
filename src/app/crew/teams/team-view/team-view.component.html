@@ -1,0 +1,585 @@
+<app-teams-subnav></app-teams-subnav>
+
+<ng-template [ngIf]="!loader.showSpinner">
+
+    <div class="row" style="margin-left: auto; margin-right: auto;">
+        <nav class="sub-nav hide-on-med-and-down">
+
+            <div class="contact-actions d-flex">
+
+                <div class="contact-home-link">
+                    <h6 style="margin-top: 26px;">{{team.teamName}}<i></i></h6>
+                </div>
+                <div class="actions-btn d-flex">
+                    <button class="fin-sec-btn" id="dropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink6">
+                        <a class="dropdown-item" href="#" (click)="fetchTeamId(team.teamID)" data-toggle="modal"
+                            data-target="#ModalCenter5">Rename</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter3">Add
+                            SalesPerson</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter2">Assign
+                            Target</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+        <!-- Add Sales Person Modal -->
+        <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle3"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle3">
+                            Add Sales Person
+                        </h5>
+                        <button (click)="closeModal()" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label class="col-form-label" style="color: #7E7F9A">Select Sales Person(s)</label>
+                                    <br />
+                                    <ngx-select-dropdown ngModel [(ngModel)]="salespersonForm" class="styleFool"
+                                        [config]="config" name="salesperson" [options]="salespersonList"
+                                        [multiple]="true">
+                                    </ngx-select-dropdown>
+                                    <p style="color: red;">Required *</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button (click)="closeModal()" type="button" class="fin-sec-btn" data-dismiss="modal">
+                            CLOSE
+                        </button>
+                        <button [disabled]="showLoading" (click)="addSalesPerson()" type="button" class="fin-pry-btn">
+                            add
+                            <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Sales Person Modal End-->
+
+        <!-- Assign Target Modal -->
+        <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle2"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle2">Assign Target</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form [formGroup]="targetForm">
+                            <div class="form-group">
+                                <label class="col-form-label" style="color: #7E7F9A">Select Target</label>
+                                <br />
+                                <ngx-select-dropdown class="styleFool" (change)="getPeriods()" [config]="targetsConfig"
+                                    [options]="targets | async" [multiple]="false" formControlName="target">
+                                </ngx-select-dropdown>
+                                <p style="color:red;">Required*</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" style="color: #7E7F9A">Select Period</label>
+                                <br />
+                                <ngx-select-dropdown class="styleFool" [config]="periodsConfig"
+                                    [options]="periods | async" [multiple]="false" [disabled]="
+                                      !targetForm.value.target || !targetForm.value.target.id
+                                    " formControlName="period">
+                                </ngx-select-dropdown>
+                                <p style="color:red;">Required*</p>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label" style="color: #7E7F9A">Target Value</label>
+                                <br />
+                                <input type="number" name="cname" formControlName="value"
+                                    class="gen-input browser-default" style="width: 100%" />
+                                <small><em>Kindly note that this input only accepts a valid number.</em></small>
+                                <br>
+                                <small *ngIf="target_limit">Total unallocated target is
+                                    {{selectedTarget['currency']? (target_limit || 0 | currency : selectedTarget['currency']:'symbol-narrow') : target_limit || 0 | number}}
+                                </small>
+                                <p style="color:red;">Required*</p>
+                            </div>
+                            <div class="form-group" *ngIf=" selectedTarget && _isCurrencyEnabled">
+                                <label class="col-form-label" style="color: #7E7F9A">Target Counts</label>
+                                <br />
+                                <ngx-select-dropdown class="styleFool" [config]="targetStageConfig"
+                                    [options]="targetStageList$ | async" [multiple]="false" formControlName="stage">
+                                </ngx-select-dropdown>
+                                <p style="color:red;">Required*</p>
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="fin-pry-btn" (click)="assignTarget()"
+                                    [disabled]="targetForm.invalid">
+                                    Assign Target
+                                </button>
+                            </div>
+                        </form>
+                        <hr />
+                        <ng-template #activateSpinner>
+                            <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+                        </ng-template>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                            CLOSE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Assign Target Modal End-->
+
+        <!-- Rename Teams Modal -->
+        <div class="modal fade" id="ModalCenter5" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle5"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle5">Rename Team</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="col-form-label" style="color: #7E7F9A">Team Name</label>
+                                <br />
+                                <input ngModel [(ngModel)]="newTeamName" type="text" id="cname" name="cname"
+                                    class="gen-input browser-default" style="width: 100%" required />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="closeUpdateTeamModal" class="fin-sec-btn" data-dismiss="modal">
+                            CLOSE
+                        </button>
+                        <button [disabled]="showLoading" (click)="updateTeam()" type="button" class="fin-pry-btn">
+                            SAVE
+                            <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Rename Teams Modal End-->
+
+    </div>
+
+    <div class="content" style="margin-top: 90px;">
+        <div class="row" style="width: 100%; margin: 0;">
+            <div class="col-lg-8 col-xl-9 col-md-12 content-body">
+                <a [routerLink]="['/teams/teams-list']">Team</a>
+
+                <app-team-nav #teamsComponent [teamID]="teamID"></app-team-nav>
+
+                <app-integration></app-integration>
+
+                <!--body for quotes, Invoice, sales-order etc,-->
+                <div class="content-body-contact" id="body2">
+                    <div class="feed-header contact-interaction" style="border-bottom: 1px solid #E4E4E4;">
+                        <ul class="nav nav-tabs d-inline-flex nav-tabs-2" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="Leads-tab" data-toggle="tab" href="#Leads" role="tab"
+                                    aria-controls="Leads" aria-selected="true">Assigned Leads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="Contacts-tab" data-toggle="tab" href="#Contacts" role="tab"
+                                    aria-controls="Contacts" aria-selected="true">Assigned Contacts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="Companies-tab" data-toggle="tab" href="#Companies" role="tab"
+                                    aria-controls="Companies" aria-selected="true">Assigned Companies</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="quotes-tab" data-toggle="tab" href="#quotes" role="tab"
+                                    aria-controls="quotes" aria-selected="true">Quotes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="invoices-tab" data-toggle="tab" href="#invoices" role="tab"
+                                    aria-controls="invoices" aria-selected="true">Invoices</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " id="sales-orders-tab" data-toggle="tab" href="#sales-orders"
+                                    role="tab" aria-controls="sales-orders" aria-selected="true">Sales Orders</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content company-within-inter comp-within-int" style="overflow-y: scroll;">
+
+                        <div class="contact-welcome tab-pane fade show active" style="padding-top: 0;" id="Leads"
+                            role="tabpanel" aria-labelledby="Lead-tab">
+                            <ng-container *ngIf="leadsList.length; else noLeads">
+                                <div *ngFor="let lead of leadsList | paginate: { itemsPerPage: 5, currentPage: p, id:'leadsList' }"
+                                    class="about-contact-row">
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">CODE</span>
+                                        <br>
+                                        <span class="contact-detail">{{lead.id}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">FULL-NAME</span>
+                                        <br>
+                                        <span class="contact-detail">{{lead.sourceValue}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">EMAIL</span>
+                                        <br>
+                                        <span class="contact-detail"> {{lead.email}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">SOURCE</span>
+                                        <br>
+                                        <span class="contact-detail"> {{lead.source}}</span>
+                                    </div>
+                                    <!-- <div class="col-sm-3">
+                                        <span class="contact-detail-top">OCCUPATION</span>
+                                        <br>
+                                        <span class="contact-detail">{{lead.occupation}}</span>
+                                    </div> -->
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail">
+                                            <button [routerLink]="['/clients/leads/', lead.id]"
+                                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="center">
+                                    <pagination-controls *ngIf="leadsList.length  > 5;" (pageChange)="p = $event"
+                                        id="leadsList">
+                                    </pagination-controls>
+                                </div>
+
+                            </ng-container>
+
+                            <ng-template #noLeads>
+                                <div class="ml-3">
+                                    <h6>No Assigned Leads</h6>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="contact-welcome tab-pane " style="padding-top: 0;" id="Contacts" role="tabpanel"
+                            aria-labelledby="Contacts-tab">
+                            <ng-container *ngIf="contactList.length; else noContacts">
+                                <div *ngFor="let contacts of contactList | paginate: { itemsPerPage: 5, currentPage: p, id:'contactList' }"
+                                    class="about-contact-row">
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">FULL-NAME</span>
+                                        <br>
+                                        <span
+                                            class="contact-detail">{{contacts.firstName + " " + contacts.surName}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">EMAIL</span>
+                                        <br>
+                                        <span class="contact-detail">{{contacts.email}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">PHONE NUMBER</span>
+                                        <br>
+                                        <span class="contact-detail"> {{contacts.officialPhoneNumber}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">GENDER</span>
+                                        <br>
+                                        <span class="contact-detail">{{contacts.gender}}</span>
+                                    </div>
+                                    <!-- <div class="col-sm-3">
+                                        <span class="contact-detail-top">OCCUPATION</span>
+                                        <br>
+                                        <span class="contact-detail">{{contacts.occupation}}</span>
+                                    </div> -->
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail">
+                                            <button [routerLink]="['/clients/contacts-view/', contacts.id]"
+                                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="center">
+                                    <pagination-controls *ngIf="contactList.length  > 5;" (pageChange)="p = $event"
+                                        id="contactList">
+                                    </pagination-controls>
+                                </div>
+
+                            </ng-container>
+
+                            <ng-template #noContacts>
+                                <div class="ml-3">
+                                    <h6>No Assigned Contacts</h6>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="contact-welcome tab-pane " style="padding-top: 0;" id="Companies" role="tabpanel"
+                            aria-labelledby="Companies-tab">
+                            <ng-container *ngIf="companyLists.length; else noCompany">
+                                <div *ngFor="let company of companyLists | paginate: { itemsPerPage: 5, currentPage: p, id:'companyLists' }"
+                                    class="about-contact-row">
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">COMPANY NAME</span>
+                                        <br>
+                                        <span class="contact-detail">{{company.name}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">EMAIL</span>
+                                        <br>
+                                        <span class="contact-detail">{{company.email}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">PHONE NUMBER</span>
+                                        <br>
+                                        <span class="contact-detail"> {{company.phoneNumber}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">INDUSTRY</span>
+                                        <br>
+                                        <span class="contact-detail">{{company.industry}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">COUNTRY</span>
+                                        <br>
+                                        <span class="contact-detail">{{company.city}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail">
+                                            <button [routerLink]="['/clients/companies-view/', company.id]"
+                                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="center">
+                                    <pagination-controls *ngIf="companyLists.length  > 5;" (pageChange)="p = $event"
+                                        id="companyLists">
+                                    </pagination-controls>
+                                </div>
+
+                            </ng-container>
+
+                            <ng-template #noCompany>
+                                <div class="ml-3">
+                                    <h6>No Assigned Company</h6>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="contact-welcome tab-pane " style="padding-top: 0;" id="quotes" role="tabpanel"
+                            aria-labelledby="quotes-tab">
+                            <ng-container *ngIf="quoteList.length; else noQuote">
+                                <div *ngFor="let quote of quoteList | paginate: { itemsPerPage: 5, currentPage: p }"
+                                    class="about-contact-row">
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">CODE</span>
+                                        <br>
+                                        <span class="contact-detail">{{quote.displayCode}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">REF. NUMBER</span>
+                                        <br>
+                                        <span class="contact-detail">{{quote.refNumber}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">TOTAL AMOUNT</span>
+                                        <br>
+                                        <span class="contact-detail"> {{quote.currency + " " +  quote.totalCost}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">TRACKING ID</span>
+                                        <br>
+                                        <span class="contact-detail">{{quote.orgTrackingId}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail">
+                                            <button [routerLink]="['/sales/edit-quotation', quote.id]"
+                                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="center">
+                                    <pagination-controls *ngIf="quoteList.length > 5;" (pageChange)="p = $event">
+                                    </pagination-controls>
+                                </div>
+
+                            </ng-container>
+
+                            <ng-template #noQuote>
+                                <div class="ml-3">
+                                    <h6>No Quotation</h6>
+                                </div>
+                            </ng-template>
+
+                        </div>
+
+                        <div class="contact-welcome tab-pane " style="padding-top: 0;" id="invoices" role="tabpanel"
+                            aria-labelledby="invoices-tab">
+                            <ng-container *ngIf="invoiceList.length; else noInvoice">
+                                <div *ngFor="let invoice of invoiceList | paginate: { itemsPerPage: 5, currentPage: p , id:'invoice'}"
+                                    class="about-contact-row">
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">CODE</span>
+                                        <br>
+                                        <span class="contact-detail">{{invoice.displayCode}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">REF. NUMBER</span>
+                                        <br>
+                                        <span class="contact-detail">{{invoice.refNumber}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">TOTAL AMOUNT</span>
+                                        <br>
+                                        <span class="contact-detail">
+                                            {{invoice.currency + " " +  invoice.totalCost}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">BALANCE AMOUNT</span>
+                                        <br>
+                                        <span class="contact-detail">
+                                            {{invoice.currency + " " +  invoice.balanceDue}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">FREQUENCY</span>
+                                        <br>
+                                        <span class="contact-detail">{{invoice.frequency}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail-top">TRACKING ID</span>
+                                        <br>
+                                        <span class="contact-detail">{{invoice.orgTrackingId}}</span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <span class="contact-detail">
+                                            <button [routerLink]="['/sales/edit-invoice', invoice.id]"
+                                                class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="center">
+                                    <pagination-controls *ngIf="invoiceList.length > 5;" (pageChange)="p = $event"
+                                        id="invoice">
+                                    </pagination-controls>
+                                </div>
+                            </ng-container>
+                            <ng-template #noInvoice>
+                                <div class="ml-3">
+                                    <h6>No Invoice</h6>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                        <div class="contact-welcome tab-pane " style="padding-top: 0;" id="sales-orders" role="tabpanel"
+                            aria-labelledby="sales-orders-tab">
+                            <ng-container *ngIf="assignedSalesOrder; else loadingSalesOrder">
+                                <ng-container *ngIf="assignedSalesOrder.length">
+                                    <div class="about-contact-row"
+                                        *ngFor="let sales of assignedSalesOrder | paginate: { itemsPerPage: 5, currentPage: p, id:'salesOrder'}">
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail-top">DEAL CODE</span>
+                                            <br />
+                                            <span class="contact-detail">{{ sales.displayCode }}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail-top">AMOUNT</span>
+                                            <br />
+                                            <span
+                                                class="contact-detail">{{ sales.currency + " "+ sales.totalAmount  }}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail-top">CURRENT STAGE</span>
+                                            <br />
+                                            <span class="contact-detail">{{ sales.stageName }}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail-top">TRANSITION NAME</span>
+                                            <br />
+                                            <span class="contact-detail">{{ sales.transitionName }}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail-top">WORKFLOW NAME</span>
+                                            <br />
+                                            <span class="contact-detail">{{ sales.workflowName }}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <span class="contact-detail">
+                                                <button (click)="openSalesOrder(sales.code)"
+                                                    class="btn btn-primary btn-sm" style="padding: 0 14px!important;"
+                                                    title="View">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="center">
+                                        <pagination-controls *ngIf="assignedSalesOrder.length  > 5;"
+                                            (pageChange)="p = $event" id="salesOrder">
+                                        </pagination-controls>
+                                    </div>
+                                </ng-container>
+                                <div *ngIf="!assignedSalesOrder.length" class="about-contact-row ">
+                                    <h6 class="text-center">No Sales Order</h6>
+                                </div>
+                            </ng-container>
+                            <ng-template #loadingSalesOrder>
+                                <div class="about-contact team-member d-block">
+                                    <h6>Loading Sales Order...</h6>
+                                </div>
+                            </ng-template>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!--body for contacts, Invoice, sales-order etc, end-->
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-xl-3 col-md-12 feeds-card">
+            <app-feeds></app-feeds>
+        </div>
+
+    </div>
+
+</ng-template>
+
+<!-- Loader -->
+<loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless" (actionState)="onActionState()"
+    *ngIf="loader.showSpinner">
+</loading-spinner>
+<!-- Loader Ends -->

@@ -1,0 +1,375 @@
+<app-sales-subnav></app-sales-subnav>
+<ng-container *ngIf="deal">
+  <div class="row" style="margin-left: auto; margin-right: auto;">
+    <nav class="sub-nav hide-on-med-and-down">
+      <!--<ul class="sub-nav-items text-center">-->
+      <!---->
+      <!--</ul>-->
+      <div class="contact-actions d-flex">
+        <div class="user-dp">
+          <!--<img src="/assets/img/leadway-logo.png" class="img-fluid" alt="">-->
+        </div>
+        <div class="contact-home-link">
+          <h6>{{deal.name}}</h6>
+          <a class="text-dark">{{deal.clientName}}<span><img src="/assets/img/arrow-diagonal.svg" alt=""></span></a>
+        </div>
+        <div class="actions-btn d-flex">
+          <button class="fin-sec-btn" id="dropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            ACTIONS <span><img src="/assets/img/caret_down_blue.svg" width="13" alt=""></span>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink6">
+            <a class="dropdown-item" *ngIf="deal?.forecastAmount"><i class="fa  fa-check"></i> Forecast Deal</a>
+            <ng-container *ngIf="deal.status === 0">
+
+              <a (click)="changeStage('Won', $event)" class="dropdown-item"><span
+                  class="fa fa-thumbs-up  text-success"></span> Mark as Won</a>
+              <a (click)="changeStage('Lost', $event)" class="dropdown-item"><span
+                  class="fa fa-thumbs-down  text-danger"></span> Mark as Lost</a>
+              <a *ngIf="!deal?.forecastAmount" class="dropdown-item" data-toggle="modal"
+                data-target="#forcastDealModal">Forecast Deal</a>
+            </ng-container>
+            <ng-container *ngIf="deal.status !== 0">
+              <a *ngIf="deal.status === 2" class="dropdown-item text-success">
+                <i class="fa  fa-check"></i> Deal Won</a>
+              <a *ngIf="deal.status === 1" class="dropdown-item text-danger">
+                <i class="fa fa-times"></i> Deal Lost</a>
+            </ng-container>
+            <a *ngIf="deal.status !== 1" class="dropdown-item" (click)="passDealsData('/sales/create-quote')">Create
+              Quote</a>
+            <ng-container *ngIf="deal.status === 2">
+              <a class="dropdown-item" (click)="passDealsData('/sales/create-invoice')">Create
+                Invoice</a>
+              <ng-container *ngIf="deal.status === 2">
+                <a class="dropdown-item" (click)="passDealsData('/sales/create-sales-order')">Create Sales Order</a>
+              </ng-container>
+            </ng-container>
+          </div>
+          <!-- <button data-toggle="modal" data-target=".bd-score-modal-lg"  class="score-btn"> SCORE </button> -->
+          <div *ngIf="deal.status !== 0" class="ml-3">
+            <p *ngIf="deal.status === 2"><span class="fa fa-thumbs-up fa-2x text-success mb-2"></span> Deal Won</p>
+            <p *ngIf="deal.status === 1"><span class="fa fa-thumbs-down fa-2x text-danger mb-2"></span> Deal Lost</p>
+
+          </div>
+        </div>
+        <!--<a href="" class="sub-nav-link right">Product Suggestions</a>-->
+
+      </div>
+    </nav>
+
+    <!--Change to Won Modal -->
+    <app-deal-modal [modalId]="'dealviewModal'" [dealCode]="deal.code" (submitData)="changeDealStage($event)">
+    </app-deal-modal>
+    <button data-toggle="modal" data-target="#dealviewModal" id="auto-click-won" class="d-none">button</button>
+    <!--Change to Won Modal -->
+    <!--Change to Lost Modal -->
+    <!-- Button trigger modal -->
+    <button type="button" class="d-none btn btn-primary" id="lossDealBtn" data-toggle="modal"
+      data-target="#lossDealModal">
+      Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="lossDealModal" tabindex="-1" role="dialog" aria-labelledby="lossDealModalTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center h-50">
+          <ng-container>
+            <div class="mt-4">
+              <div>
+                <img class=" is-clickable" src="/assets/img/not-good-emoji.svg" width="15%">
+                <h5>Aww</h5>
+              </div>
+
+            </div>
+            <div class="modal-body">
+              <div>
+                <h6>Reason for lossing deal <span class="text-danger">*</span> </h6>
+                <select ngModel [(ngModel)]="seletedReason" #dealReson="ngModel" name="dealReason"
+                  (change)="changeReson()" class=" form-control" name="" id="">
+                  <option disabled value="">Select reason</option>
+                  <option *ngFor="let reson of (reasonList$ | async)" [value]="reson.value">{{reson.value}}</option>
+                  <option value="others">Others</option>
+                </select>
+                <span *ngIf="errors.reason" class="text-left text-danger">reason is required</span>
+                <ng-container *ngIf="seletedReason === 'others'">
+                  <h6>Other reason <span class="text-danger">*</span></h6>
+                  <textarea ngModel [(ngModel)]="selectedOtherReason" class="form-control" name="" id="" cols="30"
+                    rows="3"></textarea>
+                  <span *ngIf="errors.others" class="text-left text-danger">other reason is required</span>
+                </ng-container>
+              </div>
+              <div class="mt-3">
+                <h5 style="font-size: 20px">Mark deal as <b>Loss?</b></h5>
+                <h6>This action is not reversible</h6>
+              </div>
+
+            </div>
+            <div class="modal-footer mx-auto">
+              <button [disabled]="lossDealLoading" (click)="markDealAsLoss()" type="button"
+                class=" fin-pry-btn text-capitalize">
+                Ok <span *ngIf="lossDealLoading">
+                  <span class="fa fa-spinner fa-spin"></span>
+                </span>
+              </button>
+              <button [id]="'closeDealLossModal'" (click)="closeDealLossModal()" type="button" class="btn btn-danger"
+                data-dismiss="modal">Close</button>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <!--Change to Lost Modal -->
+
+
+
+
+
+    <!-- Forcast Modal -->
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="forcastDealModal" tabindex="-1"
+      role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center h-50">
+          <div class="mt-4">
+            <i class="fa fa-question-circle fa-5x text-info"></i>
+          </div>
+          <div class="modal-body">
+            <h6>Are you sure you want to <b>Forcast Deal</b> ?</h6>
+            <div class="mt-3">
+              <div>
+                <p class="text-left text-danger my-2">All fields with (*) are required</p>
+                <form class=" text-left" #forcastDealForm="ngForm">
+                  <div class="form-group">
+                    <label for="exampleFormControlInput1">Forecast Value (<span>{{deal.currency}}</span>) <span
+                        class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="exampleFormControlInput1" #forAmount="ngModel"
+                      name="forecastAmount" ngModel placeholder="Enter Forecast Value" required>
+                    <p>{{forAmount.value | currency:deal.currency:'symbol-narrow'}}</p>
+                    <p class="text-danger" *ngIf="forAmount.dirty && (forAmount.value < 0 || forAmount.value === -0)">
+                      Forecast Value must not be less than 0
+                    </p>
+                  </div>
+                  <div class="form-group">
+                    <label for="forcecastDate">Forecast Date <span class="text-danger">*</span></label>
+                    <input type="text" readonly placeholder="dd/mm/yyyy" class="form-control" id="dealDate"
+                      [minDate]="minDate" required name="forecastDate" ngModel bsDatepicker
+                      [bsConfig]="{ adaptivePosition: true }">
+                  </div>
+                </form>
+              </div>
+              <h6>This action is not reversible</h6>
+            </div>
+          </div>
+          <div class="modal-footer mx-auto">
+            <button [disabled]="(forcastDealForm.invalid || forAmount.value < 1) || forcastLoading"
+              (click)="forcastDeal(forcastDealForm)" type="button" class="fin-pry-btn">Save <span
+                *ngIf="forcastLoading"><i class="fa fa-spinner fa-spin"></i></span> </button>
+            <button id="closeModal" (click)="closeForecastModal(forcastDealForm)" type="button" class="btn btn-danger"
+              data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assign Target Modal -->
+    <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Assign Target</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label class="col-form-label">Target available for company</label>
+                <br>
+                <select id="mselect" multiple="" data-placeholder="Pick Target Type" style="width: 100%;">
+                  <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                  <!--Add select all-->
+                  <!--<option value="" disabled selected>Choose your option</option>-->
+                  <option value="1">Option 1</option>
+                  <option value="2">Option 2</option>
+                  <option value="3">England</option>
+                  <option value="3">Option 4</option>
+                  <option value="3">Tokyo</option>
+                  <option value="3">Tokyo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <p class="mb-1">Total Target value:</p>
+                <h5 class="m-0">$300,000</h5>
+              </div>
+              <div class="form-group">
+                <label for="target-value" class="col-form-label">Set target value:</label>
+                <input type="text" class="form-control" id="target-value">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+            </button>
+            <button type="button" class="fin-pry-btn">Assign</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Assign Target Modal End-->
+  </div>
+
+  <div class="content" style="margin-top: 90px;">
+    <div class="row" style="width: 100%; margin: 0;">
+      <div class="col-lg-8 col-xl-9 col-md-12 content-body">
+
+        <div class="modal fade bd-score-modal-lg" tabindex="-1" role="document" aria-labelledby="myLargeConversionModal"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered lead-score-modal">
+            <div class="modal-content p-3">
+              <app-score></app-score>
+            </div>
+          </div>
+        </div>
+
+        <app-deal-stages #dealStage (getDeal)="getDeal()" (calldealNav)="dealNav.getDocument()" [deal]="deal">
+        </app-deal-stages>
+        <app-deal-nav (callDealStage)="dealStage.updateModal()" #dealNav [deal]="deal" (getDeal)="getDeal()">
+        </app-deal-nav>
+        <!--Preloader to load company info-->
+        <div class="row d-none">
+          <div class="pre-loader text-center m-auto">
+            <img src="/assets/img/loader.svg" width="70px" alt="">
+          </div>
+        </div>
+        <!--Preloader end-->
+
+        <!--salesperson-target-->
+
+        <!--About salesperson ends-->
+        <app-integration></app-integration>
+        <!--body for contacts, attachments, etc,-->
+        <div class="content-body-contact" id="body2">
+          <div class="feed-header contact-interaction" style="border-bottom: 1px solid #E4E4E4;">
+            <ul class="nav nav-tabs d-inline-flex nav-tabs-2" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab"
+                  aria-controls="contacts" aria-selected="true">Contacts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " id="products-tab" data-toggle="tab" href="#products" role="tab"
+                  aria-controls="products" aria-selected="true">Products</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " id="competitors-tab" data-toggle="tab" href="#competitors" role="tab"
+                  aria-controls="products" aria-selected="true">Competitors</a>
+              </li>
+
+              <!-- <li class="nav-item">
+                        <a class="nav-link" id="tickets-tab" data-toggle="tab" href="#tickets"
+                           role="tab"
+                           aria-controls="tickets"
+                           aria-selected="false">Tickets</a>
+                    </li> -->
+
+
+            </ul>
+          </div>
+          <div class="tab-content company-within-inter comp-within-int">
+            <div class="contact-welcome tab-pane fade show active" style="padding-top: 0;" id="contacts" role="tabpanel"
+              aria-labelledby="contacts-tab">
+              <ng-container *ngIf="deal.contacts.length; else noContacts">
+                <div *ngFor="let contact of deal.contacts" class="about-contact-row">
+                  <div class="col-sm-4">
+                    <span class="contact-detail-top">Full Name</span>
+                    <br>
+                    <span class="contact-detail">{{contact.name}}</span>
+                  </div>
+                  <div class="col-sm-4">
+                    <span class="contact-detail-top"></span>
+                    <br>
+                    <span class="contact-detail">
+                      <button (click)="generalSrv.displaySpinner('clients')" class=" fin-sec-btn"
+                        [routerLink]="['/clients/contacts-view', contact.id]">View</button>
+                    </span>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #noContacts>
+                <div class="ml-3">
+                  <h6>No Contact</h6>
+                </div>
+              </ng-template>
+            </div>
+
+            <div class="contact-welcome tab-pane fade show" style="padding-top: 0;" id="products" role="tabpanel"
+            aria-labelledby="contacts-tab">
+            <ng-container *ngIf="deal.products.length; else noproducts">
+              <div *ngFor="let product of deal.products" class="about-contact-row">
+                <div class="col-sm-4">
+                  <span class="contact-detail-top">Name</span>
+                  <br>
+                  <span class="contact-detail">{{product.name}}</span>
+                </div>
+                <div class="col-sm-4">
+                  <span class="contact-detail-top"></span>
+                  <br>
+                  <!-- <span class="contact-detail">
+                    <button (click)="generalSrv.displaySpinner('clients')" class=" fin-sec-btn" [routerLink]="['/clients/products-view', product.id]" >View</button>
+                  </span> -->
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #noproducts>
+              <div class="ml-3">
+                <h6>No Products</h6>
+              </div>
+            </ng-template>
+          </div>
+          <div class="contact-welcome tab-pane fade show" style="padding-top: 0;" id="competitors" role="tabpanel"
+          aria-labelledby="contacts-tab">
+          <ng-container *ngIf="deal.salesCompetitors.length; else nosalesCompetitors">
+            <div *ngFor="let competitors of deal.salesCompetitors" class="about-contact-row">
+              <div class="col-sm-4">
+                <span class="contact-detail-top">Name</span>
+                <br>
+                <span class="contact-detail">{{competitors.name}}</span>
+              </div>
+              <div class="col-sm-4">
+                <span class="contact-detail-top"></span>
+                <br>
+                <!-- <span class="contact-detail">
+                  <button (click)="generalSrv.displaySpinner('clients')" class=" fin-sec-btn" [routerLink]="['/clients/salesCompetitors-view', product.id]" >View</button>
+                </span> -->
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #nosalesCompetitors>
+            <div class="ml-3">
+              <h6>No Products</h6>
+            </div>
+          </ng-template>
+        </div>
+
+
+          </div>
+
+
+        </div>
+        <!--body for contacts, attachments, etc, end-->
+      </div>
+      <div class="col-lg-4 col-xl-3 col-md-12 feeds-card">
+        <app-feeds></app-feeds>
+      </div>
+    </div>
+
+  </div>
+
+
+</ng-container>
+<div *ngIf="!deal" class="card shadow-sm pb-5">
+  <div class="card-body" style="margin-top: 10%">
+    <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+  </div>
+</div>

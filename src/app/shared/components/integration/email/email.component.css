@@ -1,0 +1,306 @@
+div, span {
+    box-sizing: border-box !important;
+}
+
+.w-10 {
+    width:  10% !important;
+}
+.w-90 {
+    width: 90% !important;
+}
+
+.w-65 {
+    width: 65% !important;
+}
+
+
+.w-35 {
+    width: 35% !important;
+}
+
+*::-webkit-scrollbar{
+    width: 3px;
+    background-color: #bbb;
+}
+
+*::-webkit-scrollbar-thumb{
+    background-color: rgb(55, 125, 255);
+}
+
+.email-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    background: rgba(255, 255, 255, 0.9);
+    z-index:999;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#email-area-header-email .email-overlay {
+    top: 0;
+}
+
+div[id*=email-area] {
+    padding: 0px 20px;
+    margin: 0;
+    margin-bottom: 10px;
+    line-height: normal;
+}
+
+div[id*=email-area] > .row {
+    margin: 5px 0px;
+    padding: 0 0 5px 0;
+}
+
+div[id*=email-area] input, div[id*=email-area] select {
+    border-radius: 0;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    
+    margin: 0px;
+
+    padding: 0 5px;
+    padding: 10px;
+
+    width: auto;
+}
+
+.btn-connected {
+    border: 1px solid green;
+}
+
+.editor-wrapper {
+    border-bottom: 1px solid #ddd;
+    /* height: 300px; */
+    overflow-y: scroll;
+}
+.ql-toolbar.ql-snow {
+    position: sticky !important;
+    top: 0 !important;
+}
+
+.attachment-list {
+    height: auto;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    padding-bottom: 5px;
+    white-space: nowrap;
+}
+
+.attachment-list::-webkit-scrollbar{
+    height: 3px;
+}
+
+.recipient-list-wrapper {
+    position: absolute ;
+    left: 0;
+    top: 50px;
+
+    display: inline-block ;
+
+    border: none;
+    padding: 0 12.5px ;
+
+    width: 100% ;
+
+    z-index: 1009 ;
+}
+
+.recipient-list-wrapper > div {
+    max-height: 200px ;
+    overflow-y: scroll ;
+}
+
+.recipient-list-item{
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 50px;
+
+    margin: 2.5px;
+    padding: 3.5px 15px;
+
+    border: 1px solid #008cff; 
+    color: #008cff;
+}
+
+.invalid-recipient-list-item{
+    border: 1px solid #ff6d6d; 
+    color: #ff6d6d;
+}
+
+.email-search-result-list{
+    position: absolute;
+    left: 0;
+    top: 35px;
+    display: inline-block;
+    z-index: 100;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.deal-search-result-list {
+    display: inline-block;
+    
+    position: absolute;
+    bottom: 35px;
+    left: 0;
+
+    z-index: 100;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.email-search-result-list-item {
+    border-bottom: 1px solid #dddddd;
+}
+
+.email-search-result-list-item:last-child {
+    border: none;
+}
+
+.email-search-result-list-item:hover {
+    background-color: cadetblue;
+}
+
+.search-btn {
+    box-sizing: border-box !important;
+    border: 1px solid #dddddd!important;
+    border-radius: 5px;
+}
+
+
+
+/* .ql-editor, .ql-blank {
+    min-height: 300px !important;
+} */
+/*
+#email-area label {
+    margin-bottom: 0;
+}
+
+#email-area div[class*=email-body] {
+    height: 313px;
+    margin: 15px 0;
+}
+
+#email-area select[id=email-deal] {
+    width: 100% !important;
+}
+
+
+.email-body div[class=col-12] {
+    height: 250px;
+}
+
+.hover-blue:hover {
+    background-color: #8fc5f1 !important;
+}
+
+.fin-sec-btn {
+    cursor: default;
+}
+
+button:disabled {
+    background-color: none !important;
+    border: 1px solid #cccccc;
+}
+
+
+.disconnect-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding-left: 15px;
+}
+
+.btn-grey {
+    border-color: #dddddd !important;
+    color: #444444 !important;
+}
+
+.email-form-recipient-label {
+    float: left;
+    text-align: left;
+    width: 10% !important;
+}
+
+
+.email-form-recipient-list > span, .recipient-list > span {
+    margin-left: 2px;
+}
+
+.recipient-label {
+    float: left;
+    text-align: left;
+    width: 10% !important;
+}
+
+.recipient-label-btn {
+    width: auto !important;
+    border: 1px solid #dddddd !important;
+    border-radius: 5px !important;
+    padding: 2.5px 10px !important;
+}
+
+
+.email-search-result-list {
+    position: absolute !important;
+    left: 0;
+    top: 35px;
+    display: inline-block !important;
+    z-index: 100 !important;
+    width: 100% !important;
+    max-height: 100px !important;
+    overflow-y: scroll !important;
+}
+
+.email-search-result-list-item {
+    border-bottom: 1px solid #dddddd !important;
+}
+
+.email-search-result-list-item:last-child {
+    border: none !important;
+}
+
+.email-search-result-list-item:hover {
+    background-color: cadetblue;
+}
+
+.email-action-wrapper {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+}
+.other-email-actions {
+
+    height: 40px;
+    width: 100px;
+
+    padding: 0 10px;
+}
+
+.other-email-actions > .svg-inline--fa.fa-w-14 {
+    width: 1.35em !important;
+}
+
+#email-area .attachment-list {
+    width: 100% !important;
+    height: 20px !important;
+    margin: 10px 0 !important;
+    padding: 0 15px !important;
+    border-radius: 5px !important;
+    border: 1px solid #dddddd;
+}
+
+#email-misc-wrapper {
+    padding: 0px 15px !important;
+} */

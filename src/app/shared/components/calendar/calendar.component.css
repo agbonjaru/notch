@@ -1,0 +1,4 @@
+.btn-primary, .btn-outline-secondary{
+    padding-top: 5px;
+    box-shadow: none !important;
+}

@@ -1,0 +1,138 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <header class="settings-header">
+        <p>Atbtechsoft Company</p>
+
+        <h1>Settings</h1>
+      </header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+         <app-settings-sidebar></app-settings-sidebar>
+        </div>
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Invoice & Quotation Set up</h1>
+            <p>Easily customise all your invoices and quotation templates from the templates below.</p>
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="invoice-temp-tab"
+                  data-toggle="tab" href="#invoice-temp" role="tab" aria-controls="email" aria-selected="true">Invoice
+                  Templates</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" style="background: transparent;" id="quotation-temp-tab"
+                  data-toggle="tab" href="#quotation-temp" role="tab" aria-controls="call"
+                  aria-selected="false">Quotation Templates</a>
+              </li>
+            </ul>
+          </div>
+          <div class="settings-label tab-pane fade show active" id="invoice-temp" role="tabpanel"
+            aria-labelledby="invoice-temp-tab">
+            <div class="row">
+              <div class="col-md-12 pt-3">
+                <p class="text-center">Simply select invoice to use.
+                  <br>
+                  Click to view invoice and then select how you intend to use it.</p>
+              </div>
+
+            </div>
+            <div class="container">
+              <div class="row pt-4">
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked1" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked1">Use this invoice for
+                      all users</label>
+                  </div>
+                  <a href="invoice-temp1.html" class="invoice-card">
+                    <img src="assets/img/invoice1.jpg" class="img-fluid" alt="">
+                  </a>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked">Use this invoice for
+                      all users</label>
+                  </div>
+                  <a href="invoice-temp2.html" class="invoice-card">
+                    <img src="assets/img/invoice2.jpg" class="img-fluid" alt="">
+                  </a>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked2">Use this invoice for
+                      all users</label>
+                  </div>
+                  <a href="invoice-temp3.html" class="invoice-card">
+                    <img src="assets/img/invoice3.jpg" class="img-fluid" alt="">
+                  </a>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-4 col-xl-4 invoice-group">
+                  <div class="custom-control custom-radio mb-3" style="margin-bottom: 5px;">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked3" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked3">Use this invoice for
+                      all users</label>
+                  </div>
+                  <a href="invoice-temp4.html" class="invoice-card">
+                    <img src="assets/img/invoice4.jpg" class="img-fluid" alt="">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="settings-label tab-pane fade" id="quotation-temp" role="tabpanel"
+          aria-labelledby="quotation-temp-tab">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 30px;">
+              <form>
+                <label>Customer Source</label>
+                <input type="text" id="customer" name="lead" placeholder="Enter Customer Source"
+                  class="gen-input2 browser-default">
+              </form>
+              <button type="button" class="fin-pry-btn mt-3 right" style="margin-top: -13px;">
+                Add Customer
+              </button>
+            </div>
+            <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6"
+              style="padding-top: 20px; border-left: 1px solid #dee2e6">
+              <div class="list-card" style="box-shadow: none; padding: 0;">
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <th scope="row" style="border-top: none;">Custmer source added
+                      </th>
+                      <td style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Customer source added</th>
+                      <td style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                      </td>
+                    </tr>
+                    <tr style="position: relative;">
+                      <th scope="row">Customer source added</th>
+                      <td style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                        <i class="fas fa-trash"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

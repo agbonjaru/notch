@@ -1,0 +1,11 @@
+<div class="row" style="margin-left: auto; margin-right: auto">
+  <nav class="sub-nav">
+    <ul class="sub-nav-items-teams text-center">
+      <li *ngIf="gs.isAuthorized('SALESPERSON')"><a routerLink="/teams/saleperson-list"
+          routerLinkActive="active">Salesperson</a></li>
+      <li *ngIf="gs.isAuthorized('TEAMS')"><a routerLink="/teams/teams-list" routerLinkActive="active">Teams</a></li>
+      <!-- <li *ngIf="gs.isAuthorized('GAMIFICATION')"><a routerLink="/teams/gamification" routerLinkActive="active">Gamification</a></li> -->
+      <!-- <li><a routerLink="/teams/commission-list" routerLinkActive="active">Commission</a></li> -->
+    </ul>
+  </nav>
+</div>

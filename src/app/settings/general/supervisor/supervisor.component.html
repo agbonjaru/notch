@@ -1,0 +1,82 @@
+
+  <div class="content settings-content">
+    <div class="row" style="width: 100%; margin: 0;">
+      <div class="col-md-12 settings-wrapper">
+        <app-settings-header></app-settings-header>
+        <div class="row">
+          <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+            <app-settings-sidebar> </app-settings-sidebar>
+          </div>
+  
+          <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+
+            <div class="settings-header">
+                <h1>Supervisors</h1>
+                <!--<p>This where you invite and administer roles to Users</p>-->
+            </div>
+            <div *ngIf="(supervisorList$ | async)as supervisorList; else loadSupervisor" class="settings-label">
+                <div class="row users-invited">
+                    <div class="col-md-12 content-list-buttons fa-pull-right">
+                        <button *ngIf="gs.isAuthorized('ADMIN_USER_ACTIONS')" class="fin-pry-btn" data-toggle="modal" data-target="#ModalCenter4">ADD Supervisor</button>
+          
+                    </div>
+          
+                    <!-- Add Supervisor Modal -->
+                    <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                         aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalCenterTitle4">Add Supervisor</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label class="col-form-label">Users</label>
+                                            <br>
+                                          <ng-container *ngIf="(usersList$ | async) as userList;else loadinguser">
+                                            <ngx-select-dropdown name="user" [multiple]="true"  [(ngModel)]="selectedUser" [options]="userList" [config]="config"  ></ngx-select-dropdown>
+                                            <p><small>*required</small></p>
+                                          </ng-container>
+                                          <ng-template #loadinguser>
+                                            <p>Loading Users...</p>
+                                          </ng-template>
+                                        </div>
+          
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                                    </button>
+                                    <button [disabled]="!selectedUser.length || (loading)" (click)="addSupervisor()" type="button" class="fin-pry-btn">
+                                        Add <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add Supervisor Modal End-->
+          
+                </div>
+                    <div class="col-md-12 mt-3 ml-3">
+                        <app-datatable
+                         [dataChanged]="dataTable.dataChangedObs" 
+                         [options]="dataTable.options"
+                          [heads]="dataTable.heads"
+                            (feedback)="dataFeedBackObsListener($event)"
+                             [bodyrows]="supervisorList"></app-datatable>
+          
+                    </div>
+            </div>
+            <ng-template #loadSupervisor>
+                <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+            </ng-template>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   

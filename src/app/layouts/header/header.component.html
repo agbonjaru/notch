@@ -1,0 +1,224 @@
+<nav class="white-bg" role="navigation">
+  <div class="nav-wrapper" [ngClass]="{'printNone': hidOnPrint}">
+    <a id="logo-container" routerLink="/dashboard" class="brand-logo hide-on-med-and-down">
+      <img src="../../../assets/img/notch-logo.svg" width="150px" alt="">
+    </a>
+    <div class="nav-option">
+      <div class="row d-flex">
+        <a id="quick-add-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-plus"></i>
+        </a>
+
+        <div class="nav_search_icon">
+          <a (click)="searchToggle()" class="material-icons" style="color: black;">search</a>
+        </div>
+
+        <div class="dropdown-menu add-dropdown-menu" aria-labelledby="quick-add-menu">
+          <a class="dropdown-item" (click)="setTrue()">Add company</a>
+          <a class="dropdown-item" href="#">Add lead</a>
+          <a class="dropdown-item" href="#">Add contact</a>
+          <hr>
+          <a class="dropdown-item" routerLink="/sales/create-deals">Create deal</a>
+          <a class="dropdown-item" routerLink="/sales/create-invoice">Create invoice</a>
+          <a class="dropdown-item" routerLink="/sales/create-quote">Create quote</a>
+          <a class="dropdown-item" routerLink="/all-my-tasks">Create task</a>
+          <hr>
+          <a class="dropdown-item" href="#">Send SMS</a>
+          <a class="dropdown-item" id="header-nav-new-mail-btn" data-toggle="modal" data-target="#email-modal">Send
+            mail</a>
+          <a class="dropdown-item" href="#">Send WhatsApp message</a>
+          <hr>
+          <a class="dropdown-item" routerLink="#">Make call</a>
+          <a class="dropdown-item" data-toggle="modal" data-target="#log-modal">Create Log activity </a>
+          <a class="dropdown-item" data-toggle="modal" data-target="#note-modal">Create  Note </a>
+          <a class="dropdown-item" routerLink="#">Post to social media</a>
+
+        </div>
+
+        <div *ngIf="userInfo" class="dropdown show nav-account">
+          <a class="nav-account-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img [src]="userImg" alt="no-img" style="margin-right: 10px; border-radius: 50%;">
+            <span class="username">{{userInfo.user.firstName + ' ' + userInfo.user.lastName}}</span>
+            <img src="assets/img/caret_down.svg" alt="" style="margin-left: 10px;">
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-item">
+              <div class="row">
+                <span style="display: flex;">
+                  <div class="profile">
+                    <img [src]="userImg" width="50px" class="ml-3" height="auto" alt="">
+                  </div>
+                  <div *ngIf="userInfo" class="profile col-md-9">
+                    <p class="user">{{userInfo.user.firstName + ' ' + userInfo.user.lastName}}</p>
+                    <p class="user-email text-elips w-75">{{userInfo.user.email}}</p>
+                    <p (click)="displaySpinner('profile')" class="user-email m-0"><a routerLink="/profile/user">Edit
+                        profile</a></p>
+                  </div>
+                </span>
+              </div>
+
+            </div>
+            <div class="dropdown-item">
+              <a class="" routerLink="/all-my-tasks" (click)="displaySpinner('misc')"
+                style="padding-top: 0 !important;line-height: 10px;font-size: 14px"><i class="fas fa-tasks mr-2"></i>My
+                Task
+              </a>
+            </div>
+            <div class="dropdown-item" *ngIf="userProgress">
+              <span style="color: black;">Profile progress</span>
+              <div class="progress mt-2">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" id="pg" aria-valuenow="60"
+                  aria-valuemin="0" aria-valuemax="100" [style.width]="userProgress">
+                  {{userProgress}}
+                </div>
+              </div>
+            </div>
+
+            <div class="dropdown-divider"></div>
+            <div *ngIf="userInfo" class="">
+              <a routerLink="/profile/company" class="dropdown-item">
+                <b>{{userInfo.organization.name}}</b>
+                <span class="fs-14 right">Edit</span>
+              </a>
+              <a *ngFor="let org of orgList" (click)="switchTenant(org)" class="dropdown-item">
+                <span><img src="assets/img/leadway-logo.png" width="20" alt="logo"></span>{{org.orgName}}
+                <!-- <span><img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" width="20"
+                    alt="logo"></span>{{org.orgName}} -->
+              </a>
+              <a routerLink="#" class="dropdown-item">Switch to demo organisation</a>
+              <a [routerLink]="['/reg/org']" class="dropdown-item" (click)="setUser()">Create organisation</a>
+              <!-- <a [routerLink]="['/administrator/create-organization']" [queryParams]="{'userID': userInfo.user.id}"
+                class="dropdown-item" >Create organisation</a> -->
+            </div>
+
+
+            <div class="dropdown-divider"></div>
+            <div class="">
+              <a routerLink="/bulk-messages" (click)="displaySpinner('misc')" class="dropdown-item">Send bulk
+                messages</a>
+              <a routerLink="/settings/list-credit-profile" (click)="displaySpinner('settings')"
+                class="dropdown-item">Credit
+                management</a>
+              <!-- <a href="billing.html" class="dropdown-item" >Billing</a> -->
+              <a href="" class="dropdown-item">Report</a>
+              <a routerLink="/doc-library" (click)="displaySpinner('misc')" class="dropdown-item">Document library</a>
+              <a routerLink="/analytics" (click)="displaySpinner('misc')" class="dropdown-item">Analytics</a>
+              <a routerLink="/banks" (click)="displaySpinner('misc')" class="dropdown-item">Bank Payments</a>
+            </div>
+            <ng-container *ngIf="generalSrv.isSuperAdmin">
+              <div class="dropdown-divider"></div>
+              <div class="">
+                <a (click)="displaySpinner('settings')" routerLink="/settings/User-Roles"
+                  class="dropdown-item">Settings</a>
+              </div>
+            </ng-container>
+            <div class="dropdown-divider"></div>
+            <div class="">
+              <a (click)="logout()" class="dropdown-item text-dark">Logout</a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <form class="form-inline" *ngIf="activeView">
+        <input class="nav-search" type="text" placeholder="Search" aria-label="Search" style="position: absolute; right: 1px;top: 85px;background: #fff; border-bottom-color: white; z-index: 9999;
+            box-shadow: rgba(0, 0, 0, 0.11) 0px 4px 13px;">
+      </form>
+
+    </div>
+    <ul class="center hide-on-med-and-down web-nav d-flex justify-content-center">
+      <li *ngIf="generalSrv.canAccessModule('CLIENTS')" (click)="displaySpinner('/clients/leads')"><a
+          routerLink="/clients/leads" [ngClass]="{'nav-active': this.router.url.includes('clients')}">Clients</a>
+      </li>
+      <!-- <li><a routerLink="#">Doc Sign</a></li> -->
+      <li *ngIf="generalSrv.canAccessModule('TARGETS')" (click)="displaySpinner('target')"><a
+          [routerLink]="['/target/period']" [ngClass]="{'nav-active': this.router.url.includes('target')}"
+          style="color: black;">Targets</a></li>
+      <li *ngIf="generalSrv.canAccessModule('SALES')" (click)="displaySpinner('sales')"><a
+          [routerLink]="['/sales/deals-list']" [ngClass]="{'nav-active': this.router.url.includes('sales')}"
+          style="color: black;">Sales</a></li>
+      <li *ngIf="generalSrv.canAccessModule('TICKETS')" (click)="displaySpinner('ticket')"><a
+          [routerLink]="['/ticket/ticket-dashboard']" [ngClass]="{'nav-active': this.router.url.includes('ticket')}"
+          style="color: black;">Client Service</a>
+      </li>
+      <li *ngIf="generalSrv.canAccessModule('TEAMS')" (click)="displaySpinner('teams')"><a
+          [routerLink]="['/teams/saleperson-list']" [ngClass]="{'nav-active': this.router.url.includes('teams')}"
+          style="color: black;">Teams</a></li>
+    </ul>
+    <!-- <div class="">
+      <button class="btn btn-secondary dropdown-toggle" type="button"  aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+      </button>
+
+    </div> -->
+
+    <!-- <div id='dropdown1' class='dropdown-content dropdown_data'></div> -->
+
+    <!--Nav Mobile-->
+    <ul id="nav-mobile" class="sidenav">
+      <li>
+        <a href="dashboard.html">
+          <img src="../../../assets/img/notch-logo.svg" width="150px" alt="">
+        </a></li>
+      <li><a routerLink="/clients/leads-list"
+          [ngClass]="{'nav-active': this.router.url.includes('clients')}">Clients</a>
+      </li>
+      <li><a href=" #">Doc Sign</a></li>
+      <li><a routerLink="#">Targets</a></li>
+      <li><a routerLink="/sales/deals-list" [ngClass]="{'nav-active': this.router.url.includes('sales')}">Sales</a></li>
+      <li><a routerLink="/ticket/ticket-dashboard"
+          [ngClass]="{'nav-active': this.router.url.includes('tickets')}">Tickets</a></li>
+    </ul>
+
+    <a href=" #" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+  </div>
+
+  <div [ngClass]="{'printNone': !hidOnPrint}">
+    <img style="margin-left: 45%" src="../../../assets/img/notch-logo.svg" width="150px" alt="">
+  </div>
+  <!--
+    EMAIL MODAL
+   -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="email-modal" id="email-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered email-modal" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-email [component_id]="email_component_id"></app-email>
+        </div>
+        <div id="close-email-modal" data-dismiss="modal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAP connection Modal -->
+  <app-imap></app-imap>
+
+  <!-- EMAIL LOOKUP MODAL -->
+  <app-email-lookup></app-email-lookup>
+
+  <!-- LOG MODAL -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="log-modal" id="log-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered log-modal" role="log">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-log-activity></app-log-activity>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTE MODAL -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="note-modal" id="note-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered note-modal" role="note">
+      <div class="modal-content">
+        <div class="modal-body">
+          <app-notes></app-notes>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</nav>

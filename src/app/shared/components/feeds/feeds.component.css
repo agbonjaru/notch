@@ -1,0 +1,22 @@
+.feeds {
+    min-height: 91% !important;
+    overflow: hidden !important;
+}
+
+.feed-header {
+    margin-bottom: 0;
+}
+
+.feeder-header-icons {
+    justify-content: space-around;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.feed-body-content{
+    overflow-y: scroll !important;
+}
+
+.tab-content {
+    margin-top: 15px;
+}

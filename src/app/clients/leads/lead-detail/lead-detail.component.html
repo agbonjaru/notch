@@ -1,0 +1,140 @@
+<div class="row" style="margin-left: auto; margin-right: auto;">
+  <nav class="sub-nav hide-on-med-and-down">
+    <div class="contact-actions d-flex">
+      <div class="lead-header-nav">
+        <a href="/clients/leads">
+          < Leads </a>
+      </div>
+      <!-- <div class="user-dp">
+        <img src="assets/img/leadway-logo.png" class="img-fluid" alt="">
+      </div>
+      <div class="contact-home-link">
+        <h6>{{info?.sourceValue}}</h6>
+        <a href="https://google.com">leadway.com<span><img src="assets/img/arrow-diagonal.svg" alt=""></span></a>
+      </div> -->
+      <div class="actions-btn d-flex">
+        <button class="fin-sec-btn" id="dropdownMenuLink6" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink6">
+          <a class="dropdown-item" data-toggle="modal" data-target=".enrich-modal-lg" >Enrich</a>
+          <!-- <a class="dropdown-item" href="#">Search in Google</a> -->
+          <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter2">Assign Target</a> -->
+        </div>
+        <button *ngIf="gs.isAuthorized('LEAD_ACTIONS')" data-toggle="modal" data-target=".bd-score-modal-lg" class="score-btn">
+          <a>FITNESS</a>
+        </button>
+        <div class="btn-group">
+          <button type="button" class="btn fin-sec-btn ml-4 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            Convert
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" data-toggle="modal" data-target=".bd-conversion-modal-lg"
+              (click)="showContactForm()">Contact <span class="pl-2"> <i *ngIf="isContact()" class="fas fa-check-circle"></i> </span> </a>
+            <a class="dropdown-item" data-toggle="modal" data-target=".bd-conversion-modal-lg"
+              (click)="showCompanyForm()">Company <span class="pl-2"> <i *ngIf="isCompany()" class="fas fa-check-circle"></i> </span></a>
+            <a class="dropdown-item" (click)="convertToDeal()">Deal</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Conversion Modal-->
+  <div class="modal fade bd-conversion-modal-lg" tabindex="-1" role="document" aria-labelledby="myLargeConversionModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content lead-conversion-modal">
+        <app-lead-to-contact *ngIf="toContact"></app-lead-to-contact>
+        <app-lead-to-company *ngIf="toCompany"></app-lead-to-company>
+      </div>
+    </div>
+  </div>
+  <!---->
+  <!-- Enrich Modal-->
+  <div class="modal fade enrich-modal-lg" tabindex="-1" role="document" aria-labelledby="myEnrichModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content lead-enrich-modal">
+      <app-enrich-lead></app-enrich-lead>
+    </div>
+  </div>
+</div>
+<!---->
+  <!-- Assign Target Modal -->
+  <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Assign Target</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label class="col-form-label">Target available for company</label>
+              <br>
+              <select id="mselect" multiple="" data-placeholder="Pick Target Type" style="width: 100%;">
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">England</option>
+                <option value="3">Option 4</option>
+                <option value="3">Tokyo</option>
+                <option value="3">Tokyo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <p class="mb-1">Total Target value:</p>
+              <h5 class="m-0">$300,000</h5>
+            </div>
+            <div class="form-group">
+              <label for="target-value" class="col-form-label">Set target value:</label>
+              <input type="text" class="form-control" id="target-value">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+          </button>
+          <button type="button" class="fin-pry-btn">Assign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Assign Target Modal End-->
+</div>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-lg-8 col-xl-9 col-md-12 content-body">
+
+      <!-- Score Modal-->
+      <div class="modal fade bd-score-modal-lg" tabindex="-1" role="document"
+        aria-labelledby="myLargeConversionModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered lead-score-modal">
+          <div class="modal-content">
+            <app-score></app-score>
+          </div>
+        </div>
+      </div>
+
+      <app-lead-nav></app-lead-nav>
+
+      <!--Preloader to load company info-->
+      <div class="row d-none">
+        <div class="pre-loader text-center m-auto">
+          <img src="assets/img/loader.svg" width="70px" alt="">
+        </div>
+      </div>
+      <!--Preloader end-->
+      <app-integration></app-integration>
+    </div>
+  </div>
+  <div class="col-lg-4 col-xl-3 col-md-12 feeds-card">
+    <app-feeds></app-feeds>
+  </div>
+</div>

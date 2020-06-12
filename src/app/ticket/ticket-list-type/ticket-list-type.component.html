@@ -1,0 +1,22 @@
+<app-ticket-subnav></app-ticket-subnav>
+<div class="content" style="margin-top: 90px;">
+    <div class="row" style="width: 100%; margin: 0;">
+    
+        <div class="col-xl-12 col-lg-12 col-md-12 content-list">
+            <ng-container *ngIf="ticketList">
+            <div class="col-sm-12 content-list-title">
+                <div class="m-auto text-center">
+                    <!--<a href="credit-management-list.html" class="text-center left"> < Credit Profile</a>-->
+                    <h5 class="text-center fin-pry-color mt-3">{{ticketType}} Tickets</h5>
+                </div>
+            </div>
+            <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+            (feedback)="dataFeedBackObsListener($event)" [bodyrows]="ticketList"></app-datatable>
+            </ng-container>
+            <div *ngIf="!ticketList">
+                <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+            </div>
+           
+            </div>
+        </div>
+    </div>

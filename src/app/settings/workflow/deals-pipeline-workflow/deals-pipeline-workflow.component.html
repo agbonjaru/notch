@@ -1,0 +1,84 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+        
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>Deal Pipeline Workflow </h1>
+          </div>
+          <div *ngIf="allWorkflowDeal" class="settings-label">
+            <div class="row">
+
+              <div class="col-md-12 col-sm-12 col-lg-10 col-xl-10" style="padding-top: 20px;">
+                <label>Workflows</label>
+                      <app-datatable 
+                      [dataChanged]="dataTable.dataChangedObs"
+                       [options]="dataTable.options"
+                       [heads]="dataTable.heads"
+                        (feedback)="dataFeedBackObsListener($event)"
+                         [bodyrows]="allWorkflowDeal">
+                      </app-datatable>
+
+               
+
+                <button type="button" class="fin-pry-btn mt-3 right" data-toggle="modal" data-target="#ModalCenter4"
+                  style="margin-top: -13px;">
+                  Add Workflow
+                </button>
+
+                <!-- Add Workflow Modal -->
+                <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle4">Add Workflow</h5>
+                        <button type="button" id="closeAddWorkflow" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form [formGroup]="dealPipelineWorkflowForm">
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">
+                              Enter Workflow Name
+                              <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" formControlName="dealWorkflowName" class="form-control"
+                              id="target-value">
+                              <p *ngIf="getDisBtn() && submitted" class="text-danger">Workflow Name is required</p>
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                          </button>
+                          <button type="button" (click)="addDealWorkflow()" 
+                            class="fin-pry-btn" [disabled]="disBtn" >
+                            Add <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Workflow Modal End-->
+
+              </div>
+
+            </div>
+          </div>
+          <div *ngIf="!allWorkflowDeal">
+              <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

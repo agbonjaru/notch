@@ -1,0 +1,49 @@
+<div class="settings-header">
+    <!--<div class="row">-->
+    <!--<div class="col-xl-3 col-sm-12">-->
+    <h1>Change Password</h1>
+    <ul class="nav nav-tabs" role="tablist">
+
+    </ul>
+    <!--<p>Set up Roles</p>-->
+</div>
+<div class="settings-label container">
+
+    <div class="row mt-3 pt-3">
+        <div class="col-sm-12">
+            <h6 class="fw-500 fin-pry-color">Update Password</h6>
+        </div>
+        <div class="col-md-5 pt-3">
+            <label>Current Password</label>
+            <br>
+            <input  [(ngModel)]="oldPassword" type="password" name="oldPassword" class="w-100 gen-input browser-default">
+        </div>
+    </div>
+    <div class="row mt-3 pt-3">
+        <div class="col-md-5 pt-3">
+            <label>New Password</label>
+            <br>
+            <input [(ngModel)]="newPassword" type="password" name="newPassword" class="w-100 gen-input browser-default">
+        </div>
+    </div>
+    <div class="row mt-3 pt-3">
+        <div class="col-md-5 pt-3">
+            <label for="date">Repeat Password</label>
+            <br>
+            <input [(ngModel)]="confirmPassword" type="password" id="date" name="confirmPassword" class="w-100 gen-input browser-default">
+            <span id="matchPassworError" class="text-danger" *ngIf="matchPassword">
+                    *password does not match</span>
+        
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-5 pt-3">
+            <button (click)="changePwd()" [disabled]="disableBtn || submitting" type="button" class="fin-pry-btn">
+                save <span *ngIf="submitting"><i  class="fa fa-spinner fa-spin"></i></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="settings-label tab-pane fade" id="create-customer-source" role="tabpanel"
+     aria-labelledby="create-customer-source-tab">
+</div>

@@ -1,0 +1,311 @@
+<app-ticket-subnav></app-ticket-subnav>
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <ng-template [ngIf]="groupList">
+        <!-- Filters -->
+        <app-data-filter [dataChanged]="dataFilter.dataChangedObs" [accordions]="dataFilter.accordions"
+          [dataSource]="groupList" [customFilters]="customFilters" (filteredSource)="dataSourceListener($event)">
+        </app-data-filter>
+      </ng-template>
+
+    </div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div *ngIf="groupList" class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+
+            <!-- Assign Company Modal -->
+            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Assign Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign company to</label>
+                        <br>
+                        <select id="mselect1" multiple="" data-placeholder="Pick Sales Person" style="width: 100%;">
+                          <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                          <!--Add select all-->
+                          <!--<option value="" disabled selected>Choose your option</option>-->
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-form-label">Assign company to</label>
+                        <br>
+                        <select id="mselect0" multiple="" data-placeholder="Select Team" style="width: 100%;">
+                          <!--Kindly include a search box to the multiple select dropdown plus users should be able to multi select-->
+                          <!--Add select all-->
+                          <!--<option value="" disabled selected>Choose your option</option>-->
+                          <option value="1">Option 1</option>
+                          <option value="2">Option 2</option>
+                          <option value="3">England</option>
+                          <option value="3">Option 4</option>
+                          <option value="3">Tokyo</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                    </button>
+                    <button type="button" class="fin-pry-btn">Assign</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Assign Company Modal End-->
+
+          </div>
+          <div class="col-md-6 content-list-buttons">
+            <!-- <button class="fin-sec-btn">IMPORT</button> -->
+            <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+            <button *ngIf="gs.isAuthorized('ADD_GROUPS')" class="fin-pry-btn" data-toggle="modal"
+              data-target="#ModalCenter2">ADD GROUP
+            </button>
+          </div>
+
+          <!-- ADD GROUP Modal -->
+          <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle2"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle2">ADD GROUP</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p class="text-danger">All field with (*) are required</p>
+                  <form [formGroup]="addGroupForm">
+                    <div class="form-group">
+                      <label class="col-form-label">Group Name <span class="text-danger">*</span> </label>
+                      <br>
+                      <input formControlName="name" (input)="onNameExist($event.target.value)" type="text"
+                        class="gen-input2 browser-default">
+                      <div class="mt-2 text-danger" style="font-size: 13px;" *ngIf="nameExist">
+                        <strong>{{gf.name.value}}</strong> already exist.
+                      </div>
+                      <div class="mt-2" *ngIf="(gf.name.dirty || gf.name.touched) && gf.name.invalid">
+                        <span class="text-danger" style="font-size: 13px;" *ngIf="gf.name.errors.required">
+                          Group Name is required.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-12">
+                        <label class="col-form-label">Select Agent(s) <span class="text-danger">*</span></label>
+                        <br>
+                        <ngx-select-dropdown formControlName="members" [config]="config" [options]="dataSource.agent"
+                          [multiple]="true"></ngx-select-dropdown>
+                        <div class="mt-2" *ngIf="(gf.members.dirty || gf.members.touched) && gf.members.invalid">
+                          <span class="text-danger" style="font-size: 13px;" *ngIf="gf.members.errors.required">
+                            Atleast 1 agent is required.
+                          </span>
+                        </div>
+
+                        <!-- <ng-container *ngIf="(agentList$ | async) as agentList; else loadingAgent">
+                          <ngx-select-dropdown formControlName="members" [config]="config" [options]="agentList"
+                            [multiple]="true"></ngx-select-dropdown>
+                        </ng-container>
+                        <ng-template #loadingAgent>
+                          <p>Loading Agents...</p>
+                        </ng-template> -->
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="closeModal" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                  </button>
+                  <button [disabled]="(addGroupForm.invalid || loading || nameExist)" (click)="addGroup()" type="button"
+                    class="fin-pry-btn">
+                    add <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ADD GROUP Modal End-->
+
+          <!-- Add Sales Person Modal -->
+          <div class="modal fade" id="ModalCenter5" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle5"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle5">Add Agent</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group col-md-12">
+                      <ng-container *ngIf="(agentList$ | async) as agentList; else loadingAgent">
+                        <label class="col-form-label">Select Agent(s) <sup class="required">*</sup></label>
+                        <br>
+                        <ngx-select-dropdown name="members" [(ngModel)]="agents" [config]="config" [options]="agentList"
+                          [multiple]="true"></ngx-select-dropdown>
+                      </ng-container>
+                      <ng-template #loadingAgent>
+                        <p>Loading Agents...</p>
+                      </ng-template>
+
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                  </button>
+                  <button [disabled]="!agents.length || agentLoading" (click)="addAgent()" type="button"
+                    class="fin-pry-btn">
+                    SAVE <span *ngIf="agentLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add Sales Person Modal End-->
+
+          <!-- Assign Commission Modal -->
+          <div class="modal fade" id="ModalCenter6" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle6"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle6">Assign Commission</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Select Commission Type</label>
+                      <br>
+                      <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                      <select class="gen-input browser-default form-control" style="width: 100%">
+                        <option value="" disabled selected>Commissions</option>
+                        <option value="1">Quarterly</option>
+                        <option value="2">Half Yearly</option>
+                        <option value="3">Yearly</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Select Target</label>
+                      <br>
+                      <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                      <select class="gen-input browser-default form-control" style="width: 100%">
+                        <option value="" disabled selected>Targets</option>
+                        <option value="1">Quarterly</option>
+                        <option value="2">Half Yearly</option>
+                        <option value="3">Yearly</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Select Period</label>
+                      <br>
+                      <!--<input type="text" id="cname" name="cname" class="gen-input browser-default">-->
+                      <select class="gen-input browser-default form-control" style="width: 100%">
+                        <option value="" disabled selected>Periods</option>
+                        <option value="1">Quarterly</option>
+                        <option value="2">Half Yearly</option>
+                        <option value="3">Yearly</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Threshold Rate</label>
+                      <br>
+                      <input type="text" name="cname" class="gen-input browser-default" style="width: 100%">
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">Accelerator Threshold</label>
+                      <br>
+                      <input type="text" name="cname" class="gen-input browser-default" style="width: 100%">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                  </button>
+                  <button type="button" class="fin-pry-btn">Assign Commission</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Assign Commission Modal End-->
+
+          <!-- RENAME GROUP Modal -->
+          <div class="modal fade" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle02"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle02">RENAME GROUP</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <label class="col-form-label">New Name <span class="text-danger">*</span> </label>
+                      <br>
+                      <input type="text" [(ngModel)]="groupName" id="groupName" name="groupName" #name="ngModel"
+                        (input)="onNameExist($event.target.value)" class="gen-input2 browser-default" required>
+                      <div class="mt-2">
+                        <span class="text-danger" style="font-size: 13px;" [hidden]="name.valid || name.pristine">
+                          New Name is required.
+                        </span>
+                        <span class="text-danger" style="font-size: 13px;" *ngIf="nameExist">
+                          Name already exist.
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="closeModal" class="fin-sec-btn" data-dismiss="modal"
+                    [hidden]="loader.rename">CLOSE
+                  </button>
+                  <button [disabled]="loader.rename || nameExist" (click)="renameGroup()" type="button"
+                    class="fin-pry-btn" [ladda]="loader.rename" data-style="slide-left">
+                    Rename
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- RENAME GROUP Modal End-->
+
+
+        </div>
+        <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+          (feedback)="dataFeedBackObsListener($event)" [bodyrows]="groupList"></app-datatable>
+        <a class="dropdown-item d-none" href="#" data-toggle="modal" data-target="#ModalCenter5">Add Agent</a>
+        <a class="dropdown-item d-none" href="#" data-toggle="modal" data-target="#RenameGroupModal">Rename</a>
+      </div>
+      <div *ngIf="!groupList">
+        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+      </div>
+    </div>
+  </div>
+
+</div>

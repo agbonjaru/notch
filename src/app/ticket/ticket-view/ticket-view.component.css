@@ -1,0 +1,79 @@
+.gmail_quote {
+    /* display: none !important; */
+    background-color: palevioletred;
+}
+.messaging{
+    background: white;
+}
+.ticket-filter2{
+    background: white;
+}
+.messaging{
+    height: 82vh;
+}
+.inbox_people{
+    height: 100%;
+}
+.ticket_msg_history{
+    height: 42vh;
+}
+.incoming_msg_img img{
+    width: 30px;
+}
+.sent_msg {
+    float: right;
+    width: 57%;
+}
+.note-loading{
+    border: medium none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 17px;
+    height: 33px;
+    position: absolute;
+    right: 13px;
+    width: 33px;
+    bottom: 44px;
+}
+.chat_ib{
+    height: 45px;
+}
+.notice-icon{
+    box-shadow: none;
+    margin-left: 5px;;
+    float: right;
+}
+.chat-name{
+    margin-bottom: 25px;
+}
+
+blockquote {
+    /* display: none !important; */
+    /* background: rgba(122,201,67,0.6); */
+    background: #fff;
+    padding: 15px 45px 15px 65px;
+    margin: 0 0 20px;
+    position: relative;
+    /* width: 50%; */
+    /* font-family: Georgia, serif; */
+    font-size: 16px;
+    line-height: 1.2;
+    color: #666;
+    /* border: 4px solid #158DED; */
+    /* width: 200px; */
+    /* height: 95px; */
+    border-radius: 10px;
+    /* border-left: none; */
+    /* box-shadow: 0 4px 7px rgba(0, 0, 0, 0.14); */
+}
+.type_msg .textarea{
+    padding-top: 10px;
+    padding-right: 10px;
+    border: none; 
+    padding-left: 15px; 
+    width: 93% !important;
+}
+
+.chat_list{
+    padding: 18px 4px 7px;
+}

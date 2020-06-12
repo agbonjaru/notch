@@ -1,0 +1,248 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar> </app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Sales Competition & Territory</h1>
+            <ul *ngIf="allIndustry && allRegion && allCompetitors" class="nav nav-tabs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" style="background: transparent;" id="sales-territory-tab"
+                  data-toggle="tab" href="#sales-territory" role="tab" aria-controls="email" aria-selected="true">Sales
+                  Territory</a>
+              </li>
+              <li class="nav-item"><a class="nav-link" style="background: transparent;" id="competition-tab"
+                  data-toggle="tab" href="#competition" role="tab" aria-controls="call"
+                  aria-selected="false">Competition</a>
+              </li>
+            </ul>
+          </div>
+          <ng-container *ngIf="allRegion && allIndustry && allCompetitors">
+          <div class="settings-label tab-pane fade show active" id="sales-territory" role="tabpanel"
+            aria-labelledby="sales-territory-tab">
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" id="selectable">
+
+                <h3>By Vertical (Industry)</h3>
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <h6 *ngIf="!allIndustry.length">No Industry</h6>
+                    <table *ngIf="allIndustry.length" class="table">
+                      <tbody *ngFor="let allIndustry of allIndustry">
+                        <tr>
+                          <th scope="row" style="border-top: none;" class="notch-settings">{{allIndustry.name}}
+                          </th>
+                          <td (click)="deleteSalesTerritory(allIndustry)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash"></i> <br>
+                            <!-- <i class="fas fa-text-height"></i> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <button type="button" class="fin-pry-btn mt-4" data-toggle="modal" data-target="#ModalCenter4">
+                  + Add Industry
+                </button>
+
+                <!-- Add industry Modal -->
+                <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle4">Add Industry</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <form [formGroup]="industryForm">
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">Enter Industry
+                              Name</label>
+                            <input formControlName="industryName" type="text" class="form-control" id="target-value">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                          </button>
+                          <button type="button" (click)="addIndustry()" [disabled]="industryForm.invalid || disBtn"
+                            class="fin-pry-btn">Add <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Add industry Modal End-->
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6" style="border-left: 1px solid #dee2e6"
+                id="selectable2">
+                <h3>By Geography (Region)</h3>
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <h6 *ngIf="!allRegion.length">No Region</h6>
+                    <table *ngIf="allRegion.length" class="table">
+                      <tbody *ngFor="let allRegion of allRegion">
+                        <tr>
+                          <th scope="row" style="border-top: none;" class="notch-settings">{{allRegion.name}}
+                          </th>
+                          <td (click)="deleteSalesTerritory(allRegion)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash"></i><br>
+                            <!-- <i class="fas fa-text-height"></i> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <button type="button" class="fin-pry-btn mt-4" data-toggle="modal" data-target="#ModalCenter2">
+                  + Add Region
+                </button>
+
+                <!-- Add region Modal -->
+                <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog"
+                  aria-labelledby="ModalCenterTitle2" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle2">Add Region</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <form [formGroup]="regionForm">
+                        <div class="modal-body">
+
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">Enter Region
+                              Name</label>
+                            <input formControlName="regionName" type="text" class="form-control">
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                          </button>
+                          <button type="button" (click)="addRegion()" [disabled]="regionForm.invalid || disBtn"
+                            class="fin-pry-btn">Add <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Add region Modal End-->
+
+              </div>
+
+            </div>
+          </div>
+          <div class="settings-label tab-pane fade" id="competition" role="tabpanel" aria-labelledby="competition-tab">
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 email-temp-left">
+                <h3>Add Competitor</h3>
+
+                <form [formGroup]="competitionForm">
+                  <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <br>
+                    <input type="name" formControlName="competitorName" id="name" name="name"
+                      placeholder="Enter Full Name" class="gen-input2 browser-default">
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email address</label>
+                    <br>
+                    <input type="email" formControlName="competitorEmail" id="email" name="email"
+                      placeholder="Enter email address" class="gen-input2 browser-default">
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Address</label>
+                    <br>
+                    <input type="text" formControlName="competitorAddress" id="address" name="email"
+                      placeholder="Enter Address" class="gen-input2 browser-default">
+                  </div>
+                  <div class="form-group">
+                    <label for="cname">Company Name</label>
+                    <br>
+                    <input type="text" formControlName="competitorCompanyName" id="cname" name="email"
+                      placeholder="Enter Company Name" class="gen-input2 browser-default">
+                  </div>
+                  <div class="form-group">
+                    <label for="website">Website</label>
+                    <br>
+                    <input type="url" formControlName="competitorWebsite" id="website" name="email"
+                      placeholder="Enter website" class="gen-input2 browser-default">
+                  </div>
+                  <div class="form-group">
+                    <label for="strengths">Strengths</label>
+                    <br>
+                    <textarea name="strengths" formControlName="competitorStrength" id="strengths" cols="30" rows="10"
+                      class="gen-input2 h-25 pt-3" placeholder="Enter Competitior strengths"></textarea>
+                  </div>
+                  <button type="submit" (click)="addCompetitors()" [disabled]="competitionForm.invalid || disBtn"
+                    class="fin-pry-btn mt-1">
+                    + Add Competitior <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </form>
+
+              </div>
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 comp-list" style="border-left: 1px solid #dee2e6">
+                <h3>Competitiors</h3>
+
+                <div style="padding-top: 5px; ">
+                  <div class="list-card" style="box-shadow: none; padding: 0;">
+                    <h6 *ngIf="!allCompetitors.length">No Competitor</h6>
+                    <table *ngIf="allCompetitors.length" class="table">
+                      <tbody *ngFor="let allCompetitors of allCompetitors">
+                        <tr>
+                          <th scope="row" style="border-top: none;" class="notch-settings">
+                            {{allCompetitors.fullname}}
+                          </th>
+                          <td (click)="deleteCompetitors(allCompetitors)"
+                            style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                            <i class="fas fa-trash"></i> <br>
+                            <!-- <i class="fas fa-text-height"></i> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div *ngIf="!(allRegion && allIndustry && allCompetitors)">
+            <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

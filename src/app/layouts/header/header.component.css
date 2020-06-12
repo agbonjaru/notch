@@ -1,0 +1,103 @@
+.showDropDown {
+  display: block;
+  width: 280px;
+  left: 76%;
+  top: -60px;
+  overflow-y: auto;
+  height: 710px;
+  transform-origin: 0px 0px;
+  opacity: 1;
+  transform: scaleX(1) scaleY(1);
+}
+
+@media screen and (max-width: 1000px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 16%;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1300px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 65%;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1300px) and (max-width: 1400px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 76%;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1401px) and (max-width: 1600px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 79%;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1800px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 82%;
+    overflow-y: auto;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .showDropDown {
+    display: block;
+    width: 280px;
+    left: 84%;
+    overflow-y: auto;
+  }
+}
+a{
+  color: black;
+}
+/* #dropdown1{
+  display: none;
+} */
+
+.brand-logo {
+  left: 2% !important;
+}
+.showDropDown{
+  height: 86vh;
+}
+
+@media screen and (min-width: 576px) {
+  .modal-dialog {
+      max-width: 70%;
+      margin: 1.75rem auto;
+  }
+}
+.dropdown .dropdown-menu .dropdown-item:active {
+  background-color: white;
+}
+.dropdown-menu{
+  overflow: auto;
+  width: 270px;
+  height: 90vh;
+}
+ .add-dropdown-menu{
+  overflow: auto;
+  width: 270px;
+  height: 90vh;
+  top: 50px!important;
+}
+.dropdown-menu a.dropdown-item:hover {
+  color: #09e !important;
+}
+.dropdown-toggle:after { content: none }

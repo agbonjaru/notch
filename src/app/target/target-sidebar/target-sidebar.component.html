@@ -1,0 +1,383 @@
+<div class="list-filter mt-0 pt-0">  
+    <div class="accordion pt-3" id="accordionExample">
+        <!-- Created On -->
+        <div class="card">
+            <div class="card-header" id="heading8">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse8"
+                    aria-expanded="false" aria-controls="collapse8">
+                    Created Date
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionExample">
+                <div class="card-body date-fliter">
+                    <form (ngSubmit)="createdForm.valid && createdOnFilter(createdForm.value)" #createdForm="ngForm">
+                        <div class="form-group">
+                            <label for="startDate">From</label>
+                            <input ngModel name="startDate" type="text" placeholder="dd/mm/yyyy" class="form-control form-control-sm" id="starttext" required bsDatepicker>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">To</label>
+                            <input ngModel name="endDate" type="text" placeholder="dd/mm/yyyy" class="form-control form-control-sm" id="endDate" required bsDatepicker>
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="createdForm.invalid" type="submit" class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Owner -->
+        <div class="card"
+            *ngIf="
+                module === 'dashboard' || 
+                module === 'commissions'"
+        >
+            <div class="card-header" id="heading6">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6"
+                    aria-expanded="false" aria-controls="collapse6">
+                    Owner
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="OwnerFilter()">
+                        <div class="form-group">
+                            <ng-container *ngIf="(teamMemberList$ | async) as teamMemberList; else loadingteamMember">
+                                <div class="form-group">
+                                    <ngx-select-dropdown [options]="teamMemberList" [config]="ownerConfig" name="owner"
+                                    [(ngModel)]="creator" required></ngx-select-dropdown>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="!creator?.id" type="submit" class="fin-pry-btn btn-filter">Submit</button>
+                                </div>
+                            </ng-container>
+                            <ng-template #loadingteamMember>
+                                <p>Loading Sales Persons</p>
+                            </ng-template>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Target -->
+        <div class="card"
+            *ngIf="
+                module === 'dashboard' || 
+                module === 'commissions'"
+        >
+            <div class="card-header" id="headingTarget">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTarget"
+                    aria-expanded="false" aria-controls="collapseTarget">
+                    Target/Period
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTarget" class="collapse" aria-labelledby="headingTarget" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="targetForm.valid && TargetFilter(targetForm.value)" #targetForm="ngForm">
+                        <div class="form-group">
+                            <ng-container *ngIf="targetList$ as targetList; else loading">
+                                <div class="form-group">
+                                    <p>Target <span style="color: red;"> *</span></p>
+                                    <ngx-select-dropdown [options]="targetList" [config]="targetConfig" name="target"
+                                    ngModel (change)="getSubPeriods()" required></ngx-select-dropdown>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="form-group">
+                            <ng-container *ngIf="periodList$ as periodList">
+                                <div class="form-group">
+                                    <p>Period</p>
+                                    <ngx-select-dropdown [options]="periodList" [config]="periodConfig" 
+                                    ngModel name="period" [attr.disabled]="!targetForm.value.target?.id"></ngx-select-dropdown>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <ng-template #loading>
+                            <p>Loading</p>
+                        </ng-template>
+                        <div class="form-group">
+                            <button [disabled]="targetForm.invalid" type="submit" class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Type -->
+        <div class="card"
+            *ngIf="
+                module === 'targets' || 
+                module === 'dashboard' || 
+                module === 'commissions'"
+        >
+            <div class="card-header" id="headingType">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseType"
+                    aria-expanded="false" aria-controls="collapseType">
+                    Target Type
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseType" class="collapse" aria-labelledby="headingType" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="TypeFilter()">
+                        <div class="form-group">
+                            <ng-container *ngIf="targetTypeList$ as targetTypeList">
+                                <div class="form-group">
+                                    <ngx-select-dropdown [options]="targetTypeList" [config]="targetTypeConfig" name="type"
+                                    [(ngModel)]="target_type" required></ngx-select-dropdown>
+                                </div>
+                                <div class="form-group">
+                                    <button [disabled]="!target_type?.value" type="submit" class="fin-pry-btn btn-filter">Submit</button>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!--  Value -->
+        <div class="card"
+            *ngIf="
+                module === 'targets' || 
+                module === 'dashboard' || 
+                module === 'commissions'"
+        >
+            <div class="card-header" id="heading9">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse9"
+                aria-expanded="false" aria-controls="collapse9">
+                Value
+                </button>
+            </h2>
+            </div>
+            <div id="collapse9" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+            <div class="card-body">
+                <form (ngSubmit)="valueForm.valid && ValueFilter(valueForm.value)" #valueForm="ngForm">
+                <div class="form-group" data-role="rangeslider">
+                    <label for="price-min">From:</label>
+                    <input id="price-min" name="fromValue" ngModel class="form-control-sm form-control" type="number"
+                    required>
+                    <label for="price-max">To:</label>
+                    <input name="toValue" ngModel class="form-control-sm form-control" type="number" required>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="valueForm.invalid" type="submit" class="fin-pry-btn btn-filter">Submit</button>
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        <!-- Filter List -->
+        <div class="card" *ngFor="let filter of (filterList$ | async);let index = index">
+            <div class="card-header custom-filter-header" [id]="'headingfilter'+ index">
+                <span [id]="'collapseHead-'+ index" class="d-none collapsed" type="button"
+                    data-toggle="collapse" [attr.data-target]="'#collapsefilter' + index" aria-expanded="false"
+                    aria-controls="collapse">
+                        {{filter.name}}
+                </span>
+                <span >
+                    <a class="text-primary" (click)="customFilter(filter)">{{filter.name}}</a>
+                    <span (click)="activateEdit(index)" class="edit-icon my-auto">
+                        <i class="fa fa-edit"></i>
+                    </span>
+                </span>
+            </div>
+            <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form *ngIf="!(showFilter === index)" (ngSubmit)="customFilter(filter)">
+                        <div class="form-group">
+                            <label *ngIf="
+                                module === 'dashboard' || 
+                                module === 'commissions'"
+                            >
+                                <b>Owner</b><br> 
+                                {{filter.creator_name || '-'}}
+                            </label><br>
+                            <label *ngIf="
+                                module === 'dashboard' || 
+                                module === 'commissions'"
+                            >
+                                <b>Target</b><br> 
+                                {{filter.target_name || '-'}}
+                            </label><br>
+                            <label *ngIf="
+                                module === 'dashboard' || 
+                                module === 'commissions'"
+                            >
+                                <b>Period</b><br> 
+                                {{filter.period_name || '-'}}
+                            </label><br>
+                            <label *ngIf="
+                                module === 'targets' || 
+                                module === 'dashboard' || 
+                                module === 'commissions'"
+                            >
+                                <b>Target Type</b><br>
+                                {{filter.target_type || '-'}}
+                            </label><br>
+                            <label *ngIf="
+                                module === 'targets' || 
+                                module === 'dashboard' || 
+                                module === 'commissions'"
+                            >
+                                <b>Value</b><br>
+                                {{filter.from_amount | number}} - {{filter.to_amount | number}}
+                            </label><br>
+                            <label>
+                                <b>Created Date</b><br>
+                                {{filter.from_date | date}} - {{filter.to_date | date}}
+                            </label><br>
+                        </div>
+                        <div class="form-group">
+                            <button (click)="editFilter(index)" type="button" class="btn btn-info btn-filter">Edit</button>
+                            <button (click)="deleteFilter(filter)" type="button"
+                            class="ml-1 btn btn-danger btn-filter">Delete</button>
+                        </div>
+                    </form>
+                    <ng-container *ngIf="showFilter === index">
+                    <app-target-sidebar-filter [filterData]="filter" [filterIndex]="index" (cancelFilter)="cancelFilter($event)"
+                        (getEditFilter)="getEditFilter($event)"></app-target-sidebar-filter>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Create Filter -->
+        <div class="card">
+            <div class="card-header" id="heading10">
+                <button class="btn btn-primary w-100 rounded-0" type="button" 
+                    data-toggle="collapse" data-target="#collapse10" 
+                    aria-expanded="false" aria-controls="collapse10">
+                        Create Filter
+                </button>
+            </div>
+            <div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+                <div class="card-body create-filter">
+                    <form (ngSubmit)="filterX.valid && createFilter()" #filterX="ngForm">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <p>Filter Name <span style="color: red;"> *</span></p>
+                                <input name="name" [(ngModel)]="filterForm.name" type="text" class="form-control form-control-sm"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <p>Created Date</p>
+                                <label>From:</label>
+                                <input name="from_date" [(ngModel)]="filterForm.from_date" 
+                                    class="form-control-sm form-control" type="text" placeholder="dd/mm/yyyy" bsDatepicker>
+                                <label>To:</label>
+                                <input name="to_date" [(ngModel)]="filterForm.to_date" 
+                                    class="form-control-sm form-control" type="text" placeholder="dd/mm/yyyy" bsDatepicker>
+                            </div>
+                            <div class="form-group" 
+                                *ngIf="
+                                    module === 'dashboard' || 
+                                    module === 'commissions'"
+                            >
+                                <p>Owner</p>
+                                <ng-container *ngIf="(teamMemberList$ | async) as teamMemberList; else loadingteamMember">
+                                    <div class="form-group">
+                                        <ngx-select-dropdown [options]="teamMemberList" [config]="ownerConfig" name="owner"
+                                            [(ngModel)]="filterForm.creator"></ngx-select-dropdown>
+                                    </div>
+                                </ng-container>
+                                <ng-template #loadingteamMember>
+                                    <small>Loading Sales Persons</small>
+                                </ng-template>
+                            </div>
+                            <div class="form-group" 
+                                *ngIf="
+                                    module === 'dashboard' || 
+                                    module === 'commissions'"
+                            >
+                                <p>Target</p>
+                                <ng-container *ngIf="targetList$ as targetList; else loadingTargets">
+                                    <div class="form-group">
+                                        <ngx-select-dropdown [options]="targetList" [config]="targetConfig" name="target"
+                                            [(ngModel)]="filterForm.target" (change)="getSubPeriods2()"></ngx-select-dropdown>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <ng-template #loadingTargets>
+                                <p>Loading Targets</p>
+                            </ng-template>
+                            <div class="form-group" 
+                                *ngIf="
+                                    module === 'dashboard' || 
+                                    module === 'commissions'"
+                            >
+                                <ng-container *ngIf="periodList$ as periodList">
+                                    <div class="form-group">
+                                        <p>Period</p>
+                                        <ngx-select-dropdown [options]="periodList" [config]="periodConfig" name="period" 
+                                            [(ngModel)]="filterForm.period" [attr.disabled]="!filterForm.target?.id"></ngx-select-dropdown>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="form-group" 
+                                *ngIf="
+                                    module === 'targets' || 
+                                    module === 'dashboard' || 
+                                    module === 'commissions'"
+                            >
+                                <p>Target Type</p>
+                                <ng-container *ngIf="targetTypeList$ as targetTypeList">
+                                    <div class="form-group">
+                                        <ngx-select-dropdown [options]="targetTypeList" [config]="targetTypeConfig" name="type"
+                                        [(ngModel)]="filterForm.target_type"></ngx-select-dropdown>
+                                    </div>
+                                </ng-container>
+                            </div>
+                            <div class="form-group" data-role="rangeslider"
+                                *ngIf="
+                                    module === 'targets' || 
+                                    module === 'dashboard' || 
+                                    module === 'commissions'"
+                            >
+                                <p>Value</p>
+                                <label>From:</label>
+                                <input name="from_amount" [(ngModel)]="filterForm.from_amount" 
+                                    class="form-control-sm form-control" type="number">
+                                <label>To:</label>
+                                <input name="to_amount" [(ngModel)]="filterForm.to_amount" 
+                                    class="form-control-sm form-control" type="number">
+                            </div>
+                            <div class="form-group">
+                                <button [disabled]="filterX.invalid || createLoading" 
+                                    type="submit" class="fin-pry-btn btn-filter">
+                                    Submit 
+                                    <span *ngIf="createLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <button (click)="clearFilter()" 
+                class="btn btn-warning w-100 rounded-0">
+                    Clear Filters
+            </button>
+        </div>
+
+        <div class="card">
+            <button (click)="toggle('close')" 
+                class="btn btn-light w-100 rounded-0">
+                    Hide Filters
+            </button>
+        </div>
+    </div>
+</div>

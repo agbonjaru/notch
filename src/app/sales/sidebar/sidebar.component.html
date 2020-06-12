@@ -1,0 +1,465 @@
+<div class="list-filter deals-filter mt-0 pt-0">
+    <!-- <div (click)="toggle('close')" class="is-clickable">
+        <span class="fa fa-times"></span>
+    </div> -->
+    <!-- <div class="mb-4">
+        <button (click)="clearFilter()" class="fin-pry-btn float-right">Clear</button>
+    </div> -->
+    <div class="accordion pt-3" id="accordionExample">
+       <!-- Teams -->
+       <!-- <div class="card">
+        <div class="card-header" id="headingTop">
+            <h2 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#teams"
+                    aria-expanded="true" aria-controls="teams">
+                    Teams
+                </button>
+            </h2>
+        </div>
+
+        <div id="teams" class="collapse show" aria-labelledby="teams" data-parent="#accordionExample">
+            <div  class="card-body date-fliter">
+                <ng-container *ngIf="(teamList$ | async) as teamList;else loadingTeams">
+                    <select  #teamId="ngModel" [(ngModel)]="selectedTeamId"
+                      class="gen-input browser-default form-control content-list-search">
+                      <option value="" disabled="" selected="">Select Team</option>
+                      <option *ngFor="let team of teamList" [value]="team.teamID">
+                        {{team.teamName}}
+                      </option>
+                    </select>
+                    <div class="form-group mt-1">
+                        <button [disabled]="!(selectedTeamId)" type="button"
+                            (click)="getTeamsDeal()"
+                            class="fin-pry-btn btn-filter">Submit</button>
+                    </div>
+                  </ng-container>
+                  <ng-template #loadingTeams>
+                    <p>Loading Teams...</p>
+                  </ng-template>
+            </div>
+        </div>
+    </div> -->
+           <!-- Workflow -->
+           <!-- <div class="card">
+            <div class="card-header" id="headingTop">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#workflow"
+                        aria-expanded="true" aria-controls="workflow">
+                        Workflow
+                    </button>
+                </h2>
+            </div>
+    
+            <div id="workflow" class="collapse" aria-labelledby="workflow" data-parent="#accordionExample">
+                <div  class="card-body date-fliter">
+                    <ng-container *ngIf="processList; else loadingworkflow">
+                        <ngx-select-dropdown  [(ngModel)]="selectedWorkflow"  [options]="processList" [config]="config" ></ngx-select-dropdown>
+                        <div class="form-group mt-1">
+                            <button [disabled]="!(selectedWorkflow &&selectedWorkflow?.id)" type="button"
+                                (click)="workflowChange()"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                      </ng-container>
+                      <ng-template #loadingworkflow>
+                        <p>Loading Workflows...</p>
+                      </ng-template>
+                </div>
+            </div>
+        </div> -->
+    
+
+        <!-- Close Date -->
+        <div class="card">
+            <div class="card-header" id="headingTop">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTop"
+                        aria-expanded="true" aria-controls="collapseTop">
+                        Close Date
+                    </button>
+                </h2>
+            </div>
+
+            <div id="collapseTop" class="collapse" aria-labelledby="headingTop" data-parent="#accordionExample">
+                <div [formGroup]="dateForm" class="card-body date-fliter">
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input autocomplete="off" formControlName="startDate" placeholder="dd/mm/yyyy" type="text" class="form-control form-control-sm"
+                            id="startDatex"  bsDatepicker placement="right">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input autocomplete="off" formControlName="endDate" placeholder="dd/mm/yyyy" type="text" class="form-control form-control-sm" 
+                        id="endDatex" bsDatepicker placement="right">
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="dateForm.invalid" (click)="filterDate()"
+                            class="fin-pry-btn btn-filter">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deal Owner -->
+        <div class="card">
+            <div class="card-header" id="heading6">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6"
+                        aria-expanded="false" aria-controls="collapse6">
+                        Deal Owner
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="dealOwnerFiter()" [formGroup]="dealOwnerForm">
+                        <div class="form-group">
+                            <ng-container *ngIf="teamMemberList; else loadingOwner">
+                                <ngx-select-dropdown (change)="changeOwner()" formControlName="owner" [options]="teamMemberList"
+                                    [config]="config">
+                                </ngx-select-dropdown>
+                            </ng-container>
+                            <ng-template #loadingOwner>
+                                <p>Loading Salespersons</p>
+                            </ng-template>
+                            <!-- <select formControlName="owner" class="form-control form-control-sm">
+                <option value="">Select Deal Owner</option>
+                <ng-container *ngIf="(teamMemberList$ | async) as teamMemxberList">
+                  <option *ngFor="let member of teamMemxberList" [value]="member.id">{{member.name}}</option>
+                </ng-container>
+              </select> -->
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="dealOwnerForm.invalid" type="submit"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Created On -->
+        <div class="card">
+            <div class="card-header" id="heading8">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse8"
+                        aria-expanded="false" aria-controls="collapse8">
+                        Created Date
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionExample">
+                <div class="card-body date-fliter">
+                    <form (ngSubmit)="createdOnFilter()" [formGroup]="createdOnForm">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input autocomplete="off" formControlName="startDate" type="text" class="form-control form-control-sm"
+                                id="startDate" placeholder="dd/mm/yyyy" bsDatepicker placement="right">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input autocomplete="off" formControlName="endDate" placeholder="dd/mm/yyyy" type="text" class="form-control form-control-sm"
+                                id="endDate" bsDatepicker placement="right">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="createdOnForm.invalid" (click)="filterDate()"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+             <!-- Deal Status -->
+             <div class="card">
+                <div class="card-header" id="heading7">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#dealstatus"
+                            aria-expanded="false" aria-controls="dealstatus">
+                            Deal Status
+                        </button>
+                    </h2>
+                </div>
+                <div id="dealstatus" class="collapse" aria-labelledby="heading7" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <form  #dealStatusForm="ngForm" (ngSubmit)="dealStatusForm.valid && dealStatusFilter(dealStatusForm)" >
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select ngModel name="dealStatus"  class="form-control form-control-sm" required>
+                                    <option disabled value="">Select Status</option>
+                                    <option value="OPEN">Open</option>
+                                    <option value="LOST">Lost</option>
+                                    <option value="WON">Won</option>
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button [disabled]="dealStatusForm.invalid" type="submit"
+                                    class="fin-pry-btn btn-filter">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Deal Client -->
+        <div class="card">
+            <div class="card-header" id="heading7">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7"
+                        aria-expanded="false" aria-controls="collapse7">
+                        Deal Client
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="clientFilter()" [formGroup]="clientForm">
+                        <!-- <div class="form-group">
+                            <label>Client Type</label>
+                            <select (change)="fetchClient()" formControlName="type"
+                                class="form-control form-control-sm">
+                                <option disabled value="">Select Client Type</option>
+                                <option value="Contact">Contact</option>
+                                <option value="Client">Company</option>
+                            </select>
+                        </div> -->
+                        <div class="form-group">
+                            <label>Client</label>
+                            <ng-container *ngIf="clientForm.value.type;else noClinetType">
+                                <ngx-select-dropdown (change)="changeClient()" [config]="config" [options]="clientList" formControlName="client"  ></ngx-select-dropdown>
+                            </ng-container> 
+                            <ng-template #noClinetType> 
+                                <div>
+                                    <span style="font-size: 11px;">Client type is required to select client</span>
+                                </div>
+                            </ng-template>
+                            <!-- <select formControlName="client" class="form-control form-control-sm">
+                                <option value="">Select Client</option>
+                                <option *ngFor="let client of clientList" [value]="client.clientId">{{client.name}}
+                                </option>
+                            </select> -->
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="clientForm.invalid" type="submit"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deal Value -->
+        <div class="card">
+            <div class="card-header" id="heading9">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse9"
+                        aria-expanded="false" aria-controls="collapse9">
+                        Deal Value
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse9" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="dealValueFilter()" [formGroup]="dealValueForm">
+                        <div class="form-group" data-role="rangeslider">
+                           
+                            <label for="price-min">From: <span>({{baseCurrency}})</span> </label>
+                            <input id="price-minx" formControlName="from" class="form-control-sm form-control"
+                                type="number">
+                            <label for="price-max">To: <span>({{baseCurrency}})</span></label>
+                            <input formControlName="to" class="form-control-sm form-control" type="number">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="dealValueForm.invalid" type="submit"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deal Win Prob -->
+        <!-- <div class="card">
+            <div class="card-header" id="heading9">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#winprob"
+                        aria-expanded="false" aria-controls="winprob">
+                        Wining Probabilty
+                    </button>
+                </h2>
+            </div>
+            <div id="winprob" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="winProbFilter()" [formGroup]="winProbForm">
+                        <div class="form-group" data-role="rangeslider">
+                            <label for="price-min">From:</label>
+                            <input id="price-min" formControlName="from" class="form-control-sm form-control"
+                                type="number">
+                            <label for="price-max">To:</label>
+                            <input formControlName="to" class="form-control-sm form-control" type="number">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="winProbForm.invalid" type="submit"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Deal Profile Score -->
+        <!-- <div class="card">
+            <div class="card-header" id="heading9">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#profileScore" aria-expanded="false" aria-controls="profileScore">
+                        Profile Score
+                    </button>
+                </h2>
+            </div>
+            <div id="profileScore" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form (ngSubmit)="profileScoreFilter()" [formGroup]="scoreForm">
+                        <div class="form-group" data-role="rangeslider">
+                            <label for="price-min">From:</label>
+                            <input id="price-min" formControlName="from" class="form-control-sm form-control"
+                                type="number">
+                            <label for="price-max">To:</label>
+                            <input formControlName="to" class="form-control-sm form-control" type="number">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="scoreForm.invalid" type="submit"
+                                class="fin-pry-btn btn-filter">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Filter List -->
+        <div *ngFor="let filter of filterList;let index = index" class="card">
+            <div class="card-header custom-filter-header" [id]="'headingfilter'+ index">
+                <h2 class="mb-0">
+                    <button [id]="'collapseHead-'+ index" class="d-none btn btn-link collapsed" type="button"
+                        data-toggle="collapse" [attr.data-target]="'#collapsefilter' + index" aria-expanded="false"
+                        aria-controls="collapse">
+                        {{filter.name}}
+                    </button>
+                    <button (click)=customFilter(filter) class="btn btn-link" type="button">
+                        <span class="text-primary text-elips">{{filter.name}}</span>
+                    </button>
+                    <span (click)="activateEdit(index)" class="float-right edit-icon my-auto"><i
+                            class="fa fa-edit"></i></span>
+                </h2>
+            </div>
+            <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading9"
+                data-parent="#accordionExample">
+                <div class="card-body">
+                    <form *ngIf="!(showFilter === index)" (ngSubmit)="customFilter(filter)">
+                        <div class="form-group">
+                            <span  *ngIf="filter.dealOwnerName">
+                                <label><b>Deal Owner</b><br> <span>{{filter.dealOwnerName}}</span><br></label>
+                            </span>
+                            <span *ngIf="filter.dealValueFrom || filter.dealValueTo"><br>
+                                <label><b>Deal Value</b><br>{{(filter.dealValueFrom||'nil') + ' - ' + (filter.dealValueTo||'nil')}} <br></label>
+                            </span>
+                            <span *ngIf="filter.dealStatus"><br>
+                                <label ><b>Deal Status</b><br> {{filter.dealStatus || 'nil'}}<br></label>
+                            </span>
+                            <span *ngIf="filter.clientName"><br>
+                                <label><b>Deal Client</b> <br>{{filter.clientName || 'nil'}}</label>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <!-- <button (click)="editFilter(index)" type="button"
+                                class="fin-pry-btn btn-filter">Edit</button> -->
+                            <button (click)="deleteFilter(filter)" type="button"
+                                class="ml-1  fin-pry-btn btn-filter btn-danger">Delete</button>                           
+                        </div>
+                    </form>
+                    <ng-container *ngIf="showFilter === index">
+                        <app-filter [filterData]="filter" [filterIndex]="index" (cancelFiter)="cancelFiter($event)"
+                            (getEditFilter)="getEditFilter($event)"></app-filter>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Filter -->
+        <div *ngIf="generalSrv.isAuthorized('CREATE_DEALS_FILTER')" class="card">
+            <div class="card-header" id="heading10">
+                <h2 class="mb-0">
+                    <button class="btn-block fin-pry-btn create-filter-btn collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                        Create Filter
+                    </button>
+                </h2>
+            </div>
+            <div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+                <div class="card-body create-filter">
+                    <form (ngSubmit)="createFilter()" [formGroup]="createFilterForm">
+                        <div class="form-group ">
+                            <div class="form-group mt-2">
+                                <p>Filter Name</p>
+                                <input formControlName="filterName" placeholder="Enter filter name" type="text" class="form-control form-control-sm">
+                            </div>
+                            <div class="form-group">
+                                <p>Deal Owner</p>
+                                <ng-container *ngIf="teamMemberList; else loadingOwner" >
+                                    <ngx-select-dropdown (change)="changeOwner()" formControlName="dealOwner"  [options]="teamMemberList" 
+                                            [config]="config"></ngx-select-dropdown>
+                                </ng-container>
+                                <ng-template #loadingOwner>
+                                   <br> <span>Loading Salespersons...</span>
+                                </ng-template>
+                            </div>
+                            <!-- <div class="form-group" data-role="rangeslider">
+                                <p>Deal Value</p>
+                                <label for="price-min">From: <span>({{baseCurrency}})</span></label>
+                                <input id="price-min" formControlName="dealValueFrom" placeholder="Enter Min value"
+                                    class="form-control-sm form-control" type="number">
+                                <label for="price-max">To: <span>({{baseCurrency}})</span></label>
+                                <input formControlName="dealValueTo" placeholder="Enter Max Value" class="form-control-sm form-control" type="number">
+                            </div> -->
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select formControlName="dealStatus" class="form-control form-control-sm">
+                                    <option disabled value="">Select Status</option>
+                                    <option value="OPEN">Open</option>
+                                    <option value="LOST">Lost</option>
+                                    <option value="WON">Won</option>
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p>Client</p>
+                       
+                                <div class="form-group">
+                                    <!-- <label>Client</label> -->
+                                    <ng-container >
+                                        <ngx-select-dropdown (change)="changeClient()" formControlName="client"  [options]="createClientList" 
+                                                [config]="config"></ngx-select-dropdown>
+                                    </ng-container>
+                            
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button [disabled]="!disCustomFilterBtn || credFiltLoading" type="submit"
+                                    class="fin-pry-btn btn-filter mt-3">
+                                    Submit <span *ngIf="credFiltLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="mb-4">
+            <button (click)="clearFilter()" class="btn rounded-0 btn-block btn-warning">Clear Filters</button>
+        </div>
+
+        
+        
+    </div>
+</div>

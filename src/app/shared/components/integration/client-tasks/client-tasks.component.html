@@ -1,0 +1,174 @@
+<div class="all-tasks-integration">
+    <div style="overflow: scroll;">
+       
+        <div class="text-left">
+            <!-- Small Loader -->
+            <div class="col-sm-12 col-xl-4 col-lg-6 pb-4" *ngIf="showSmallSpinner">
+                <loading-spinner [spinnerType]="'fadingCircle'" [spinnerStyle]="{'margin': '15px auto'}">
+                </loading-spinner>
+            </div>
+
+            <ng-container *ngIf="allClientTasks && !showSmallSpinner">
+                <ng-container *ngIf="allClientTasks.length">
+                    <div class="about-contact-row"
+                        *ngFor="let task of allClientTasks | paginate: { itemsPerPage: 5, currentPage: p}">
+                        <div class="col-sm-3">
+                            <span class="contact-detail-top">DUE DATE</span>
+                            <br />
+                            <span class="contact-detail">{{ task.dueDate }}</span>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="contact-detail-top">TASK NAME</span>
+                            <br />
+                            <span class="contact-detail">{{ task.taskName  }}</span>
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="contact-detail-top">TASK DESCRIPTION</span>
+                            <br />
+                            <span class="contact-detail">{{ task.description }}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <span class="contact-detail-top">Status</span>
+                            <br>
+                            <span class="contact-detail badge-warning pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px"
+                                *ngIf="task.status === 'PENDING' || task.status === 'pending'">{{ task.status }}</span>
+                            <span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px"
+                                *ngIf="task.status === 'COMPLETED' || task.status === 'completed'">{{ task.status }}</span>
+                            <span class="contact-detail badge-info pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px"
+                                *ngIf="task.status === 'OVERDUE' || task.status === 'overdue'">{{ task.status }}</span>
+                            <span class="contact-detail badge-danger pl-2 pr-2 text-uppercase"
+                                style="border-radius: 10px;font-size: 12px"
+                                *ngIf="task.status === 'VOIDED' || task.status === 'voided'">{{ task.status }}</span>
+                        </div>
+                        <div class="col-sm-3">
+
+                            <span class="contact-detail">
+                                <button data-toggle="modal" data-target="#ModalCenter6"
+                                    (click)="onViewTask(task.taskID)" class="btn btn-primary btn-sm"
+                                    style="padding: 0 14px!important;" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                            </span>
+
+                            <span
+                                *ngIf="(task.status === 'PENDING' || task.status === 'pending') &&  (task.creatorUserID == userID || task.assignedUserID == userID) "
+                                class="contact-detail">
+                                <button  (click)="onMarkTaskAsCompleted(task.taskID)"  class="btn btn-success btn-sm" style="padding: 0 14px!important;"
+                                    title="Mark As Completed">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </span>
+
+                            <span
+                                *ngIf="(task.status === 'PENDING' || task.status === 'pending') &&  (task.creatorUserID == userID || task.assignedUserID == userID) "
+                                class="contact-detail">
+                                <button  (click)="onMarkTaskAsVoid(task.taskID)"  class="btn btn-danger btn-sm" style="padding: 0 14px!important;"
+                                    title="Terminate">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </span>
+
+                        </div>
+                    </div>
+                    <div class="center">
+                        <pagination-controls *ngIf="allClientTasks.length  > 5;" (pageChange)="p = $event">
+                        </pagination-controls>
+                    </div>
+                </ng-container>
+                <div *ngIf="!allClientTasks.length" class="about-contact-row ">
+                    <h6 class="text-center"> NO TASK </h6>
+                </div>
+            </ng-container>            
+
+        </div>
+
+    </div>
+
+    <!-- View Task Modal -->
+
+    <div class="modal fade" id="ModalCenter6" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle4"><small>TASK NAME :
+                            {{task?.name}}</small></h5>
+                    <span class="contact-detail badge-warning pl-2 pr-2 text-uppercase"
+                        style="border-radius: 10px;font-size: 12px"
+                        *ngIf="task.status === 'PENDING' || task.status === 'pending'">{{ task.status }}</span>
+                    <span class="contact-detail badge-success pl-2 pr-2 text-uppercase"
+                        style="border-radius: 10px;font-size: 12px"
+                        *ngIf="task.status === 'COMPLETED' || task.status === 'completed'">{{ task.status }}</span>
+                    <span class="contact-detail badge-info pl-2 pr-2 text-uppercase"
+                        style="border-radius: 10px;font-size: 12px"
+                        *ngIf="task.status === 'OVERDUE' || task.status === 'overdue'">{{ task.status }}</span>
+                    <span class="contact-detail badge-danger pl-2 pr-2 text-uppercase"
+                        style="border-radius: 10px;font-size: 12px"
+                        *ngIf="task.status === 'VOIDED' || task.status === 'voided'">{{ task.status }}</span>
+                </div>
+                <div class="modal-body">
+                    <div id="lead-info">
+                        <div class="about-contact-row">
+                            <div class="col-sm-12">
+                                <span class="contact-detail-top">DESCRIPTION</span>
+                                <br>
+                                <span class="contact-detail">{{task?.description}}</span>
+                            </div>
+                        </div>
+                        <div class="about-contact-row">
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top">DEAL</span>
+                                <br>
+                                <span class="contact-detail">{{task?.dealName}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top">CLIENT</span>
+                                <br>
+                                <span class="contact-detail">{{task?.clientName}}</span>
+                            </div>
+                        </div>
+                        <div class="about-contact-row">
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top">CREATOR</span>
+                                <br>
+                                <span class="contact-detail">{{task?.creatorUsername}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top">ASSIGNED USER</span>
+                                <br>
+                                <span class="contact-detail">{{task?.assignedUsername}}</span>
+                            </div>
+                        </div>
+                        <div class="about-contact-row">
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top"> DUE DATE TIME</span>
+                                <br>
+                                <span class="contact-detail">{{task?.endDate}}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="contact-detail-top"> COMPLETED / VOIDED DATE</span>
+                                <br>
+                                <span
+                                    class="contact-detail">{{task?.dateCompleted  || task?.dateVoided | date: 'medium' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span *ngIf="isLoading" class="text-center"><small> Loading Task... </small> <i
+                            class="fa fa-spinner fa-spin"></i></span>
+                    <div class="float-right col-4">
+                        <button type="button" data-dismiss="modal" aria-label="Close"
+                            class="fin-sec-btn float-right m-2 ng-star-inserted">
+                            CLOSE
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Task Modal End-->

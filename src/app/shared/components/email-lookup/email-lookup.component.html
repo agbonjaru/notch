@@ -1,0 +1,106 @@
+<!-- LOOK UP MODAL -->
+<div class="modal fade" id="email-lookup-modal" tabindex="-1" role="dialog" aria-labelledby="email-lookup-modal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header pt-0">
+        <h5 class="modal-title" id="email-lookup-title">Email Lookup</h5>
+      </div>
+      <div class="modal-body mt-0">
+        <div *ngIf="email_helper.alertMessage" class="alert alert-info">
+          {{email_helper.alertMessage}}
+        </div>
+        <form>
+          <div class="form-row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="email-lookup-recipient-group" class="w-100 text-left">Recipient Group</label>
+                <select class="form-control w-100" name="recipient-group" id="email-lookup-recipient-group"
+                  [(ngModel)]="email_helper.selectedRecipientGroup">
+                  <option value="">Select recipient group</option>
+                  <option value="to">To</option>
+                  <option value="cc">Cc</option>
+                  <option value="bcc">Bcc</option>
+                </select>
+              </div>
+            </div>
+            <!-- <div class="col-6">
+              <div class="form-group">
+                <label for="email-lookup-source" class="w-100 text-left">Client Type</label>
+                <select class="form-control w-100" id="email-lookup-source" name="client-type"
+                  [(ngModel)]="email_helper.selectedClientType">
+                  <option value="">Select client tpe</option>
+                  <option value="leads">Lead</option>
+                  <option value="contacts">Contact</option>
+                  <option value="companies">Company</option>
+                </select>
+              </div>
+            </div> -->
+          </div>
+          <div class="form-row mt-2">
+            <div class="col-12">
+              <div class="form-group">
+                <input type="text" name="search-text" class="form-control pl-2 pr-2 search-btn"
+                  placeholder="Search name" (input)="getSuggestions()" [(ngModel)]="email_helper.inputText"
+                  autocomplete="off">
+                <div *ngIf="email_helper.suggestedUsers.length > 0" class="card shadow email-search-result-list">
+                  <div *ngFor="let suggestedUser of email_helper.suggestedUsers"
+                    class="p-2 is-clickable text-left email-search-result-list-item"
+                    (click)="email_helper.addRecipient(suggestedUser, 'inputText')">
+                    {{suggestedUser.name}} <span *ngIf="!suggestedUser.email" class="text-danger"><small> **No
+                        email address</small></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row mt-4 pl-2 pr-2">
+            <div class="form-group w-100">
+              <div class="recipient-label">To: </div>
+              <div class="recipient-list">
+                <span *ngFor="let toRecipient of email_helper.convertObjectToArray(email_helper.temporaryToRecipients)"
+                  class={{email_helper.determineItemClass(toRecipient.is_valid)}}>
+                  {{toRecipient.name}}
+                  <span class="pl-2" (click)="email_helper.removeRecipient('temporaryToRecipients', toRecipient.email)">
+                    X </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row pl-2 pr-2">
+            <div class="form-group w-100">
+              <div class="recipient-label">Cc: </div>
+              <div class="recipient-list">
+                <span *ngFor="let ccRecipient of email_helper.convertObjectToArray(email_helper.temporaryCcRecipients)"
+                  class={{email_helper.determineItemClass(ccRecipient.is_valid)}}>
+                  {{ccRecipient.name}}
+                  <span class="pl-2" (click)="email_helper.removeRecipient('temporaryCcRecipients', ccRecipient.email)">
+                    X </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row pl-2 pr-2">
+            <div class="form-group w-100">
+              <div class="recipient-label">Bcc: </div>
+              <div class="recipient-list">
+                <span *ngFor="let bccRecipient of email_helper.convertObjectToArray(email_helper.temporaryBccRecipients)"
+                  class={{email_helper.determineItemClass(bccRecipient.is_valid)}}>
+                  {{bccRecipient.name}}
+                  <span class="pl-2"
+                    (click)="email_helper.removeRecipient('temporaryBccRecipients', bccRecipient.email)"> X </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer mt-0 border-0">
+        <button type="button" class="btn border border-info mr-2 fin-sec-btn" data-dismiss="modal"
+          (click)="email_helper.clearTemporarySelections()">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="email_helper.consolidateRecipients()">Apply</button>
+      </div>
+    </div>
+  </div>
+</div>

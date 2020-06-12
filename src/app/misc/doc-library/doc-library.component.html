@@ -1,0 +1,222 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+      <div class="document-header text-left">
+          <h3  class="left">Document Library</h3>
+          <div class="right doc-search">
+              <!-- Search form -->
+              <input (input)="searchFile($event)" class="form-control pl-2" type="text" placeholder="Search" aria-label="Search" height="40px">
+          </div>
+      </div>
+      <div class="col-md-12 document-wrapper tab-content" style="min-height: 100vh">
+        <ng-container *ngIf="generalDocList && teamDocList && personalDocList; else loading">
+          <div class="container" style="margin-top: 70px">
+
+              <div class="row">
+                  <div *ngIf="totalStorageUsage" class="col-sm-12 mb-3">
+                    <h6>Storage: {{getFilesize(totalStorageUsage)}} of {{getFilesize(totalStorage)}} used</h6>
+                      <div class="progress">
+                          <div class="progress-bar" role="progressbar" [ngStyle]="{'width': storagePercent}"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            {{storagePercent + '%'}}
+                          </div>
+                        </div>
+                  </div>
+                  <div class="col-md-3">
+                      <button data-toggle="modal" data-target="#uploadModal" class="fin-pry-btn">UPLOAD FILE</button>
+
+                      <!-- <a href="#" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true"
+                         aria-expanded="false">
+                      <button class="fin-pry-btn">UPLOAD FILE</button>
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="margin-top: 10px;">
+                          <a id="auth" (click)="onApiLoad()" class="dropdown-item" >One drive</a>
+                          <a class="dropdown-item" href="#">Google drive</a>
+                          <a class="dropdown-item" href="#">Dropbox</a> 
+                          <a data-toggle="modal" data-target="#uploadModal" class="dropdown-item" >Browse Device</a>
+                      </div> -->
+                  </div>
+                  <div class="col-md-6">
+                      <ul class="nav nav-tabs text-center" role="tablist" style="border: none">
+                          <li class="nav-item pl-5"><a class="nav-link active" style="background: transparent;"
+                                                       id="gen-tab"
+                                                       data-toggle="tab"
+                                                       href="#gen-doc" role="tab"
+                                                       aria-controls="email"
+                                                       (click)="changeShareTo('general')"
+                                                       aria-selected="true">GENERAL</a>
+                          </li>
+                          <li class="nav-item pl-5"><a class="nav-link " style="background: transparent;"
+                                                       id="team-tab"
+                                                       data-toggle="tab" href="#team-doc"
+                                                       role="tab"
+                                                       aria-controls="call"
+                                                       (click)="changeShareTo('team')"
+                                                       aria-selected="false">TEAM</a>
+                          </li>
+                          <li class="nav-item pl-5"><a class="nav-link " style="background: transparent;"
+                                                       id="per-tab"
+                                                       data-toggle="tab" href="#per-doc"
+                                                       role="tab"
+                                                       aria-controls="task"
+                                                       (click)="changeShareTo('personal')"
+                                                       aria-selected="false">PERSONAL</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <!-- <div class="col-md-3 right">
+                      <select class="gen-input browser-default form-control content-list-search right">
+                          <option value="" disabled="" selected="">All Documents</option>
+                          <option value="1">0-20</option>
+                          <option value="2">21-80</option>
+                          <option value="3">&gt;80</option>
+                      </select>
+                  </div> -->
+
+              </div>
+          </div>
+          <!-- General -->
+          <div class="settings-label tab-pane fade show active" id="gen-doc" role="tabpanel"
+               aria-labelledby="gen-tab" style="margin-top: 40px">
+              <div class="container">
+                  <div class="row">
+                    <ng-container *ngIf="generalDocList.length; else noGenDoc">
+                      <div  class="col-xl-2 col-md-4 mb-1" *ngFor="let generalDoc of generalDocList">
+                          <div  (click)="openDoc(generalDoc)" class=" text-center is-clickable">
+                              <span  title="view document" 
+                              class="{{fileExt.getIcon(generalDoc.type)}} fa-2x" ></span>
+                          </div>
+                          <div class=" doc-card-header text-center">
+                              <p class=" text-elips">
+                                  {{generalDoc.name}}
+                              </p>
+                          </div>
+                      </div>
+                    </ng-container>
+                      <ng-template #noGenDoc>
+                        <div class="col-12 text-center">
+                          <i class="fa fa-file-alt fa-5x"></i>
+                          <h6>No General File</h6>
+                        </div>
+                      </ng-template>
+
+                  </div>
+              </div>
+
+          </div>
+
+          <!--Team-->
+          <div class="settings-label tab-pane fade" id="team-doc" role="tabpanel"
+               aria-labelledby="team-tab" style="margin-top: 40px">
+              <div class="container">
+                <div class="row">
+                  <ng-container *ngIf="teamDocList.length; else noTeam">
+                    <div class="col-xl-2 col-md-4 mb-1" *ngFor="let teamDoc of teamDocList">
+                      <div  (click)="openDoc(teamDoc)" class=" text-center is-clickable">
+                          <span class="{{fileExt.getIcon(teamDoc.type)}} fa-2x"></span>
+                      </div>
+                      <div class=" doc-card-header text-center">
+                          <p class=" text-elips">
+                              {{teamDoc.name}}
+                          </p>
+                      </div>
+                  </div>
+                  </ng-container>
+                  <ng-template #noTeam>
+                    <div class="col-12 text-center">
+                      <i class="fa fa-file-alt fa-5x"></i>
+                      <h6>No Teams File</h6>
+                    </div>
+                  </ng-template>
+              </div>
+
+
+
+              </div>
+
+          </div>
+          <!--Personal-->
+          <div class="settings-label tab-pane fade" id="per-doc" role="tabpanel"
+               aria-labelledby="per-tab" style="margin-top: 40px">
+              <div class="container">
+                <div class="row">
+                  <ng-container *ngIf="personalDocList.length; else noPersonal">
+                    <div class="col-xl-2 col-md-4 mb-1" *ngFor="let personalDoc of personalDocList">
+                      <div  (click)="openDoc(personalDoc)" 
+                          class=" text-center is-clickable">
+                          <span class="{{fileExt.getIcon(personalDoc.type)}} fa-2x"></span>
+                      </div>
+                      <div class=" doc-card-header text-center">
+                          <p class=" text-elips">
+                              {{personalDoc.name}}
+                          </p>
+                      </div>
+                  </div>
+                  </ng-container>
+                  <ng-template #noPersonal>
+                    <div class="col-12 text-center">
+                      <i class="fa fa-file-alt fa-5x"></i>
+                      <h6>No Personal File</h6>
+                    </div>
+                  </ng-template>
+
+              </div>
+
+
+              </div>
+
+          </div>
+        </ng-container>
+        <ng-template #loading>
+            <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+        </ng-template>
+      </div>
+
+  </div>
+
+</div>
+<!-- Upload File Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <p>Upload To</p>
+          <div class="mb-2"   >
+            <ng-container [formGroup]="shareForm"> 
+                    <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" value="general" id="general" name="shareTo" class="custom-control-input" formControlName="shareTo">
+                            <label class="custom-control-label" for="general">General</label>
+                          </div> 
+                          <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="team" value="team" name="shareTo" class="custom-control-input" formControlName="shareTo">
+                            <label class="custom-control-label" for="team">Team</label>
+                          </div>
+                          <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="personal" value="personal" name="shareTo" class="custom-control-input" formControlName="shareTo">
+                                <label class="custom-control-label" for="personal">Personal</label>
+                            </div>
+            </ng-container>
+          </div>
+          <div class="custom-file">
+              <input (change)="browseFile($event)" type="file" class="custom-file-input" id="uploadedFile">
+              <label class="custom-file-label text-elips" for="uploadedFile">{{selectedFile ? selectedFile.name : 'Choose file'}}</label>
+            </div>
+      </div>
+      <p class="mb-1 text-center">Maximum file size is 15MB</p>
+      <div class="modal-footer">
+        <button (click)="upload()" [disabled]="!selectedFile || disableBtn" type="button" class="fin-pry-btn">
+          Upload <span *ngIf="disableBtn"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+
+<app-view-doc (updateFiles)="getData()" [document]="viewFile"></app-view-doc>
+<ng-container *ngIf="viewFile">
+</ng-container>

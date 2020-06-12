@@ -1,0 +1,71 @@
+<div class="modal fade" data-backdrop="static" data-keyboard="false" [id]='modalId' tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content text-center h-50">
+      <ng-container *ngIf="supenseLoading">
+        <div class="mt-4">
+          <div *ngIf="nextStage?.name === 'Approval'; else otherStageIcon">
+            <img class=" is-clickable" src="/assets/img/great-emoji.svg" width="15%">
+            <h5>Awesome</h5>
+          </div>
+          <ng-template #otherStageIcon>
+            <i class="fa fa-question-circle fa-5x text-info"></i>
+          </ng-template>
+        </div>
+        <div class="modal-body" *ngIf="activeStage">
+          <ng-container>
+            <h6>Are you sure you have meet the required conditions?</h6>
+            <p style="margin: 0px; font-weight: 600;">"Documents For Stage Must be Uploaded"</p>
+          </ng-container>
+
+          <div class="mt-2" *ngIf="needsDocument.length">
+            <p style="margin: 0px; font-weight: 500;">Upload Document(s)</p>
+            <table class=" d-flex justify-content-center">
+              <tbody>
+                <tr *ngFor="let doc of needsDocument; let index = index">
+                  <td>{{doc.document}}</td>
+                  <td>
+                    <input id="doc-file" (change)="uploadFile($event, index, doc)" class="form-control-file "
+                      type="file">
+                  </td>
+                  <td>
+                    {{doc.size}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="my-1">Maximum file size is 15MB</p>
+            <p *ngIf="fileErrMsg" class="text-danger">upload all required document(s)</p>
+          </div>
+
+          <div class="mt-3" *ngIf="nextStage === 'Approval' || nextStage === 'Decline'; else otherStage">
+            <h5 style="font-size: 20px">Mark sales order as <b>{{nextStage?.stageName}} stage?</b></h5>
+            <h6>This action is not reversible</h6>
+          </div>
+          <ng-template #otherStage>
+            <div class="mt-3">
+              <h5 style="font-size: 20px">Move sales order to <b>{{nextStage?.stageName}} stage?</b></h5>
+            </div>
+          </ng-template>
+        </div>
+
+
+        <div class="modal-footer mx-auto">
+          <button [disabled]="loading" (click)="saveChanges()" type="button" class=" fin-pry-btn text-capitalize">
+            Ok <span *ngIf="loading">
+              <span class="fa fa-spinner fa-spin"></span>
+            </span>
+          </button>
+          <button [id]="closeModalId || 'closeDModal'" type="button" class="btn btn-danger"
+            data-dismiss="modal">Close</button>
+        </div>
+      </ng-container>
+      <div *ngIf="!supenseLoading">
+        <div class="modal-body text-center my-5">
+          <i class="fa fa-spinner fa-spin fa-3x"></i>
+          <h6>Loading...</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

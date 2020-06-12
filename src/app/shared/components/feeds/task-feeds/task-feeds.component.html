@@ -1,0 +1,18 @@
+<div class="feed-body-content" *ngIf="loadedTasks.length < 1">
+  <p class="feed-body-header" style="margin-top: 10px">No Tasks Available</p>
+</div>
+<div class="feed-body-content" *ngFor="let task of loadedTasks">
+  <p class="feed-body-header" style="margin-top: 10px">{{ task.reminder }}</p>
+
+  <div class="row">
+      <span class="col-md-2" style="padding-right: 0"><i class="fab fa-whatsapp"></i></span>
+
+      <span class="col-md-10" style="padding-left: 0;font-size: 14px">{{ task.description }}
+          <span class="feed-response">
+              <p>Edit</p>
+              <p class="bg-red">Delete</p>
+              <p class="bg-green" (click="onMarkTaskAsCompleted(task.id)")>Mark as completed</p>
+          </span>
+      </span>
+  </div>
+</div>

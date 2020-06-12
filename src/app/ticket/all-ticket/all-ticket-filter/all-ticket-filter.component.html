@@ -1,0 +1,238 @@
+<div class="list-filter">
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="createdDateTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#createdDate"
+            aria-expanded="true" aria-controls="createdDate">
+            Created Date
+          </button>
+        </h2>
+      </div>
+
+      <div id="createdDate" class="collapse show" aria-labelledby="createdDateTop" data-parent="#accordionExample">
+        <div class="card-body" >
+          <form (ngSubmit)="createdForm.valid && createdDate(createdForm.value)" #createdForm="ngForm">
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input ngModel name="startDate" autocomplete="off"  placeholder="dd/mm/yyyy" type="text" class="form-control form-control-sm"
+                    id="startDatex"  bsDatepicker placement="right" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input ngModel name="endDate" autocomplete="off"  placeholder="dd/mm/yyyy" type="text" class="form-control form-control-sm" 
+                id="endDatex" bsDatepicker placement="right" required>
+            </div>
+            <button [disabled]="createdForm.invalid" class="fin-pry-btn btn-filter">submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="priorityTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#priority"
+            aria-expanded="true" aria-controls="priority">
+            Priority
+          </button>
+        </h2>
+      </div>
+
+      <div id="priority" class="collapse" aria-labelledby="priorityTop" data-parent="#accordionExample">
+        <div class="card-body">
+        <form (ngSubmit)="priorityForm.valid&&filtersEmition('Priority',priorityForm.value.priority)" #priorityForm="ngForm" >
+          <select ngModel name="priority"  class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4" required>
+            <option value="" disabled>Select Priority</option>
+            <option value="1">High</option>
+            <option value="2">Low</option>
+            <option value="3">Medium</option>
+            <option value="4">Urgent</option>
+        </select>
+        <button [disabled]="priorityForm.invalid" class="fin-pry-btn btn-filter">submit</button>
+        </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="sourceTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#source"
+            aria-expanded="true" aria-controls="source">
+            Source
+          </button>
+        </h2>
+      </div>
+
+      <div id="source" class="collapse" aria-labelledby="sourceTop" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="sourceForm.valid&&filtersEmition('Source', sourceForm.value.source)" #sourceForm="ngForm" >
+            <select ngModel name="source"  class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4" required>
+              <option value="" disabled>Select Source</option>
+              <option value="6">Phone call</option>
+              <option value="1">Email</option>
+              <option value="3">Whatsapp</option>
+              <option value="5">Twitter</option>
+              <option value="2">Website</option>
+          </select>
+          <button [disabled]="sourceForm.invalid" class="fin-pry-btn btn-filter">submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="statusTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#status"
+            aria-expanded="true" aria-controls="status">
+            Status
+          </button>
+        </h2>
+      </div>
+
+      <div id="status" class="collapse" aria-labelledby="statusTop" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="statusForm.valid&&filtersEmition('Status', statusForm.value.status)" #statusForm="ngForm">
+            <select ngModel name="status" required class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4">
+              <option value="" disabled>Select Status</option>
+              <option value="1">Pending</option>
+              <option value="2">Resolved</option>
+              <option value="4">Unsolved</option>
+              <option value="3">Waiting For Customer</option>
+          </select>
+          <button [disabled]="statusForm.invalid" class="fin-pry-btn btn-filter">submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="typeTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#type"
+            aria-expanded="true" aria-controls="type">
+            Type
+          </button>
+        </h2>
+      </div>
+
+      <div id="type" class="collapse" aria-labelledby="typeTop" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="typeForm.valid&&filtersEmition('Type', typeForm.value.type)" #typeForm="ngForm" >
+            <select ngModel name="type" required class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4">
+              <option value="" disabled>Select Type</option>
+              <option value="2">Complain</option>
+              <option value="1">Enquiry</option>
+              <option value="4">Incident</option>
+              <option value="3">Problem</option>
+          </select>
+          <button [disabled]="typeForm.invalid" class="fin-pry-btn btn-filter">submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let filter of filterList;let index = index" class="card">
+      <div class="card-header custom-filter-header" [id]="'headingfilter'+ index">
+          <h2 class="mb-0">
+              <button  [id]="'collapseHead-'+ index" class="d-none btn btn-link collapsed" type="button"
+                  data-toggle="collapse" [attr.data-target]="'#collapsefilter' + index" aria-expanded="false"
+                  aria-controls="collapse">
+                  {{filter.name}}
+              </button>
+              <button (click)="filtersEmition('customFilter', filter.id)"  class="text-left btn btn-link text-elips w-80" type="button">
+                  <span class="text-primary ">{{filter.name}}</span>
+              </button>
+              <span (click)="activateEdit(index)" class="float-right edit-icon my-auto"><i
+                      class="fa fa-edit">
+                    </i></span>
+          </h2>
+      </div>
+      <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading9"
+          data-parent="#accordionExample">
+          <div class="card-body">
+              <form >
+                  <div class="form-group filter-list">
+                      <p *ngIf="filter.priority"><b>Priority</b><br> {{filter.priority}}</p>
+                      <p *ngIf="filter.source"><b>Source</b><br> {{filter.source}}</p>
+                      <p *ngIf="filter.status"><b>Status</b><br> {{filter.status}}</p>
+                      <p *ngIf="filter.type"><b>Type</b><br> {{filter.type}}</p>
+                  </div>
+                  <div class="form-group">
+                      <!-- <button (click)="editFilter(index)" type="button"
+                          class="fin-pry-btn btn-filter">Edit</button> -->
+                      <button (click)="deleteFilter(filter)" type="button"
+                          class="ml-1  fin-pry-btn btn-filter btn-danger">Delete</button>                           
+                  </div>
+              </form>
+         
+          </div>
+      </div>
+  </div>
+    <div class="card">
+      <div class="card-header" id="customFilterTop">
+        <h2 class="mb-0">
+          <button class="btn-block fin-pry-btn create-filter-btn" type="button" data-toggle="collapse" data-target="#customFilter"
+            aria-expanded="true" aria-controls="customFilter">
+            Create Filter
+          </button>
+        </h2>
+      </div>
+
+      <div id="customFilter" class="collapse" aria-labelledby="customFilterTop" data-parent="#accordionExample">
+        <div class="card-body" >
+          <form (ngSubmit)="customFilter(customFilterForm)" #customFilterForm="ngForm">
+            <div class="form-group">
+              <label >Filter Name</label>
+              <input ngModel name="name" class="form-control form-control-sm" placeholder="Enter Name" type="text" required>
+            </div>
+              <div class="form-group">
+                <label >Priority</label>
+                <select ngModel name="priority"  class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4" required>
+                  <option value="" disabled>Select Priority</option>
+                  <option value="URGENT">Urgent</option>
+                  <option value="HIGH">High</option>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label >Source</label>
+              <select ngModel name="source"  class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4" required>
+                <option value="" disabled>Select Source</option>
+                <option value="CALL">Phone call</option>
+                <option value="EMAIL">Email</option>
+                <option value="WHATSAPP">Whatsapp</option>
+                <option value="TWITTER">Twitter</option>
+                <option value="WEBSITE">Website</option>
+            </select>  
+            </div>
+            <div class="form-group">
+              <label >Status</label>
+              <select ngModel name="status" required class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4">
+                <option value="" disabled>Select Status</option>
+                <option value="RESOLVED">Resolved</option>
+                <option value="PENDING">Pending</option>
+                <option value="UNSOLVED">Unsolved</option>
+                <option value="WAITING_FOR_CUSTOMER">Waiting For Customer</option>
+            </select>
+            </div>
+            <div class="form-group">
+              <label >Type</label>
+              <select ngModel name="type" required class="gen-input browser-default form-control mb-2" style="width: 100%;border-color: #c4c4c4">
+                <option value="" disabled>Select Type</option>
+                <option value="COMPLAIN">Complain</option>
+                <option value="ENQUIRY">Enquiry</option>
+                <option value="INCIDENT">Incident</option>
+                <option value="PROBLEM">Problem</option>
+            </select>
+            </div>
+            <button [disabled]="!disBtn || loadingCustom" class="fin-pry-btn btn-filter">
+              submit <span *ngIf="loadingCustom"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <button (click)="clearFilters([createdForm, priorityForm, sourceForm, typeForm, statusForm])" class="btn btn-block btn-warning rounded-0">Clear Filters</button>
+   
+   
+  </div>
+</div>

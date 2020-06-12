@@ -1,0 +1,124 @@
+<!-- <registration-header></registration-header> -->
+<!-- <div class="col-12 spinner-container" *ngIf="dataContext.loading$ | async">
+  <mat-progress-spinner class="example-margin ml-auto mr-5" mode="indeterminate" diameter="20">
+  </mat-progress-spinner>
+</div> -->
+<!-- Loader -->
+<!-- <div class="all-loader animated ml-3 float-right" id="loader-4" *ngIf="dataContext.loading$ | async"
+  [ngClass]="{'fadeIn faster': !dataContext.loading$}">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div> -->
+<section>
+  <div class="container">
+    <div class="login-header mt-5">
+      <a href="" id="logo-container"><img src="assets/img/notch-logo1.svg" width="120" alt=""></a>
+    </div>
+  </div>
+</section>
+
+<section class="w3l-pricing-7-main mt-5" id="bottom">
+  <div class="pricing-7-sec">
+
+    <div class="container">
+      <div class="mt-5 text-center">
+        <h2 class="" style="font-weight: 800">License Plan For Notch</h2>
+
+      </div>
+    </div>
+
+    <div class="wrapper pricing-grid pt-0">
+      <h3 class="heading my-0" style="color: #158DED">Select A Plan</h3>
+      <div class="mb-5 mx-auto">
+        <mat-slide-toggle [(ngModel)]="licenseToggled" (change)="updateLicense()" class="mx-auto">
+          {{'Switch to monthly plan'}}
+        </mat-slide-toggle>
+      </div>
+
+      <div class="pricing-sec-7 mt-0">
+        <!-- pricing grid 1 -->
+        <div class="pricing-gd-left pric-7-1" [ngClass]="{'active':license.active===true}"
+          *ngFor="let license of licenses; let i = index;">
+          <div class="w3l-pricing-7">
+
+
+            <div class="w3l-pricing-7-top">
+
+              <h6 class="one-light">{{license.name}}</h6>
+              <h4>
+                <label><span>&#8358;</span></label>{{license.activePrice.toLocaleString("en-US")}}<span>/{{license.activePlan}}</span>
+                <p *ngIf="!licenseToggled" style="font-size: 10px;line-height: 1px;"><span
+                    style="font-size: 10px;">(Billed Annually)</span></p>
+              </h4>
+
+            </div>
+            <div class="w3l-pricing-7-bottom">
+              <div class="w3l-pricing-7-bottom-bottom">
+                <ul class="links">
+                  <li>
+                    <div class="tick-mark"><span class="fa fa-check" aria-hidden="true"></span>
+                    </div>
+                    <p class="tick-info">{{license.descrip}}</p>
+
+                  </li>
+                  <li *ngIf="i !== 0">
+                    <div class="tick-mark"><span class="fa fa-check" aria-hidden="true"></span>
+                    </div>
+                    <p class="tick-info">Add users up to {{license.maxUsers}}</p>
+
+                  </li>
+                  <li>
+                    <div class="tick-mark"><span class="fa fa-check" aria-hidden="true"></span>
+                    </div>
+                    <p class="tick-info">10 GB SSD Cloud Storage</p>
+
+                  </li>
+                  <li>
+                    <div class="tick-mark"><span class="fa fa-check" aria-hidden="true"></span>
+                    </div>
+                    <p class="tick-info">No Monthly Backups</p>
+
+                  </li>
+                  <li>
+                    <div class="tick-mark"><span class="fa fa-check" aria-hidden="true"></span>
+                    </div>
+                    <p class="tick-info">10 Email Addresses</p>
+
+                  </li>
+
+                </ul>
+              </div>
+              <div class="d-block ">
+                <button [disabled]="dataContext.loading$ | async" (click)="license.liveLoading=true;license.trialLoading=false;makePayment(license)" style="cursor: pointer;"
+                  class="save-btn btn d-block w-100 m-2 p-2">Buy Now <span *ngIf="license.liveLoading"><span
+                      class="fa fa-spinner fa-spin"></span></span>
+                </button>
+                <button [disabled]="dataContext.loading$ | async" class="save-btn-2 btn d-block w-100 m-2 p-2 small" type="submit" style="cursor: pointer;"
+                  (click)="license.liveLoading=false;license.trialLoading=true;buyTrial(license)">START TRIAL <span *ngIf="license.trialLoading"><span
+                      class="fa fa-spinner fa-spin"></span></span>
+                </button>
+              </div>
+
+              <!-- <div>
+                <button class="buy-button" (click)="makePayment(license)">
+                  Buy Now
+                </button>
+                <button class="buy-button" (click)="buyTrial(license)">
+                  Start Trial
+                </button>
+              </div> -->
+
+            </div>
+          </div>
+        </div>
+        <!-- //pricing grid 1 -->
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- <loading-spinner style="position: absolute; z-index: 1000;position: fixed;width: 100%;height: 100vh;top: 0px;background-color: white;" [spinnerType]="'notch-loader'" *ngIf="gs.notchSpinner$ | async">
+</loading-spinner> -->

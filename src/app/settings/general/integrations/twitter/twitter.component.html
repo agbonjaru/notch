@@ -1,0 +1,31 @@
+<div class="p-2 pb-0 twitter-setting-wrapper">
+  <div class="twitter-setting-form-wrapper">
+    <div [class]="form_class" *ngIf="form_class">{{form_message}}</div>
+    <div class="form-group">
+      <label for="twitter-hashTag" class="m-0">HashTag:</label>
+      <input type="text" name="twitter-hashTag" id="twitter-hashTag"
+        placeholder="Notchcx (For Multiple: Notchcx, NoctchCXMobile)" [(ngModel)]="form_hashtags" />
+      <small class="text-secondary">Use <b>Comma(,)</b> to seperate multiple hashtags(s)</small>
+    </div>
+    <div class="form-group">
+      <label for="twitter-userName" class="m-0">Handles:</label>
+      <input type="text" name="twitter-handles" id="twitter-handles"
+        placeholder="Notchcx (For Multiple: notchCX, notchcx_care)" [(ngModel)]="form_handles" />
+      <small class="text-secondary">Use <b>Comma(,)</b> to separate multiple handles(s)</small>
+    </div>
+  </div>
+  <div class="form-group row float-right">
+    <button type="button" class="btn border border-danger bg-white text-danger float-right" *ngIf="dm_connected" [disabled]="dm_loading"
+      (click)="disconnect()"> <span class="fab fa-twitter text-danger"></span> Disconnect
+      <span *ngIf="dm_loading"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+    <button *ngIf="!dm_connected" type="button" class="btn border border-info mr-2 fin-sec-btn float-right"
+      (click)="initialize_twitter_connection()" [disabled]="dm_loading">
+      <span class="fab fa-twitter"></span> Connect
+      <span *ngIf="dm_loading"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+    <button type="button" (click)="save_stream_setting()" class="btn fin-pry-btn float-right" [disabled]="loading || (!form_handles && !form_hashtags)">Save Changes
+      <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span></span>
+    </button>
+  </div>
+</div>

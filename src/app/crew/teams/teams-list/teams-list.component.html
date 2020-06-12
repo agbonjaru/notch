@@ -1,0 +1,331 @@
+<app-teams-subnav></app-teams-subnav>
+
+<div class="content" style="margin-top: 90px;">
+
+    <div class="row" style="width: 100%; margin: 0;">
+
+        <div *ngIf="sidebarFilter === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%"
+            (click)="toggleFilter('open')">
+            <div class="card">
+                <div class="card-body">
+                    <span class="fa fa-solar-panel"></span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="sidebarFilter === 'open'" class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+            style="border-right: 4px solid #ECF2FB; width: 80%;">
+            <app-teams-side-bar #teamSidebar (toggleFilter)="toggleFilter($event)"
+                (getCreateFilter)="createFilter($event)" (getCustomTeamFilter)="getFilteredTeams($event)"
+                (getDealsFilter)="getDealsFilter(teamSidebar.dealsForm)"
+                (getDealWonFilter)="getDealWonFilter(teamSidebar.dealWonForm)"
+                (getDealLostFilter)="getDealLostFilter(teamSidebar.dealLostForm)" (getClearFilter)="clearFilters()">
+            </app-teams-side-bar>
+        </div>
+
+        <div class="{{mainStyle}} content-list">
+            <ng-template [ngIf]="!loader.showSpinner">
+                <div class="list">
+                    <div class="row content-list-header">
+                        <div class="col-md-6 text-left filter-actions-top">
+
+                            <!-- Add Sales Person Modal -->
+                            <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalCenterTitle2" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalCenterTitle2">
+                                                Add Sales Person
+                                            </h5>
+                                            <button (click)="closeModal()" type="button" class="close"
+                                                data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="form-group col-md-12">
+                                                        <label class="col-form-label" style="color: #7E7F9A">Select
+                                                            Sales
+                                                            Person(s)</label>
+                                                        <br />
+                                                        <ngx-select-dropdown ngModel [(ngModel)]="salespersonForm"
+                                                            class="styleFool" [config]="config" name="salesperson"
+                                                            [options]="salespersonList" [multiple]="true">
+                                                        </ngx-select-dropdown>
+                                                        <p style="color: red;">Required *</p>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button (click)="closeModal()" type="button" class="fin-sec-btn"
+                                                data-dismiss="modal">
+                                                CLOSE
+                                            </button>
+                                            <button [disabled]="showLoading" (click)="addSalesPerson()" type="button"
+                                                class="fin-pry-btn">
+                                                add
+                                                <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Add Sales Person Modal End-->
+
+                            <!-- Assign Lead Modal -->
+                            <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalCenterTitle">
+                                                Assign Lead
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Assign Lead to
+                                                        <span class="fw-500">Team Name</span></label>
+                                                    <br />
+                                                    <select id="mselect1" multiple="" data-placeholder="Select Lead"
+                                                        style="width: 100%;">
+
+                                                        <option value="1">Option 1</option>
+                                                        <option value="2">Option 2</option>
+                                                        <option value="3">England</option>
+                                                        <option value="3">Option 4</option>
+                                                        <option value="3">Tokyo</option>
+                                                        <option value="3">Tokyo</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button" class="fin-pry-btn">Assign</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Assign Lead Modal End-->
+
+                            <!-- Add Teams Modal -->
+                            <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog"
+                                aria-labelledby="ModalCenterTitle4" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalCenterTitle4">
+                                                Add Teams
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form [formGroup]="teamsForm">
+                                            <div class="modal-body">
+
+                                                <div class="form-group">
+                                                    <label class="col-form-label" style="color: #7E7F9A">Team
+                                                        Name</label>
+                                                    <br />
+                                                    <input type="text" id="cname" formControlName="teamname"
+                                                        name="cname" class="gen-input browser-default"
+                                                        style="width: 100%" required />
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="closeAddTeamModal" class="fin-sec-btn"
+                                                    data-dismiss="modal">
+                                                    CLOSE
+                                                </button>
+                                                <button [disabled]="(teamsForm.invalid || showLoading)"
+                                                    (click)="addTeam()" type="button" class="fin-pry-btn">
+                                                    add
+                                                    <span *ngIf="showLoading"><i
+                                                            class="fa fa-spinner fa-spin"></i></span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Add Teams Modal End-->
+
+                        </div>
+
+                        <div class="col-md-6 content-list-buttons">
+                            <button class="fin-sec-btn" id="dropdownMenuLink4" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                EXPORT
+                            </button>
+                            <button *ngIf="generalService.isAuthorized('ADD_TEAM')" class="fin-pry-btn"
+                                data-toggle="modal" data-target="#ModalCenter4">
+                                ADD TEAMS
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink4">
+                                <a class="dropdown-item" (click)="exportTable()">Export to Excel</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Rename Teams Modal -->
+                    <div class="modal fade" id="ModalCenter5" tabindex="-1" role="dialog"
+                        aria-labelledby="ModalCenterTitle5" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ModalCenterTitle5">Rename Team</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label class="col-form-label" style="color: #7E7F9A">Team Name</label>
+                                            <br />
+                                            <input ngModel [(ngModel)]="newTeamName" type="text" id="cname" name="cname"
+                                                class="gen-input browser-default" style="width: 100%" required />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="closeUpdateTeamModal" class="fin-sec-btn"
+                                        data-dismiss="modal">
+                                        CLOSE
+                                    </button>
+                                    <button [disabled]="showLoading" (click)="updateTeam()" type="button"
+                                        class="fin-pry-btn">
+                                        SAVE
+                                        <span *ngIf="showLoading"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Rename Teams Modal End-->                  
+
+                    <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+                        (feedback)="dataFeedBackObsListener($event)" [bodyrows]="teamList">
+                    </app-datatable>
+
+                </div>
+            </ng-template>
+
+            <!-- Loader -->
+            <loading-spinner [spinnerType]="loader.spinnerType" [dataless]="loader.dataless"
+                (actionState)="onActionState()" *ngIf="loader.showSpinner">
+            </loading-spinner>
+            <!-- Loader Ends -->
+
+        </div>
+
+    </div>
+
+    <!-- Assign Target Modal -->
+    <div class="modal fade" id="targetModal" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle6"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalCenterTitle6">Assign Target</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="targetForm">
+                        <div class="form-group">
+                            <label class="col-form-label" style="color: #7E7F9A">Select Target</label>
+                            <br />
+                            <ngx-select-dropdown class="styleFool" (change)="getPeriods()" [config]="targetsConfig"
+                                [options]="targets | async" [multiple]="false" formControlName="target">
+                            </ngx-select-dropdown>
+                            <p style="color:red;">Required*</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" style="color: #7E7F9A">Select Period</label>
+                            <br />
+                            <ngx-select-dropdown class="styleFool" [config]="periodsConfig" [options]="periods | async"
+                                [multiple]="false" [disabled]="
+                                !targetForm.value.target || !targetForm.value.target.id
+                                " formControlName="period">
+                            </ngx-select-dropdown>
+                            <p style="color:red;">Required*</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" style="color: #7E7F9A">Target Value</label>
+                            <br />
+                            <input type="number" name="cname" formControlName="value" class="gen-input browser-default"
+                                style="width: 100%" />
+                            <small><em>Kindly note that this input only accepts a valid number.</em></small>
+                            <br>
+                            <small *ngIf="target_limit">Total unallocated target is 
+                                {{selectedTarget['currency']? (target_limit || 0 | currency : selectedTarget['currency']:'symbol-narrow') : target_limit || 0 | number}}
+                            </small>
+                            <p style="color:red;">Required*</p>
+                        </div>
+                        <div class="form-group" 
+                          *ngIf="_isCurrencyEnabled || selectedTarget.type === 'product_quantity'"
+                        >
+                          <label class="col-form-label" style="color: #7E7F9A">Target Counts</label>
+                          <br />
+                          <ngx-select-dropdown class="styleFool" [config]="targetStageConfig"
+                            [options]="targetStageList$ | async" [multiple]="false" formControlName="stage">
+                          </ngx-select-dropdown>
+                          <p style="color:red;">Required*</p>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="fin-pry-btn" (click)="assignTarget()"
+                                [disabled]="targetForm.invalid">
+                                Assign Target
+                            </button>
+                        </div>
+                    </form>
+                    <hr />
+                    <!-- hidden-->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink3">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#ModalCenter5">Rename</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter2">Add Sales
+                            Person</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter3">Assign
+                            Company</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#targetModal">Assign
+                            Target</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter">Assign Lead</a>
+                        <!-- <a *ngIf="generalService.isAuthorized('DELETE_TEAM')" class="dropdown-item" href="#">Delete</a> -->
+                    </div>
+                    <ng-template #activateSpinner>
+                        <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+                    </ng-template>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="fin-sec-btn" data-dismiss="modal">
+                        CLOSE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Assign Target Modal End-->
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+    <blockquote>
+        <div class="arrow-left"></div>
+    </blockquote>
+</div>

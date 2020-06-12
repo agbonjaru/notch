@@ -1,0 +1,53 @@
+.create-deal-left {
+    border-right: none !important;
+}
+
+.analysis-form label {
+    margin-bottom: 5px !important;
+}
+
+.analysis-form select, .analysis-form input {
+    box-sizing: border-box !important;
+    border-radius: 0;
+    border: 1px solid #dddddd !important;
+    padding: 10px !important;
+}
+
+.analysis-form option {
+    box-sizing: border-box !important;
+    width: 100% !important;
+}
+
+.analysis-form input {
+    height: auto !important;
+}
+
+.classic-btn {
+    border-radius: 0 !important;
+    padding: 12.5px !important;
+}
+
+.dropdown-btn {
+    height: auto !important;
+    padding: 10px 20px !important;
+}
+
+.dropdown-menu > div:hover {
+    background-color: #dddddd !important;
+}
+
+.analysis-setting-list {
+    border-left: 1px solid #eeeeee;
+}
+
+.analysis-factor-list {
+    border: 1px solid #dddddd;
+}
+
+.analysis-factor-list thead{
+    background-color: #dddddd !important;
+}
+
+.analysis-factor-list td {
+    padding: 10px !important;
+}

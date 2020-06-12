@@ -1,0 +1,96 @@
+<div class="card-body create-filter">
+  <form (ngSubmit)="filterX.valid&&editFilter()" #filterX="ngForm" >
+    <div class="form-group">
+      <div class="form-group">
+        <p>Filter Name <span style="color: red;"> *</span></p>
+        <input name="name" [(ngModel)]="filterForm.name" type="text" class="form-control form-control-sm" required>
+      </div>
+      <div class="form-group">
+        <p>Created Date</p>
+        <label>From:</label>
+        <input name="from_date" [(ngModel)]="filterForm.from_date" 
+          class="form-control-sm form-control" type="text" placeholder="dd/mm/yyyy" bsDatepicker>
+        <label>To:</label>
+        <input name="to_date" [(ngModel)]="filterForm.to_date" 
+          class="form-control-sm form-control" type="text" placeholder="dd/mm/yyyy" bsDatepicker>
+      </div>
+      <div class="form-group" 
+        *ngIf="
+            module === 'dashboard' || 
+            module === 'commissions'"
+      >
+        <p>Owner</p>
+        <ng-container *ngIf="(teamMemberList$ | async) as teamMemberList; else loadingteamMember" >
+          <div class="form-group">
+            <ngx-select-dropdown [options]="formatOwner(teamMemberList)" [config]="ownerCnfig"
+            name="owner"  [(ngModel)]="filterForm.creator"></ngx-select-dropdown >
+          </div>
+        </ng-container>
+        <ng-template #loadingteamMember>
+          <small>Loading Sales Persons</small>
+        </ng-template>
+      </div>
+      <div class="form-group" 
+        *ngIf="
+          module === 'dashboard' || 
+          module === 'commissions'"
+      >
+        <p>Target</p>
+        <ng-container *ngIf="targetList$ as targetList; else loadingTargets">
+          <div class="form-group">
+            <ngx-select-dropdown [options]="targetList" [config]="targetConfig" name="target"
+              [(ngModel)]="filterForm.target" (change)="getSubPeriods()"></ngx-select-dropdown>
+          </div>
+        </ng-container>
+      </div>
+      <ng-template #loadingTargets>
+        <p>Loading Targets</p>
+      </ng-template>
+      <div class="form-group" 
+        *ngIf="
+          module === 'dashboard' || 
+          module === 'commissions'"
+      >
+        <ng-container *ngIf="periodList$ as periodList">
+          <div class="form-group">
+            <p>Period</p>
+            <ngx-select-dropdown [options]="periodList" [config]="periodConfig" name="period" 
+              [(ngModel)]="filterForm.period" [attr.disabled]="!filterForm.target?.id"></ngx-select-dropdown>
+          </div>
+        </ng-container>
+      </div>
+      <div class="form-group"
+        *ngIf="
+          module === 'targets' || 
+          module === 'dashboard' || 
+          module === 'commissions'"
+      >
+          <p>Target Type</p>
+          <ng-container *ngIf="targetTypeList$ as targetTypeList">
+              <div class="form-group">
+                  <ngx-select-dropdown [options]="targetTypeList" [config]="targetTypeConfig" name="type"
+                  [(ngModel)]="filterForm.target_type"></ngx-select-dropdown>
+              </div>
+          </ng-container>
+      </div>
+      <div class="form-group" data-role="rangeslider"
+        *ngIf="
+          module === 'targets' || 
+          module === 'dashboard' || 
+          module === 'commissions'"
+      >
+        <p>Value</p>
+        <label for="price-min">From:</label>
+        <input name="from_amount" [(ngModel)]="filterForm.from_amount" id="price-min"  class="form-control-sm form-control" type="number">
+        <label for="price-max">To:</label>
+        <input name="to_amount" [(ngModel)]="filterForm.to_amount" class="form-control-sm form-control" type="number">
+      </div>
+      <div class="form-group">
+        <button (click)="cancel()" type="button" class="btn btn-danger btn-filter mr-2">Cancel</button>
+        <button [disabled]="filterX.invalid || editLoading" type="submit" class="fin-pry-btn btn-filter">
+          Submit <span *ngIf="editLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

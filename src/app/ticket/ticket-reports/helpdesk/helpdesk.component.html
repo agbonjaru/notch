@@ -1,0 +1,131 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+      <a routerLink="/ticket/ticket-reports"> < back</a>
+      <div class="col-xl-12 col-lg-12 col-md-12  helpdesk-content ">
+          <div *ngIf="loading" class="row">
+              <div class="col-xl-3 col-md-10">
+                  <div class="helpdesk-left"  *ngIf="!dateFilterLoading">
+                        <ng-container>
+                            <div *ngFor="let help of helpStatsList" class="helpdesk-left-content">
+                                <h3>{{help.total}}</h3>
+                                <p class="">{{help.name}}</p>
+                            </div>
+                        </ng-container>
+                        
+                    </div>
+                            <ng-container *ngIf="dateFilterLoading">
+                                <loading-spinner [spinnerType]="'wave'" ></loading-spinner>
+                            </ng-container>
+              </div>
+              <div class="col-xl-9 col-md-10" style="padding-right: 40px ">
+                  <div class="helpdesk-right-header"> 
+                    <data-range (getFilter)="filterDate($event)"></data-range>
+                  </div>
+                  <div *ngIf="!dateFilterLoading" class="row mb-3">
+                      <div class="col-xl-6 ">
+                          <div class="helpdesk-card ">
+                              <h3>Created tickets splits by source</h3>
+
+                             <div *ngFor="let source of sourceList" class="row" style="margin-bottom: 15px">
+                                 <div class="splits col-10">
+                                    <p>{{source.name}}</p>
+                                 </div>
+
+                                 <div class="splits col-2">
+                                    <p>{{source.total}}</p>
+                                 </div>
+                             </div>
+
+                          </div>
+                          <div class="helpdesk-card mb-2">
+                              <h3>Created tickets splits by status</h3>
+
+                              <div *ngFor="let status of statusList" class="row" style="margin-bottom: 15px">
+                                <div class="splits col-10">
+                                   <p >{{status.name}}</p>
+                                </div>
+                                <!-- <div class="col-md-8">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" id="pg"
+                                         aria-valuenow="60"
+                                         aria-valuemin="0" aria-valuemax="100" style="height: 10px;margin-top: 5px;border-radius: 5px"
+                                         [ngStyle]="{'width': toPercent(status.total, statusList)}">
+                                    </div>
+                                </div> -->
+                                <div class="splits col-2">
+                                   <p>{{status.total}}</p>
+                                </div>
+                            </div>
+
+                          </div>
+                      </div>
+
+                      <div class="col-xl-6">
+                          <div class="helpdesk-card">
+                              <h3>Created tickets splits by Priority</h3>
+                              <div *ngFor="let prirority of priorityList" class="row" style="margin-bottom: 15px">
+                                <div class="splits col-10">
+                                   <p>{{prirority.name}}</p>
+                                </div>
+                                <!-- <div class="col-md-8">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" id="pg"
+                                         aria-valuenow="60"
+                                         aria-valuemin="0" aria-valuemax="100" style="height: 10px;margin-top: 5px;border-radius: 5px"
+                                         [ngStyle]="{'width': toPercent(prirority.total, priorityList)}">
+                                    </div>
+                                </div> -->
+                                <div class="splits col-2">
+                                   <p>{{prirority.total}}</p>
+                                </div>
+                            </div>
+
+                          </div>
+                          <div class="helpdesk-card">
+                              <h3>Created tickets splits by Type</h3>
+
+                              <div *ngFor="let type of typeList" class="row" style="margin-bottom: 15px">
+                                <div class="splits col-10">
+                                   <p>{{type.name}}</p>
+                                </div>
+                                <!-- <div class="col-md-8">
+                                    <div class="progress-bar progress-bar-striped active" role="progressbar" id="pg"
+                                         aria-valuenow="60"
+                                         aria-valuemin="0" aria-valuemax="100" style="height: 10px;margin-top: 5px;border-radius: 5px"
+                                         [ngStyle]="{'width': toPercent(type.total, typeList)}">
+                                    </div>
+                                </div> -->
+                                <div class="splits col-2">
+                                   <p>{{type.total}}</p>
+                                </div>
+                            </div>
+
+                          </div>
+                      </div>
+                  </div>
+                  <div *ngIf="dateFilterLoading" class="row">
+                      <div class="col-12">
+                          <loading-spinner [spinnerType]="'wave'" ></loading-spinner>
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+          <div class="row" *ngIf="!loading">
+              <div class="col-12 py-5">
+                  <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+              </div>
+          </div>
+
+
+      </div>
+
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+      <div class="arrow-left"></div> 
+  </blockquote>
+</div>

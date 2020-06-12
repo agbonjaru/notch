@@ -1,0 +1,236 @@
+<div class="list-filter">
+  <div class="accordion" id="accordionExample">
+    <h6>Filters
+      <button class="btn btn-small" style="background-color: #35657b !important; margin-left: 10%"
+        (click)="clearAllFilter()">Clear
+        Filter</button>
+    </h6>
+
+    <!-- <button (click)="handleSwalEmal()">Modal Test</button> -->
+
+    <!-- Company Client -->
+    <!-- <div class="card">
+      <div class="card-header" id="heading1">
+        <h2 class="mb-0">
+          <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#collapse1"
+            aria-expanded="true" aria-controls="collapse1">
+            Companies
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByCompanyName()" [formGroup]="companyForm">
+            <div class="form-group">
+              <div class="form-group">
+                <label>Company Name</label>
+                <select formControlName="companyName" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Company</option>
+                  <option [value]="company" *ngFor="let company of dropdownOptions | async">{{company}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Company Date -->
+    <div class="card">
+      <div class="card-header" id="headingTop11">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse11"
+            aria-expanded="true" aria-controls="collapse1">
+            Company Date
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse11" class="collapse" aria-labelledby="headingTop11" data-parent="#accordionExample">
+        <div [formGroup]="companyDateForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">From: Past Date</label>
+            <input formControlName="fromDate" type="date" class="form-control form-control-sm dateWidth" id="fromDate">
+
+          </div>
+          <div class="form-group">
+            <label for="toDate">To: Latest Date</label>
+            <input formControlName="toDate" type="date" class="form-control form-control-sm dateWidth" id="toDate">
+          </div>
+          <div class="form-group">
+            <button (click)="filterByCompanyDate()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contacts -->
+    <!-- <div class="card">
+      <div class="card-header" id="heading3">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse3"
+            aria-expanded="false" aria-controls="collapse3" (click)="fetchContactList()">
+            Contact
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse3" class="collapse " aria-labelledby="heading3" data-parent="#accordionExample">
+        <div [formGroup]="contactForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">Filter By ContactName</label>
+            <ngx-select-dropdown [config]="config" [options]="contacts | async" [multiple]="false"
+              style="width: 100% !important" formControlName="contactName">
+            </ngx-select-dropdown>
+          </div>
+
+          <div class="form-group">
+            <button (click)="filterByContactName()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Industry -->
+    <div class="card">
+      <div class="card-header" id="heading6">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6"
+            aria-expanded="false" aria-controls="collapse6">
+            Industry
+          </button>
+        </h2>
+      </div>
+      <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByIndusry()" [formGroup]="industryForm">
+            <div class="form-group">
+              <select formControlName="industry" class="form-control form-control-sm dateWidth">
+                <option value="">Select Industry</option>
+                <option value="IT">IT</option>
+                <option value="Business">Business</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Food">Food</option>
+                <option value="Health">Health</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter List -->
+    <div *ngFor="let filter of filterList;let index = index" class="card">
+      <div class="card-header" [id]="'headingfilter'+ index">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+            [attr.data-target]="'#collapsefilter' + index" aria-expanded="false" aria-controls="collapse">
+            {{filter.name}}
+          </button>
+        </h2>
+      </div>
+      <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+        <div class="card-body">
+          <form *ngIf="!(showFilter === index)" (ngSubmit)="filterCustomFilter(filter.filter)">
+            <div class="form-group">
+              <label><b>Contact Name</b><br> {{filter.filter.contactName.name}}</label><br>
+              <label><b>Industry </b><br> {{filter.filter.industry}}</label><br>
+            </div>
+            <div class="form-group">
+              <button (click)="editFilter(index, filter)" type="button" class="btn btn-info btn-filter">Edit</button>
+              <button (click)="deleteFilter(filter)" type="button"
+                class="ml-1 btn btn-danger btn-filter">Delete</button>
+              <button type="submit" class="mt-2 btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+          <ng-container *ngIf="showFilter === index">
+
+            <form (ngSubmit)="createUpdateFilter('update')" [formGroup]="createFilterForm" (click)="fetchContactList()">
+              <div class="form-group">
+                <div class="form-group">
+                  <p>Filter Name</p>
+                  <input formControlName="filterName" type="text" class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <p>Contact Name</p>
+                  <ngx-select-dropdown [config]="config" [options]="contacts | async" [multiple]="false"
+                    style="width: 100% !important" formControlName="contactName">
+                  </ngx-select-dropdown>
+                </div>
+                <div class="form-group" data-role="rangeslider">
+                  <label for="price-min">Industry:</label>
+                  <select formControlName="industry" class="form-control form-control-sm dateWidth">
+                    <option value="">Select Industry</option>
+                    <option value="IT">IT</option>
+                    <option value="Business">Business</option>
+                    <option value="Agriculture">Agriculture</option>
+                    <option value="Food">Food</option>
+                    <option value="Health">Health</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+                </div>
+              </div>
+            </form>
+
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Filter -->
+    <div class="card">
+      <div class="card-header" id="heading22">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse22"
+            aria-expanded="false" aria-controls="collapse22" (click)="fetchContactList()">
+            Create Filter
+          </button>
+        </h2>
+      </div>
+      <div id="collapse22" class="collapse" aria-labelledby="heading22" data-parent="#accordionExample">
+        <div class="card-body create-filter">
+          <form (ngSubmit)="createUpdateFilter('create')" [formGroup]="createFilterForm">
+            <div class="form-group">
+              <div class="form-group">
+                <p>Filter Name</p>
+                <input formControlName="filterName" type="text" class="form-control form-control-sm">
+              </div>
+              <div class="form-group">
+                <p>Contact Name</p>
+                <ngx-select-dropdown [config]="config" [options]="contacts | async" [multiple]="false"
+                  style="width: 100% !important" formControlName="contactName">
+                </ngx-select-dropdown>
+              </div>
+              <div class="form-group" data-role="rangeslider">
+                <label for="price-min">Industry:</label>
+                <select formControlName="industry" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Industry</option>
+                  <option value="IT">IT</option>
+                  <option value="Business">Business</option>
+                  <option value="Agriculture">Agriculture</option>
+                  <option value="Food">Food</option>
+                  <option value="Health">Health</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <a routerLink="/ticket/ticket-reports">
+      < back </a> 
+      <div class="col-xl-12 col-lg-12 col-md-12 content-list " style="padding: 70px">
+        <ng-container *ngIf="performaceList; else loading">
+
+        
+        <data-range (getFilter)="getFilter($event)"></data-range>
+        <app-datatable *ngIf="!dateFilterLoading; else dateloading"
+              [dataChanged]="dataTable.dataChangedObs"
+              [options]="dataTable.options"
+              [heads]="dataTable.heads"
+              [bodyrows]="performaceList"
+            ></app-datatable>
+          <ng-template #dateloading>
+            <loading-spinner [spinnerType]="'wave'" ></loading-spinner>
+          </ng-template>
+
+  
+      </ng-container>
+      <ng-template #loading>
+          <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+      </ng-template>
+  </div>
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

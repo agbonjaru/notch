@@ -1,0 +1,48 @@
+<app-ticket-subnav></app-ticket-subnav>
+
+<div class="content" style="margin-top: 90px;">
+    <div class="row" style="width: 100%; margin: 0;">
+        <a routerLink="/ticket/ticket-reports">< back</a>
+        <div class="col-xl-12 col-lg-12 col-md-12 content-list " style="padding: 70px">
+            <data-range (getFilter)="getFilter($event)" ></data-range>
+            <ng-container *ngIf="(perDistList$ | async) as perDistList; else loading">
+            <div class="row">
+                <div *ngFor="let per of perDistList" class="col-xl-4">
+                    <div class="performance-card">
+                        <h3>{{per.statName}}</h3>
+
+                        <div *ngFor="let stat of per.stats" class="row" style="margin-bottom: 15px">
+                            <div class="splits col-md-2">
+                                <p class="">{{stat.range}}</p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                     aria-valuenow="60"
+                                     aria-valuemin="0" aria-valuemax="100" style="height: 10px;margin-top: 5px;border-radius: 5px;"
+                                     [ngStyle]="{'width': (stat.total)}">
+                                </div>
+                            </div>
+                            <div class="splits col-md-2 ">
+                                <p >{{stat.total}}</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #loading>
+              <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+        </ng-template>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="ai-blockquote" style="display: none;">
+    <blockquote>
+        <div class="arrow-left"></div> 
+    </blockquote>
+</div>

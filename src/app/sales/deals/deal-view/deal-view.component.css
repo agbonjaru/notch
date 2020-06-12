@@ -1,0 +1,12 @@
+.text-success{
+    color: green !important;
+}
+.text-danger{
+    color: red !important;
+}
+.file-container{
+    margin-left: 30%
+  }
+  .modal-footer button{
+    box-shadow: none
+  }

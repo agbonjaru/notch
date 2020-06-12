@@ -1,0 +1,211 @@
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div *ngIf="sidebarState === 'close'" class="ai-character is-clickable" style="right: 96%; top: 18%" (click)="toggleSidebar('open')">
+      <div class="card">
+        <div class="card-body">
+          <span class="fa fa-solar-panel"></span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="sidebarState === 'open'" class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab"
+        style="border-right: 4px solid #ECF2FB; width: 80%;">
+      <app-target-sidebar 
+        (getFilter)='getPeriods($event)'
+        (getClearFilter)="clearFilter()"
+        (toggleSidebar)="toggleSidebar($event)"
+      ></app-target-sidebar>
+    </div>
+    <div class="{{mainStyle}} content-list">
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 offset-md-6 content-list-buttons">
+            <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+            <button
+              *ngIf="generalService.isAuthorized('ADD_PERIOD')"
+              class="fin-pry-btn" (click)="openPeriodModal()"
+              data-toggle="modal" data-target="#ModalCenter4"
+            >
+              ADD PERIOD
+            </button>
+            <button data-toggle="modal" data-target="#SubPeriodsModal" style="display: none;"></button>
+          </div>
+
+          <!-- Add period Modal -->
+          <div
+            class="modal fade"
+            id="ModalCenter4"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalCenterTitle2">
+                    <span *ngIf="!Id">Add</span>
+                    <span *ngIf="!!Id">Edit</span>
+                    Period
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="periodForm">
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">
+                        Period Name <span style="color: red;"> *</span>
+                      </label>
+                      <br />
+                      <input
+                        type="text"
+                        id="cname"
+                        name="cname"
+                        formControlName="name"
+                        class="gen-input browser-default"
+                        style="width: 100%"
+                      />
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">
+                          Start Date <span style="color: red;"> *</span>
+                        </label>
+                        <br /> 
+                        <input
+                          type="text"
+                          id="date"
+                          name="cname"
+                          formControlName="start"
+                          class="gen-input browser-default"
+                          style="width: 100%"
+                          [attr.disabled]="Id"
+                          (bsValueChange)="setPeriodEnd($event)"
+                          [bsConfig]="bsConfig"
+                          #dp="bsDatepicker"
+                          bsDatepicker
+                          [(bsValue)]="bsValue"
+                        />
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label class="col-form-label" style="color: #7E7F9A">End date</label>
+                        <br />
+                        <input
+                          type="text"
+                          id="date2"
+                          name="cname"
+                          formControlName="end"
+                          class="gen-input browser-default"
+                          style="width: 100%"
+                          [attr.disabled]="true"
+                          [bsConfig]="bsConfig"
+                          #dp="bsDatepicker"
+                          bsDatepicker
+                          [(bsValue)]="bsValue2"
+                        />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-form-label" style="color: #7E7F9A">
+                        Sub-period <span style="color: red;"> *</span>
+                      </label>
+                      <br />
+                      <select
+                        class="gen-input browser-default form-control"
+                        style="width: 100%"
+                        [attr.disabled]="Id"
+                        formControlName="type"
+                      >
+                        <option value="quarterly">Quarterly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="half_yearly">Half Yearly</option>
+                        <option value="yearly">Yearly</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="fin-sec-btn"
+                    data-dismiss="modal"
+                  >
+                    CLOSE
+                  </button>
+                  <button
+                    type="button"
+                    class="fin-pry-btn"
+                    (click)="savePeriod()"
+                    [disabled]="periodForm.invalid"
+                  >
+                    SAVE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Add Period Modal End-->
+          <!-- List Sub Periods Modal -->
+          <div class="modal fade" id="SubPeriodsModal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="ModalCenterTitle2">
+                            {{period['name']}} Sub Periods  
+                          </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <table class="table table-striped table-bordered table-sm w-100 eng-table" 
+                            cellspacing="0" width="100%">
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let sub_period of sub_periods">
+                                <td>{{sub_period['name']}}</td>
+                                <td>{{sub_period['start']}}</td>
+                                <td>{{sub_period['end']}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">CLOSE
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- List Sub Periods Modal End-->
+        </div>
+
+        <div *ngIf="!loadingView; else activateSpinner">
+          <app-datatable
+            [dataChanged]="dataTable.dataChangedObs"
+            [options]="dataTable.options"
+            [heads]="dataTable.heads"
+            (feedback)="dataFeedBackObsListener($event)"
+            [bodyrows]="periods"
+          ></app-datatable>
+        </div>
+        <ng-template #activateSpinner>
+            <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <!-- Loader -->
+        <loading-spinner [spinnerStyle]="spinnerStyle" [spinnerType]="spinnerType" (reloadSpinner)="retry($event)"
+          *ngIf="showSpinner">
+        </loading-spinner>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10" *ngIf="!showSpinner">
+          <div class="settings-header">
+            <h1>Two Factor Authentication</h1>
+            <p>Set up extra authentications for a more secure login</p>
+          </div>
+          <div class="settings-label pt-3">
+            <form [formGroup]="twoFactorAuthForm" role="form">
+              <div class="row mb-3 pt-2 pb-2">
+                <div class="col-md-12">
+                  <p>Select the Role users you would want to login via two factor authentications</p>
+                </div>
+
+                <div class="col-sm-12 col-lg-6 col-xl-4">
+                  <input type="hidden" formControlName="id">
+                  <select (change)="loadAuthByRole()" formControlName="twoFactorAuthRoleName"
+                    class="gen-input2 browser-default form-control" id="role">
+                    <option value="" disabled="" selected="">Select role</option>
+                    <option *ngFor="let role of arrayRoles" value="{{role.name}}">{{role.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Small Loader -->
+              <div class="col-sm-12 col-xl-4 col-lg-6 pb-4" *ngIf="showSmallSpinner">
+                <loading-spinner [spinnerType]="'fadingCircle'" [spinnerStyle]="{'margin': '15px auto'}">
+                </loading-spinner>
+              </div>
+
+              <div *ngIf="(!showSmallSpinner) && (f.twoFactorAuthRoleName.valid !== null)">
+                <div class="row pl-2">
+                  <div class="col-sm-12 col-xl-4 col-lg-6 pb-4">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="twoFactorAuthSms"
+                        class="custom-control-input text-center checkbox-all" id="defaultUnchecked5">
+                      <label class="custom-control-label" for="defaultUnchecked5">By SMS</label>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+                <div class="row pl-2">
+                  <br>
+                  <div class="col-sm-12 col-xl-4 col-lg-6 pb-4">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" formControlName="twoFactorAuthEmail"
+                        class="custom-control-input text-center checkbox-all" id="defaultUnchecked">
+                      <label class="custom-control-label" for="defaultUnchecked">By Email</label>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="button" (click)="addTwoFactorAuth()" class="fin-pry-btn" [disabled]="(isLoading)"
+                      [ladda]="isLoading" data-style="slide-right">Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

@@ -1,0 +1,354 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-12 col-lg-12 col-md-12 content-list" style="height: 100%">
+      <div class="list">
+        <div class="row">
+          <div class="col-md-7">
+            <button type="button" class="fin-sec-btn" routerLink="/sales/quotation-list/">
+              Go Back
+            </button>
+          </div>
+        </div>
+        <div class="row content-list-header" style="padding-top: 10px">
+          <div class="col-md-8 text-left filter-actions-top">
+
+            <span>
+              <label for="exampleInputEmail1" style="font-size: 13px;"><span class="text-danger">*</span>
+                Clients</label>
+              <select class="gen-input browser-default form-control content-list-search" disabled="true">
+                <option>{{selectedClientName}}</option>
+              </select>
+            </span>
+
+            <span style="width: 30%" class="ml-1">
+              <label for="exampleInputEmail1" style="font-size: 13px;"><span class="text-danger">*</span>
+                Currency</label>
+              <select [(ngModel)]="selectedCurrency" class="gen-input browser-default form-control content-list-search"
+                style="width: 100% !important;">
+                <option value="" disabled="" selected="">Select Currency</option>
+                <option *ngFor="let curr of currencies" [value]="curr">
+                  {{curr}}
+                </option>
+              </select>
+            </span>
+
+            <span class="ml-1">
+              <label for="exampleInputEmail1" style="font-size: 13px;"><span class="text-danger">*</span>
+                Reference</label>
+              <input type="text" name="refNumber" class="gen-input browser-default form-control content-list-search"
+                placeholder="Reference" [(ngModel)]="refNumber">
+            </span>
+
+
+            <span class="custom-control custom-checkbox toggle-adv-table ml-1" style="margin-top:35px;">
+              <input type="checkbox" [(ngModel)]="isAdvanced" class="custom-control-input" id="defaultunchecked">
+              <label class="custom-control-label" for="defaultunchecked" style="font-size: 15px;color: #000000">
+                Advanced
+              </label>
+            </span>
+
+          </div>
+          <div class="col-md-4 content-list-buttons file-input">
+            <button class="fin-sec-btn" (click)="handlePrint()">PRINT</button>
+          </div>
+
+          <div class="col-md-8 mt-3">
+            <div class="row" [formGroup]="teamForm">
+              <div class="col-md-4">
+                <label for="exampleInputEmail1" style="font-size: 13px;" class="row" style="margin-bottom: -10px;">
+                  <span class="col-md-4"> <small style="color: red;">*</small> Team</span>
+                  <span class="col-md-8">
+
+                    <span class="custom-control custom-checkbox toggle-adv-table ml-1" style="margin-top:35px;"
+                      style="float: right;">
+                      <input type="checkbox" (click)="handleSelf($event)"
+                        class="custom-control-input text-center checkbox-all" id="customCheck01" [checked]="selfActive">
+                      <label class="custom-control-label" for="customCheck01" style="padding-top: 3px;color: #000000">
+                        For Self?
+                      </label>
+                    </span>
+
+                  </span>
+
+                </label>
+                <span *ngIf="!selfActive; else self">
+                  <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                    <ngx-select-dropdown class="content-list-search" [config]="teamConfig" [options]="arrayTeams"
+                      [multiple]="false" formControlName="team">
+                    </ngx-select-dropdown>
+                  </ng-container>
+                  <ng-template #loadingOwner>
+                    <small class="text-danger" style="display: block;margin-top: 10px;"><i>...fetching Teams </i>
+                      <i class="fa fa-spinner fa-spin"></i>
+                    </small>
+                  </ng-template>
+                </span>
+                <ng-template #self>
+                  <label for="exampleInputEmail1" style="font-size: 13px;">
+                  </label>
+                  <input type="text" name="refNumber"
+                    class="gen-input browser-default form-control  content-list-search" value="SELF" disabled>
+                </ng-template>
+
+
+                <!-- <ng-container *ngIf="arrayTeams ; else loadingOwner">
+                  <ngx-select-dropdown class="content-list-search" [config]="teamConfig" [options]="arrayTeams"
+                    [multiple]="false" formControlName="team">
+                  </ngx-select-dropdown>
+                </ng-container>
+                <ng-template #loadingOwner>
+                  <small class="text-danger" style="display: block;margin-top: 10px;"><i>...fetching Teams </i>
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </small>
+                </ng-template> -->
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 right invoice-total">
+            <table class="table table-borderless text-right mt-3 pt-3">
+              <tbody>
+                <tr style="background-color: #F0F6FB;" *ngIf="isAdvanced">
+                  <th scope="row">
+                    <h6>Total Markup Amount</h6>
+                  </th>
+                  <td class="tooltip-test">
+                    <h6>{{totalQuotationAmountDetails?.totalMarkup | currency : selectedCurrency :'symbol-narrow'}}
+                    </h6>
+                  </td>
+                </tr>
+                <tr style="background-color: #F0F6FB;">
+                  <th scope="row">
+                    <h6>Total Amount</h6>
+                  </th>
+                  <td class="tooltip-test">
+                    <h6>
+                      {{totalQuotationAmountDetails?.amountAfterTax | currency : selectedCurrency :'symbol-narrow' }}
+                    </h6>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Editable table -->
+        <div class="">
+
+          <div class="card" style="margin-top: 30px">
+            <div class="card-body basic-table">
+              <div id="table2" class="table-editable" style="overflow: auto">
+                <div class="row">
+                  <div class="col-sm-4" style="margin-bottom: 15px">
+                    <span class="table-add2 mb-3 mr-2">
+                      <a class="text-success" (click)="addQuote()">
+                        <i class="fas fa-plus" aria-hidden="true">
+                        </i>
+                        <span>ADD</span>
+                      </a>
+                    </span>
+                  </div>
+
+                </div>
+                <!-- <form ></form> -->
+                <table class="table table-bordered table-responsive-md table-striped text-center"
+                  [formGroup]="quotesForm">
+                  <tr>
+                    <th class="text-center"> Item Name </th>
+                    <th class="text-center"> <span class="text-danger">*</span> Description </th>
+                    <th class="text-center" *ngIf="isAdvanced"> <span class="text-danger">*</span> Purchase Price
+                      ({{selectedCurrency}})</th>
+
+                    <th class="text-center" *ngIf="isAdvanced"> <span class="text-danger">*</span> Margin </th>
+                    <th class="text-center" *ngIf="isAdvanced"> <span class="text-danger">*</span> Margin Type </th>
+                    <th class="text-center"> <span class="text-danger">*</span> Unit Price ({{selectedCurrency}}) </th>
+                    <th class="text-center"> <span class="text-danger">*</span> Qty </th>
+                    <th class="text-center" *ngIf="isAdvanced">Markup</th>
+                    <th class="text-center">Tax</th>
+                    <th class="text-center">Tax Incl</th>
+                    <th class="text-center">Tax Amount ({{selectedCurrency}})</th>
+                    <th class="text-center">Amount ({{selectedCurrency}})</th>
+                    <th class="text-center"></th>
+
+                  </tr>
+                  <tr formArrayName="quotesFormArray" *ngFor="let creds of quotesFormArray.controls; let i = index;">
+                    <ng-container [formGroupName]="i">
+                      <td class="pt-3-half">
+                        <select class="pt-3-half" formControlName="itemName" (change)="handleProductSelection(i)">
+                          <option value="" disabled selected>Items</option>
+                          <option *ngFor="let product of productsName" [value]="product.name">
+                            {{product.name}}</option>
+                        </select>
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="text" [value]="description[i]" formControlName="description">
+                      </td>
+                      <td class="pt-3-half" *ngIf="isAdvanced">
+                        <input type="number" name="purchasePrice" formControlName="purchasePrice"
+                          (input)="handleComputation(i)">
+                      </td>
+                      <td class="pt-3-half" *ngIf="isAdvanced">
+                        <input type="number" name="markUp" formControlName="markUp" (input)="handleComputation(i)">
+                        <!-- [disableControl]="!markupSelectionFlat[i]" -->
+                      </td>
+                      <td class="pt-3-half" *ngIf="isAdvanced">
+                        <select name="markUpType" formControlName="markUpType" (change)="handleComputation(i)"
+                          (click)="handleMarkSelection(i)">
+                          <option disabled value="none">--</option>
+                          <option value="flat">Flat</option>
+                          <option value="percent">%</option>
+                        </select>
+                      </td>
+
+                      <td class="pt-3-half">
+                        <input type="number" name="unitPrice" [disableControl]="isAdvanced"
+                          (input)="handleComputation(i)" [value]="taxation[i].unitPrice" formControlName="unitPrice">
+                      </td>
+                      <td class="pt-3-half">
+                        <input type="number" name="quantity" (input)="handleComputation(i)" formControlName="quantity">
+                      </td>
+                      <td class="pt-3-half" *ngIf="isAdvanced">
+                        <input type="number" name="margin" [disableControl]="isAdvanced" formControlName="margin"
+                          [value]="taxation[i].margin">
+                      </td>
+                      <td class="pt-3-half">
+
+                        <!-- <div *ngIf="!creds.value.tax; else dropDownTaxes">
+                          {{taxes[i]}}
+                        </div> -->
+                        <!-- <ng-template #dropDownTaxes> -->
+                        <select name="" formControlName="tax" (change)="handleTaxSelection(i)">
+                          <option value="none">No tax</option>
+                          <option *ngFor="let tax of taxList$ | async" [value]="tax.rate">
+                            {{tax.name+' ('+tax.rate+')'}}
+                          </option>
+                        </select>
+                        <!-- </ng-template> -->
+
+                      </td>
+                      <td class="pt-3-half">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" formControlName="taxInclusive" (change)="handleTaxSelection(i)"
+                            [value]="taxation[i].taxInclusive" [disableControl]="!activateTaxInclusive[i]"
+                            class="custom-control-input text-center checkbox-all" id="defaultUnchecked{{i}}">
+                          <label class="custom-control-label" for="defaultUnchecked{{i}}"></label>
+                        </div>
+                      </td>
+                      <td class="pt-3-half">
+                        {{taxation[i].taxAmount}}
+                      </td>
+
+                      <td class="pt-3-half">
+                        {{taxation[i]?.amountAfterTax}}
+                      </td>
+
+
+                      <td class="text-center">
+                        <span class="table-remove" (click)="deleteQuote(i)">
+                          <i class="fas fa-trash hov-pointer-black text-danger"></i>
+                        </span>
+
+                      </td>
+                    </ng-container>
+                  </tr>
+
+                </table>
+
+                <div class="row">
+                  <div class="col-sm-4" style="margin-bottom: 15px">
+                    <span class="table-add2 mb-3 mr-2">
+                      <a class="text-success" (click)="addQuote()">
+                        <i class="fas fa-plus" aria-hidden="true">
+                        </i>
+                        <span>ADD</span>
+                      </a>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <!-- Editable table -->
+
+          <div class="row">
+            <div class="col-sm-6">
+              <button type="button" (click)="handleQuotationUpdate()" class="fin-pry-btn mr-0 mt-3">Update
+                <span *ngIf="savingSpinner"><i class="fa fa-spinner fa-spin"></i></span> </button>
+              <button type="button" (click)="sendQuote()" class="fin-sec-btn mr-0 mt-3 ml-1">Send quote </button>
+              <span>
+                <button type="button" class="fin-sec-btn ml-1 mt-3 dropdown-toggle" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Copy quote To
+                </button>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="handleCopyTo('Invoice')">Invoice</a>
+                  <a class="dropdown-item" (click)="handleCopyTo('Sales Order')">Sales
+                    Order</a>
+                </div>
+              </span>
+
+              <button type="button" class="fin-sec-btn ml-1 mt-3" routerLink="/sales/quotation-list/">Go
+                Back to List
+              </button>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-sm-4 right invoice-total">
+              <table class="table table-borderless text-right mt-3 pt-3">
+                <tbody>
+                  <tr>
+                    <th scope="row">Subtotal Amount</th>
+                    <td title="View more options" class="tooltip-test">
+                      {{totalQuotationAmountDetails?.amountBeforeTax | currency : selectedCurrency :'symbol-narrow'}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Tax Amount</th>
+                    <td title="View more options" class="tooltip-test">
+                      {{totalQuotationAmountDetails?.taxAmount | currency : selectedCurrency :'symbol-narrow'}}
+                    </td>
+                  </tr>
+                  <tr style="background-color: #F0F6FB;" *ngIf="isAdvanced">
+                    <th scope="row">
+                      <h6>Total Markup Amount</h6>
+                    </th>
+                    <td class="tooltip-test">
+                      <h6>
+                        {{totalQuotationAmountDetails?.totalMarkup | currency : selectedCurrency :'symbol-narrow'}}</h6>
+                    </td>
+                  </tr>
+                  <tr class="last-row">
+                    <th scope="row">
+                      <h4>Total Amount</h4>
+                    </th>
+                    <td title="View more options" class="tooltip-test">
+                      <h4>
+                        {{totalQuotationAmountDetails?.amountAfterTax | currency : selectedCurrency :'symbol-narrow'}}
+                      </h4>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <!-- Editable table -->
+
+      </div>
+    </div>
+  </div>
+
+  <ng-template #activateSpinner>
+    <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+  </ng-template>
+
+
+</div>

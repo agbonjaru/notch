@@ -1,0 +1,25 @@
+<div class="content settings-content bg-white" style="padding-top: 130px !important;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-1"></div>
+    <div class="col-xl-10 col-lg-9 col-md-8 content-list">
+      <div class="m-auto">
+        <h5 class="fin-pry-color mb-4">Bank Payment</h5>
+      </div>
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+
+          </div>
+          <!-- BANKS TABLE -->
+          <div class="w-100">
+            <!-- <ng-template> -->
+            <app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options"
+              [heads]="dataTable.heads" (feedback)="datatable_event_handler($event)" [bodyrows]="banks">
+            </app-datatable>
+            <!-- </ng-template> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-1"></div>
+  </div>

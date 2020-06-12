@@ -1,0 +1,29 @@
+#imap_form_modal * {
+    line-height: 16px;
+}
+
+#imap_form_modal input, #imap_form_modal select {
+    border-radius: 0;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    
+    margin: 0px;
+
+    padding: 0 5px;
+    padding: 10px;
+
+    width: auto;
+}
+
+#imap_form_title {
+    color: #333333;
+}
+
+#imap_form_modal form-group {
+    margin: 0;
+    margin: 15px 0;
+}
+
+#imap_form_modal label {
+    margin-bottom: 15px;
+}

@@ -1,0 +1,101 @@
+<app-sales-subnav></app-sales-subnav>
+
+<div class="content" style="margin-top: 90px;">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-xl-2 col-lg-3 col-md-4 content-list left-filter-tab" *ngIf="ViewSwitch === 'List'"
+      style="border-right: 4px solid #ECF2FB; width: 80%;">
+
+      <app-invoice-sidebar #sidebar (getClearFilter)="handleClearAllFilter()"
+        (getInvoiceDateFilter)="handleDateFilter(sidebar.invoiceDateForm)"
+        (getInvoiceCurrencyFilter)="handleCurrencyFilter(sidebar.currencyForm)"
+        (getInvoicePaymentDateFilter)="handlePaymentDateFilter(sidebar.invoicePaymentDateForm)"
+        (getClientNameFilter)="handleClientFilter(sidebar.clientForm)"
+        (getInvoiceValueFilter)="handleValueFilter(sidebar.invoiceValueForm)"
+        (getInvoiceBalanceValueFilter)="handleBalanceValueFilter(sidebar.invoiceBalanceValueForm)"
+        (getInvoiceOwnerFilter)="handleOwnerFilter(sidebar.invoiceOwnerForm)"
+        (getInvoiceCustomFilter)="handleCustomFilter($event)">
+      </app-invoice-sidebar>
+
+    </div>
+
+    <div class="content-list" [ngClass]="{'col-xl-10 col-lg-9 col-md-8' : ViewSwitch !== 'Dashboard', 
+    'col-xl-12 col-lg-12 col-md-12' : ViewSwitch === 'Dashboard'}">
+
+      <div class="list">
+        <div class="row content-list-header">
+          <div class="col-md-6 text-left filter-actions-top">
+            <!-- <select class="gen-input browser-default form-control content-list-search">
+              <option value="" disabled="" selected="">All Invoice</option>
+              <option value="1">0-20</option>
+              <option value="2">21-80</option>
+              <option value="3">&gt;80</option>
+            </select>
+            <div class="list-actions">
+              <button class="fin-sec-btn" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                ACTIONS <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="#">Copy To</a>
+                <a class="dropdown-item" href="#">Email</a>
+                <a class="dropdown-item" href="#">SMS</a>
+                <a class="dropdown-item" href="#">Chat</a>
+                <a class="dropdown-item" href="#">Delete</a>
+              </div>
+            </div> -->
+          </div>
+          <div class="col-md-6 content-list-buttons">
+            <button class="fin-sec-btn" (click)="exportTable()">EXPORT</button>
+
+            <ng-container *ngIf="gs.isAuthorized('CREATE_INVOICE')">
+              <button class="fin-pry-btn" id="dropdownMenuLink34" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                NEW INVOICE <span><img src="assets/img/caret_down_blue.svg" width="13" alt=""></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink34">
+                <a class="dropdown-item" routerLink="/sales/create-invoice">CREATE INVOICE</a>
+                <a class="dropdown-item" (click)="navigateToRecurring()">CREATE RECURRING INVOICE</a>
+              </div>
+            </ng-container>
+
+
+          </div>
+
+
+        </div>
+
+        <div class="row mt-3 mb-2">
+          <div class="col-md-6">
+            <h4 class=" m-auto fs-15">
+              <span class="fin-green">SWITCH VIEW : </span>
+              <a [ngClass]="{'fin-blue' : ViewSwitch !== 'Dashboard'}"
+                (click)="handleViewSwitch('Dashboard')">DASHBOARD</a> | <a
+                [ngClass]="{'fin-blue' : ViewSwitch !== 'List'}" (click)="handleViewSwitch('List')">LIST</a>
+            </h4>
+
+          </div>
+
+        </div>
+
+        <app-invoice-diagram *ngIf="ViewSwitch === 'Dashboard'; else listView"
+          (getDashboardFilter)="handleDashBoardFilter($event)"></app-invoice-diagram>
+
+        <ng-template #listView>
+          <app-invoice-table [filteredDataSource]="filteredDataSource" #invoiceTable
+            (exportInvoice)="handleData(invoiceTable.dataSource)">
+          </app-invoice-table>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+    <!--edit to arrow-left or arrow-right -->
+  </blockquote>
+</div>

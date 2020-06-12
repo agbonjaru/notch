@@ -1,0 +1,77 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10 tab-content">
+          <div class="settings-header">
+            <h1>Lead Sources</h1>
+            <ul *ngIf="true" class="nav nav-tabs" role="tablist">
+              <li class="nav-item"><a class="nav-link active" style="background: transparent;"
+                  id="create-lead-source-tab" data-toggle="tab" href="#create-lead-source" role="tab"
+                  aria-controls="email" aria-selected="true">Create Lead Source</a>
+              </li>
+            </ul>
+          </div>
+
+          <div *ngIf="supported_lead_sources">
+            <div class="settings-label tab-pane fade show active" id="create-lead-source" role="tabpanel"
+              aria-labelledby="create-lead-source-tab">
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 30px;">
+                  <div class="form-group">
+                    <label for="lead-source-name">Select Lead Source:</label>
+                    <select type="text" id="lead-source-name" class="gen-input2 browser-default"
+                      [(ngModel)]="selected_source">
+                      <option value="">Select Source</option>
+                      <option *ngFor="let source of convert_object_to_array(sources_to_display)"
+                        value="{{source.name}}">{{source.name}} </option>
+                    </select>
+
+                    <button [disabled]="general_service.isAuthorized('ADD_LEAD_SOURCE')" type="button"
+                      (click)="create_organisation_lead_source()" [disabled]="lead_loading"
+                      class="fin-pry-btn mt-3 right" style="margin-top: -13px;">
+                      Add Lead Source <span *ngIf="lead_loading"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6"
+                  style="padding-top: 20px; border-left: 1px solid #dee2e6">
+                  <div style="box-shadow: none; padding: 0;">
+                    <table>
+                      <tr *ngFor="let my_source of convert_object_to_array(organisation_lead_sources)">
+                        <td> {{my_source.name}}</td>
+                        <td class="text-right"
+                          style="font-weight: bold !important; border-top: none; cursor: pointer;">
+                          <span class="d-inline-block" (lick)="delete_organisation_lead_source(my_source.id, my_source.name)" >
+                            <i class="fas fa-trash"></i>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!supported_lead_sources">
+            <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

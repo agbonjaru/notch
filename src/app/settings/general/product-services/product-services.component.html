@@ -1,0 +1,236 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+
+    <div class="col-md-12 settings-wrapper">
+
+      <app-settings-header></app-settings-header>
+
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-9">
+          <div class="settings-header">
+            <h1>Product & Services</h1>
+          </div>
+          <div *ngIf="allProduct" class="settings-label">
+            <div class="row content-list-header">
+              <div class="col-md-6 text-left filter-actions-top">
+
+                <div class="list-actions">
+               
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                    <a class="dropdown-item" href="#">Email</a>
+                    <a class="dropdown-item" href="#">SMS</a>
+                    <a class="dropdown-item" href="#">Chat</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#ModalCenter">Assign Company</a>
+                    <a class="dropdown-item" href="#">Delete</a>
+                  </div>
+                </div>
+
+                <!-- Assign Lead Modal -->
+                <div class="modal fade" id="ModalCenter" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Assign Company</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form>
+                          <div class="form-group">
+                            <label class="col-form-label">Assign company to</label>
+                            <br>
+                            <select id="mselect0" multiple="" data-placeholder="Select Team" style="width: 100%;">
+                              <option value="1">Option 1</option>
+                              <option value="2">Option 2</option>
+                              <option value="3">England</option>
+                              <option value="3">Option 4</option>
+                              <option value="3">Tokyo</option>
+                            </select>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" class="fin-pry-btn">Assign</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Assign Lead Modal End-->
+
+              </div>
+
+              <div class="col-md-6 content-list-buttons">
+
+                <button *ngIf="gs.isAuthorized('VIEW_CATEGORY')" class="fin-sec-btn" data-toggle="modal" data-target="#ModalCenter4">View Categories
+                </button>
+
+                <button *ngIf="gs.isAuthorized('ADD_CATEGORY')" class="fin-sec-btn" data-toggle="modal" data-target="#ModalCenter2">Add Categories
+                </button>
+
+                <button *ngIf="gs.isAuthorized('ADD_PRODUCT')" class="fin-pry-btn" href="#" data-toggle="modal" data-target="#ModalCenter3">ADD
+                  Product
+                </button>
+
+              </div>
+
+              <!-- Add Product Modal -->
+              <div class="modal fade" id="ModalCenter3" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle">Add Product</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <form [formGroup]="productForm">
+                      <div class="modal-body">
+
+                        <div class="form-group">
+                          <label for="pro-name" class="col-form-label">
+                            Product Name
+                          </label>
+                          <input type="text" formControlName="productName" class="form-control" id="pro-name"
+                            placeholder="Enter Product Name">
+                        </div>
+
+                        <div class="form-group" *ngIf="allCategory">
+                          <label class="col-form-label">Add Category</label>
+                          <br>
+                          <ngx-select-dropdown formControlName="productCategory" tabindex="0" [multiple]="false"
+                            [config]="config" [options]="allCategoryName">
+                          </ngx-select-dropdown>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="Description">Description</label>
+                          <br>
+                          <textarea name="Description" formControlName="productDiscription" id="Description" cols="30"
+                            rows="10" class="gen-input2 h-25 pt-3" placeholder="Enter Product Description"></textarea>
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="button" (click)="submitProduct()" [disabled]="productForm.invalid || loadingProduct"
+                          class="fin-pry-btn">
+                          Add <span *ngIf="loadingProduct"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- Add Product Modal End-->
+
+              <!-- Add Category Modal -->
+              <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle2"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle2">Add Category</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+
+                    <form [formGroup]="categoryForm">
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label class="col-form-label">Category
+                            Name</label>
+                          <input type="text" formControlName="categoryName" class="form-control" id="ct-name"
+                            placeholder="Enter Category Name">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" (click)="submitCategory()" data-dismiss="modal"
+                          [disabled]="categoryForm.invalid || loadingCat" class="fin-pry-btn">
+                          Add <span *ngIf="loadingCat"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+              <!-- Add Category Modal End-->
+
+              <!-- View Category Modal -->
+              <div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalCenterTitle4">View Categories</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body p-0" *ngIf="allCategory">
+
+                      <ng-container *ngIf="allCategory.length">
+                        <div class="category-list" *ngFor="let cat of allCategory">
+                          <p>{{cat.name}}</p>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="!allCategory.length">
+                          <h6 class="text-center">No Category</h6>
+                      </ng-container>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                      </button>
+                      <!-- <button type="button" class="fin-pry-btn">Save</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- View Category Modal End-->
+
+            </div>
+            <app-datatable
+            [dataChanged]="dataTable.dataChangedObs" 
+            [options]="dataTable.options" 
+            [heads]="dataTable.heads"
+              (feedback)="dataFeedBackObsListener($event)" 
+              [bodyrows]="allProduct"></app-datatable>
+
+          
+
+            <ng-template #activateSpinner>
+                <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+            </ng-template>
+
+          </div>
+          <div *ngIf="!allProduct" >
+            <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

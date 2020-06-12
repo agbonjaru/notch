@@ -1,0 +1,102 @@
+.bg-grey{
+    background: gainsboro;
+}
+.px-3 {
+    padding: 0px 10px;
+}
+.chat-message-content {
+    margin-left: 40px;
+}
+.chat-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+.chat-history{
+    height: 65%;
+    padding: 1px 7px;
+}
+.ai-chat-card{
+    z-index: 9999;
+    width: 33%
+}
+.list-group .list-group-item{
+    border-right: none;
+}
+.thread-list{
+    border-right: 1px solid #ddd;
+    height: 88%;
+}
+.chat-message {
+    margin: 0;
+}
+.ai-chat-card-top {
+    box-shadow: none;
+}
+
+#twitter {
+	max-height: 478px !important;
+	overflow-y: scroll !important;
+}
+
+.tweet {
+	width: 100% !important;
+	border-bottom: 1px solid #dedede;
+}
+
+.tweet:hover {
+	background-color: #efefef;
+}
+
+.tweet-reply-text {
+	resize: none;
+	height: 100px;
+}
+
+.tweet-action {
+	color: #aaaaaa;
+}
+/* AI NOTIFICATION BOUNCE */
+.bounce {
+	-webkit-animation: bounce 2s;
+	        animation: bounce 2s;
+	-webkit-animation-iteration-count: infinite;
+	        animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes bounce {
+	0%,
+	25%,
+	50%,
+	75%,
+	100% {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
+	40% {
+		-webkit-transform: translateY(-20px);
+		        transform: translateY(-20px);
+	}
+	60% {
+		-webkit-transform: translateY(-12px);
+		        transform: translateY(-12px);
+	}
+}
+
+@keyframes bounce {
+	0%,
+	25%,
+	50%,
+	75%,
+	100% {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
+	40% {
+		-webkit-transform: translateY(-20px);
+		        transform: translateY(-20px);
+	}
+	60% {
+		-webkit-transform: translateY(-12px);
+		        transform: translateY(-12px);
+	}
+}

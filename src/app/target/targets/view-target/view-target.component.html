@@ -1,0 +1,121 @@
+<div class="content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-sm-12">
+        <div class="m-auto text-center">
+            <a href="/target/targets" class="text-center left" *ngIf="targetType === 'company'"> < Targets List</a>
+            <a href="/target/dashboard" class="text-center left" *ngIf="targetType === 'assigned'"> < Targets List</a>
+        </div>
+    </div>
+    <div class="col-md-12 settings-wrapper" style="margin-top: 0;">
+        <header class="settings-header gen-border-btm">
+            <h1 class="m-0 fin-pry-color">Name: <strong>{{target['title'] || target['owner']}}</strong></h1>
+            <p class="m-0 mt-1 fin-sec-color">Target Period: <strong>{{target['start'] | date}} to {{target['end'] | date}}</strong></p>
+            <p class="m-0 mt-1 fin-sec-color">Target Type: <strong>{{type}}</strong></p>
+            <p class="m-0 mt-1 fin-sec-color" 
+                *ngIf="stage.id" style="width: 450px;"
+            >
+                Target Counts on: 
+                <ngx-select-dropdown [config]="targetStageConfig" [disabled]="targetType === 'assigned'" 
+                    [options]="targetStageList$ | async" [multiple]="false" (change)="getTarget()" 
+                    [(ngModel)]="stage" style="display: block; float:right; width: 70%; margin: -5px 0 5px 0;">
+                </ngx-select-dropdown>
+                <span class="clearfix"></span>
+            </p>
+        </header>
+        <div class="">
+            <div *ngIf="!loadingView; else activateSpinner" class="row target-types">
+                <div class="col-md-12 col-xl-3 target-type-col">
+                    <div class="target-type">
+                        <p class="m-0 fw-500 fs-24">{{committals['count'] || 0}}</p>
+                      <i class="fa fa-barcode right fs-40 text-warning"></i>
+                        <p class="">No Of Committals</p>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-3 target-type-col">
+                    <div class="target-type">
+                        <p class="m-0 fw-500 fs-24">
+                            {{target['currency']? (committals['total'] || 0 | currency : target['currency']:'symbol-narrow') : committals['total'] || 0 | number}}
+                        </p>
+                      <i class="fa fa-money-bill right fs-40 text-info"></i>
+                        <p class="">Amount reached</p>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-3 target-type-col">
+                    <div class="target-type">
+                        <p class="m-0 fw-500 fs-24 ">
+                            {{target['currency']? (target['value'] || 0 | currency : target['currency']:'symbol-narrow') : target['value'] || 0 | number}}
+                        </p>
+                      <i class="fa fa-money-bill right fs-40 text-success"></i>
+                        <p class="">Target Value</p>
+
+                    </div>
+                </div>
+                <div class="col-md-12 col-xl-3 target-type-col">
+                    <div class="target-type">
+                        <p class="m-0 fw-500 fs-24">{{rate}}%</p>
+                      <i class="fa fa-chart-pie right fs-40 text-secondary"></i>
+                        <p class="">Progress</p>
+                    </div>
+                </div>
+            <hr>
+            </div>
+            <div *ngIf="targetGuageValues">
+                <zing-chart [id]="'targetGuage'" [values]="targetGuageValues"></zing-chart>
+            <hr>
+            </div>
+          <div class="target-type mt-3">
+            <div class="card-body">
+            <table *ngIf="!loadingView" id="dtBasicExample"
+            class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th class="th-sm">Id</th>
+                <th class="th-sm">Client</th>
+                <th class="th-sm"
+                    *ngIf="target['user_type'] !== 'Team'">
+                    Team
+                </th>
+                <th class="th-sm"
+                    *ngIf="target['user_type'] !== 'Salesperson'">
+                    Salesperson
+                </th>
+                <th class="th-sm"
+                    *ngIf="_isCurrencyEnabled">
+                    Amount
+                </th>
+                <th class="th-sm"
+                    *ngIf="target['type'] === 'product_quantity'">
+                    Quantity
+                </th>
+                <th class="th-sm">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="table-row" *ngFor="let committal of committals['data']; let i = index">
+                <td>{{committal['id']}}</td>
+                <td>{{committal['client']}}</td>
+                <td *ngIf="target['user_type'] !== 'Team'">
+                    {{committal['team_name']}}
+                </td>
+                <td *ngIf="target['user_type'] !== 'Salesperson'">
+                    {{committal['creator_name']}}
+                </td>
+                <td *ngIf="_isCurrencyEnabled">
+                    {{committal['currency']? (committal['amount'] || 0 | currency : committal['currency']:'symbol-narrow') : committal['amount'] || 0 | number}}
+                </td>
+                <td *ngIf="target['type'] === 'product_quantity'">
+                    {{committal['amount'] || 0 | number}}
+                </td>
+                <td>{{committal['date'] | date}}</td>
+            </tr>
+            </tbody>
+            </table>
+            </div>
+          </div>
+            <ng-template #activateSpinner>
+                  <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+            </ng-template>
+        </div>
+    </div>
+  </div>
+</div>

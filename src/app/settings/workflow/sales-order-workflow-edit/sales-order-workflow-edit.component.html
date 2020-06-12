@@ -1,0 +1,302 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+
+
+        <div class="right-settings col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="create-deal-wrapper" style="margin-top: 0; padding: 0;">
+            <a routerLink="/settings/sales-workflow">
+              < back </a> <div class="row ">
+
+
+
+                <div class="col-md-8 create-deal-left">
+                  <h1 style="margin-top: 30px; margin-bottom: 0px;">Create Workflow and Transitions</h1>
+                  <p class="text-danger">All fields with (*) are required</p>
+                  <form [formGroup]="salesOrderWorkflowForm">
+                    <div class="row">
+                      <div class="col-md-8 col-sm-12 role-creation-tab border-left-0">
+                        <label for="cname">Workflow Name <span class="text-danger">*</span> </label>
+                        <br />
+                        <input formControlName="salesWorkflowName" type="text" id="cname" name="cname"
+                          placeholder="Enter Workflow Name" class="gen-input browser-default form-control" />
+                      </div>
+                    </div>
+                  </form>
+
+
+                  <div class="row" *ngIf="(defaultTransition.length > 0)">
+                    <div class="col-md-12 col-sm-12 col-lg-11 col-xl-11 role-creation-tab border-left-0"
+                      style="padding-top: 20px;">
+                      <br>
+                      <form autocomplete="on">
+                        <h4 style="color: #7E7F9A;">Transitions</h4>
+                        <p>
+                          A transition defines a change in your workflow from one stage to another.
+                          View transitions below. <br>
+                          Please update the Start and End Transition before adding another
+                          Transition
+                          <small class="text-danger" style="display: block;">Note: the <b>Start</b> and <b>End</b>
+                            Transition cannot be Deleted. You cannot delete a transition and create another transition
+                            with the deleted transition name</small>
+                        </p>
+                      </form>
+
+                      <div class="transition-setup">
+                        <div class="transition-boxes pb-3" style="border: none; border-bottom: 1px solid #c4c4c4">
+                          <ul>
+                            <li class="transition-row w-100">
+                              <b class="left col-sm-3 text-left mt-3 mb-0">
+                                <b>Transition Name</b>
+                              </b>
+                              <b class="left col-sm-6 text-center mt-3 mb-0">
+                                <b>Stages</b>
+                              </b>
+                              <b class="left col-sm-3 text-right mt-3 mb-0">
+                                <b>Action</b>
+                              </b>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <ul class="list-unstyled mb-0 connected-sortable">
+                          <li class="transition-row connected-sortable droppable-area1 row w-100 m-0">
+                            <p class="left col-sm-3 text-left mt-3 mb-0">
+                              <b>{{defaultTransition[0]?.name}}</b>
+                            </p>
+                            <span class="trans-step draggable-item col-sm-6 text-center"
+                              style="overflow: auto;">{{defaultTransition[0]?.startStageName}}
+                              <ng-container *ngFor="let stage of defaultTransition[0]?.stages">
+                                > {{stage.stageName}}
+                              </ng-container>
+                            </span>
+                            <span class="right col-sm-3 text-right mt-3 fin-pry-color">
+                              <a (click)="loadFormTransition(defaultTransition[0], 'StartTrans')">
+                                <i class="fas fa-cog" data-toggle="modal" data-target="#ModalCenter4"
+                                  title="Configure stage"></i>
+                              </a>
+
+                            </span>
+                          </li>
+
+                          <li class="transition-row connected-sortable droppable-area1 row w-100 m-0"
+                            *ngFor="let transition of allTransitionList; let i = index">
+                            <p class="left col-sm-3 text-left mt-3 mb-0">
+                              <b>{{transition.name}}</b>
+                            </p>
+                            <span class="trans-step draggable-item col-sm-6 text-center"
+                              style="overflow: auto;">{{transition.startStageName}}
+                              <ng-container *ngFor="let stage of transition.stages">
+                                > {{stage.stageName}}
+                              </ng-container>
+                            </span>
+                            <span class="right col-sm-3 text-right mt-3 fin-pry-color">
+                              <a (click)="loadFormTransition(transition, i)">
+                                <i class="fas fa-cog" data-toggle="modal" data-target="#ModalCenter4"
+                                  title="Configure stage"></i>
+                              </a>
+                              <a (click)="deleteTransition(transition)">
+                                <i class="fas fa-trash"></i>
+                              </a>
+                            </span>
+                          </li>
+
+                          <li class="transition-row connected-sortable droppable-area1 row w-100 m-0">
+                            <p class="left col-sm-3 text-left mt-3 mb-0">
+                              <b>{{defaultTransition[1]?.name}}</b>
+                            </p>
+                            <span class="trans-step draggable-item col-sm-6 text-center"
+                              style="overflow: auto;">{{defaultTransition[1]?.startStageName}}
+                              <ng-container *ngFor="let stage of defaultTransition[1]?.stages">
+                                > {{stage.stageName}}
+                              </ng-container>
+                            </span>
+                            <span class="right col-sm-3 text-right mt-3 fin-pry-color">
+                              <a (click)="loadFormTransition(defaultTransition[1], 'EndTrans')">
+                                <i class="fas fa-cog" data-toggle="modal" data-target="#ModalCenter4"
+                                  title="Configure stage"></i>
+                              </a>
+
+                            </span>
+                          </li>
+                        </ul>
+
+                      </div>
+                    </div>
+
+
+
+
+
+                    <div class="d-flex create-deal-btn mt-5" style="margin-left: 78%">
+                      <button [disabled]=" salesOrderWorkflowForm.invalid || disBtn" class="fin-pry-btn" type="button"
+                        (click)="updateWorkflow()">
+                        UPDATE WORKFLOW <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <div *ngIf="(defaultTransition.length === 0)">
+                    <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+                  </div>
+
+                  <div class="space-30 hidden-xs"></div>
+                  <div class="space-10 hidden-md hidden-lg hidden-xg"></div>
+                  <br />
+                  <br />
+                </div>
+
+
+
+                <div class="col-md-4 col-sm-12 Associated-deal">
+                  <h1 style="margin: 20px">Create Transitions</h1>
+
+                  <div class="col-md-12  col-sm-12 create-deal-right">
+                    <form [formGroup]="salesOrderTransitionForm">
+                      <div class="modal-body">
+
+                        <div class="form-group">
+                          <label for="t-name" class="col-form-label">Transition
+                            Name<span class="text-danger"><sup>*</sup>
+                              <small class="text-danger" style="display: block;">Must not contain
+                                special
+                                characters or
+                                blank characters except
+                                '_' and '-' </small></span>
+                          </label>
+                          <input type="text" formControlName="transitionName" class="form-control" id="t-name" #test
+                            [attr.disabled]="salesOrderTransitionForm.controls.transitionName.value == 'Start Transition' ||
+                            salesOrderTransitionForm.controls.transitionName.value == 'End Transition' ? true: null">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="t-stage">Start stage<span class="text-danger"><sup>*</sup></span></label>
+                          <br>
+                          <select formControlName="transitionStartStage" *ngIf="!editTrans; else editview"
+                            (change)="setNextStages(salesOrderTransitionForm.controls.transitionStartStage.value)"
+                            class="gen-input2 browser-default form-control">
+                            <option value="" disabled="" selected="">Select Stage</option>
+                            <option *ngFor="let startStage of startSalesStages"
+                              [disabled]="startStage.name === 'Application Start' || startStage.name === 'Application End'"
+                              [value]="startStage.id+'+'+startStage.name">
+                              {{startStage.name}}
+                            </option>
+                          </select>
+
+                          <ng-template #editview>
+                            <select formControlName="transitionStartStage" (change)="setNextStages(salesOrderTransitionForm.controls.transitionStartStage.value,
+                              salesOrderTransitionForm.controls.transitionName.value)"
+                              class="gen-input2 browser-default form-control"
+                              [attr.disabled]="salesOrderTransitionForm.controls.transitionName.value === 'Start Transition' ? true: null">
+                              <option value="" disabled="" selected="">Select Stage</option>
+                              <option *ngFor="let startStage of startEditStage"
+                                [value]="startStage.id+'+'+startStage.name"
+                                [disabled]="startStage.name === 'Application Start' || startStage.name === 'Application End'">
+                                {{startStage.name}}
+                              </option>
+                            </select>
+                          </ng-template>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Document to be uploaded before moving to next stage</label>
+                          <input type="text" formControlName="transitionDocument"
+                            class="gen-input2 browser-default w-90 mr-1" placeholder="Enter document name"
+                            style="width: 86% !important;" />
+                          <button [disabled]="!salesOrderTransitionForm.value.transitionDocument"
+                            (click)="addDocs(salesOrderTransitionForm.value.transitionDocument)" class="
+                                  fin-pry-btn "> <span><span class=" fa fa-plus"></span></span> </button>
+                          <ul *ngIf="documents.length" class="mt-2 ml-2">
+                            <li *ngFor="let doc of documents">
+                              <i class="fa fa-file"></i> {{doc}} <span (click)="removeDoc(doc)"
+                                class="text-danger is-clickable"> <i class="fa fa-times"></i> </span>
+                            </li>
+                          </ul>
+                          <p class="mt-1" *ngIf="!documents.length">No documents added </p>
+                        </div>
+
+
+
+
+
+                        <div class="form-group">
+                          <label>
+                            Next stage
+                            <span class="text-danger"><sup>*</sup></span>
+                          </label>
+                          <br>
+                          <ng-multiselect-dropdown [placeholder]="'Select Stages'" [data]="otherStages"
+                            formControlName="transitionNextStage" [settings]="dropdownSettings" [disabled]="salesOrderTransitionForm.controls.transitionStartStage.invalid ||
+                            salesOrderTransitionForm.controls.transitionName.value === 'End Transition'">
+                          </ng-multiselect-dropdown>
+                        </div>
+
+
+
+                        <br>
+
+                        <div class="form-group">
+                          <label for="approval-right">
+                            Permission
+                            <span class="text-danger"><sup>*</sup></span>
+                          </label>
+                          <br>
+                          <ng-multiselect-dropdown [placeholder]="'Select Roles'" [data]="allRoles"
+                            formControlName="transitionPermission" [settings]="dropdownSettings">
+                          </ng-multiselect-dropdown>
+
+
+                        </div>
+
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="fin-sec-btn" (click)='reset()'>Reset
+                        </button>
+                        <button *ngIf="!editTrans" type="button" (click)="addTransition()" [disabled]="salesOrderTransitionForm.invalid 
+                                ||
+                                !salesOrderTransitionForm.value.transitionName.trim() ||
+                                salesOrderTransitionForm.value.transitionName.startsWith('-') ||
+                                salesOrderTransitionForm.value.transitionName.startsWith('_')||
+                                !pattern.test(salesOrderTransitionForm.value.transitionName.trim())
+                                
+                                || disBtn" class="fin-pry-btn">
+                          Add <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                        <button *ngIf="editTrans" type="button"
+                          (click)="updateTransition(salesOrderTransitionForm.value.transitionName)" [disabled]="salesOrderTransitionForm.invalid ||
+                    
+                          !salesOrderTransitionForm.value.transitionName.trim() ||
+                          salesOrderTransitionForm.value.transitionName.startsWith('-') ||
+                          salesOrderTransitionForm.value.transitionName.startsWith('_')||
+                          !pattern.test(salesOrderTransitionForm.value.transitionName.trim())
+                          
+                          || disBtn" class="fin-pry-btn">
+                          update <span *ngIf="disBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                      </div>
+
+                    </form>
+                  </div>
+
+
+                </div>
+
+          </div>
+        </div>
+
+
+
+
+        <div *ngIf="false">
+          <loading-spinner [spinnerType]="'notch-loader'"></loading-spinner>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>

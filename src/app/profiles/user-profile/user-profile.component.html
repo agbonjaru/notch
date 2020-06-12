@@ -1,0 +1,121 @@
+<div class="settings-header">
+  <!--<div class="row">-->
+  <!--<div class="col-xl-3 col-sm-12">-->
+  <h1>Personal Profile</h1>
+  <ul class="nav nav-tabs" role="tablist">
+
+  </ul>
+  <!--<p>Set up Roles</p>-->
+</div>
+<div class="settings-label container">
+  <div class="row">
+    <div class="col-sm-12 pt-3 d-flex mt-3">
+      <div class="avatar-upload left">
+        <span (click)="handleBrowse()" class=" is-clickable">
+          <div class="avatar-edit fa fa-edit">
+          </div>
+          <input class="d-none" (change)="browseFile($event)" type='file' id="photo" accept=".png, .jpg, .jpeg" />
+        </span>
+        <div class="avatar-preview">
+          <div id="imagePreview" [ngStyle]="{'background-image': 'url(' + imgUrl + ')'}">
+          </div>
+        </div>
+      </div>
+      <div class="d-block pt-3" *ngIf="user">
+        <span class="avatar-username">{{user.firstName + ' ' + user.lastName}}</span>
+        <br>
+        <span class="username-des">{{user.email}}</span>
+        <br>
+        <span class="username-des user-role-profile">{{roleName}}</span>
+      </div>
+
+    </div>
+    <div class="col-sm-12 mt-3" *ngIf="userImg">
+      <span> {{userImg ? userImg.name : ''}}</span>
+      <button [disabled]="imgLoading" (click)="upload()" class="ml-3 fin-pry-btn">
+        Upload <span *ngIf="imgLoading"><i class="fa fa-spinner fa-spin"></i></span>
+      </button>
+      <button (click)="cancelUpload()" class="ml-2 btn btn-danger">Cancel</button>
+    </div>
+  </div>
+  <ng-container [formGroup]="userForm">
+    <div class="row mt-3 pt-3">
+      <div class="col-sm-12">
+        <h6 class="fw-500 fin-pry-color">User Information</h6>
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="fname">First Name <sup class="required">*</sup> </label>
+        <br>
+        <input type="text" id="fname" name="fname" class="w-100 gen-input browser-default" formControlName="firstName">
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="lname">Last Name <sup class="required">*</sup> </label>
+        <br>
+        <input type="text" id="lname" name="lname" class="w-100 gen-input browser-default" formControlName="lastName">
+      </div>
+    </div>
+
+    <div class="row mt-3 pt-3">
+      <div class="col-md-5 pt-3">
+        <label for="phone">Phone</label>
+        <br>
+        <input type="text" id="phone" name="phone" class="w-100 gen-input browser-default" formControlName="phoneNo">
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="phone2">Mobile</label>
+        <br>
+        <input type="text" id="phone2" name="phone2" class="w-100 gen-input browser-default" formControlName="mobileNo">
+      </div>
+    </div>
+    <div class="row mt-3 pt-3">
+      <div class="col-md-5 pt-3">
+        <label for="date">Date of Birth</label>
+        <br>
+        <input type="date" id="date" name="date" class="w-100 gen-input browser-default" formControlName="dateOfBirth">
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="website">Website</label>
+        <br>
+        <input type="url" id="website" name="website" class="w-100 gen-input browser-default" formControlName="website">
+      </div>
+    </div>
+    <div class="row mt-3 pt-3">
+      <div class="col-sm-12">
+        <h6 class="fw-500 fin-pry-color">Address Information</h6>
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="address">Street</label>
+        <br>
+        <input type="text" id="address" name="address" class="w-100 gen-input browser-default" formControlName="street">
+      </div>
+      <div class="col-md-5 pt-3">
+        <label for="city">City</label>
+        <br>
+        <input type="text" id="city" name="city" class="w-100 gen-input browser-default" formControlName="city">
+      </div>
+    </div>
+    <div class="row mt-3 pt-3">
+      <div class="col-md-5 pt-3">
+        <label for="state">State</label>
+        <br>
+        <input type="text" id="state" name="state" class="w-100 gen-input browser-default" formControlName="state">
+      </div>
+      <div class="col-md-5 pt-3">
+        <label>Country</label>
+        <br>
+        <ngx-select-dropdown formControlName="country" [config]="config" [options]="countries"></ngx-select-dropdown>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row mt-3">
+    <div class="col-sm-5 offset-sm-5 pt-3">
+      <button [disabled]="userForm.invalid" (click)="updateUser()" type="submit" class="fin-pry-btn expand-btn right"
+        [ladda]="loader.save" data-style="slide-left">Save </button>
+    </div>
+  </div>
+</div>
+<div class="settings-label tab-pane fade" id="create-customer-source" role="tabpanel"
+  aria-labelledby="create-customer-source-tab">
+
+</div>

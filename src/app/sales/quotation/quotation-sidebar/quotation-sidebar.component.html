@@ -1,0 +1,315 @@
+<div class="list-filter">
+  <div class="accordion" id="accordionExample">
+    <h6>Filters
+      <button class="btn btn-small" style="background-color: #35657b !important; margin-left: 10%"
+        (click)="clearAllFilter()">Clear
+        Filter</button>
+    </h6>
+
+    <!-- Quotation Date -->
+    <div class="card">
+      <div class="card-header" id="headingTop">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse1"
+            aria-expanded="true" aria-controls="collapse1">
+            Quotation Date
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse1" class="collapse show" aria-labelledby="headingTop" data-parent="#accordionExample">
+        <div [formGroup]="quotationDateForm" class="card-body date-fliter">
+          <div class="form-group">
+            <label for="fromDate">From: Past Date</label>
+            <input formControlName="fromDate" type="text" id="fromDate"
+              class="gen-input browser-default form-control content-list-search" placeholder="dd/mm/yyyy" bsDatepicker
+              [bsConfig]="{ dateInputFormat:
+              'DD-MM-YYYY',
+              selectFromOtherMonth: true }" style="width: 100% !important;" autocomplete="off">
+
+          </div>
+          <div class="form-group">
+            <label for="toDate">To: Latest Date</label>
+            <input formControlName="toDate" type="text" id="toDate"
+              class="gen-input browser-default form-control content-list-search" placeholder="dd/mm/yyyy" bsDatepicker
+              [bsConfig]="{ dateInputFormat:
+               'DD-MM-YYYY',
+               selectFromOtherMonth: true }" style="width: 100% !important;" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <button (click)="filterByQuotationDate()" class="btn btn-primary btn-filter">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Quotation Client -->
+    <div class="card">
+      <div class="card-header" id="heading7">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7"
+            aria-expanded="false" aria-controls="collapse7">
+            Quotation Client
+          </button>
+        </h2>
+      </div>
+      <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByClientName()" [formGroup]="clientForm">
+            <div class="form-group">
+              <div class="form-group">
+                <label>Client Name</label>
+                <select formControlName="clientName" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Client</option>
+                  <option [value]="client" *ngFor="let client of dropdownOptions | async">{{client}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" [disabled]="clientForm.invalid" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quotation Value -->
+    <div class="card">
+      <div class="card-header" id="heading9">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse10"
+            aria-expanded="false" aria-controls="collapse9">
+            Quotation Value
+          </button>
+        </h2>
+      </div>
+      <div id="collapse10" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="quotationValueFilter()" [formGroup]="quotationValueForm">
+            <div class="form-group" data-role="rangeslider">
+              <label for="price-min">From:</label>
+              <input formControlName="fromAmount" class="form-control-sm form-control dateWidth" type="number">
+              <label for="price-max">To:</label>
+              <input formControlName="toAmount" class="form-control-sm form-control dateWidth" type="number">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quotation Currency -->
+    <div class="card">
+      <div class="card-header" id="heading9">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse21"
+            aria-expanded="false" aria-controls="collapse21">
+            Quotation Currencies
+          </button>
+        </h2>
+      </div>
+      <div id="collapse21" class="collapse" aria-labelledby="heading21" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="filterByCurrency()" [formGroup]="currencyForm">
+            <div class="form-group">
+              <div class="form-group">
+                <label>Currency Name</label>
+                <select formControlName="currencyName" class="form-control form-control-sm dateWidth">
+                  <option value="">Select Currency</option>
+                  <option [value]="currency" *ngFor="let currency of currencies ">
+                    {{currency}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <button type="submit" [disabled]="currencyForm.invalid" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quotation Owner -->
+    <div class="card">
+      <div class="card-header" id="heading6">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6"
+            aria-expanded="false" aria-controls="collapse6">
+            Quotation Owner
+          </button>
+        </h2>
+      </div>
+      <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+        <div class="card-body">
+          <form (ngSubmit)="quotationOwnerFiter()" [formGroup]="quotationOwnerForm">
+            <div class="form-group">
+              <ng-container *ngIf="(salesPerson | async) as teamMemxberList; else loadingOwner">
+                <ngx-select-dropdown formControlName="owner" [options]="teamMemxberList" [config]="config">
+                </ngx-select-dropdown>
+              </ng-container>
+              <ng-template #loadingOwner>
+                <p>Loading Salespersons</p>
+              </ng-template>
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- Filter List -->
+    <div *ngFor="let filter of filterList;let index = index" class="card">
+      <div class="card-header" [id]="'headingfilter'+ index">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+            [attr.data-target]="'#collapsefilter' + index" aria-expanded="false" aria-controls="collapse">
+            {{filter.name}}
+          </button>
+        </h2>
+      </div>
+      <div [id]="'collapsefilter' + index" class="collapse" aria-labelledby="heading10 "
+        data-parent="#accordionExample">
+        <div class="card-body">
+          <form *ngIf="!(showFilter === index)" (ngSubmit)="customFilter(filter.filter)">
+            <div class="form-group">
+              <label><b>Quotation Owner</b><br> {{filter.filter.quotationOwner.name}}</label><br>
+              <label><b>Quotation Value</b>
+                <br>{{filter.filter.quotationValueFrom + ' - ' + filter.filter.quotationValueTo}}</label><br>
+              <label><b>Quotation Client Type</b><br> {{filter.filter.clientType}}</label><br>
+              <label><b>Quotation Client</b> <br>{{filter.filter.clientName.name}}</label>
+            </div>
+            <div class="form-group">
+              <button (click)="editFilter(index, filter)" type="button" class="btn btn-info btn-filter">Edit</button>
+              <button (click)="deleteFilter(filter)" type="button"
+                class="ml-1 btn btn-danger btn-filter">Delete</button>
+              <button type="submit" class="mt-2 btn btn-primary btn-filter">Submit</button>
+            </div>
+          </form>
+          <ng-container *ngIf="showFilter === index">
+
+            <form (ngSubmit)="createUpdateFilter('update')" [formGroup]="createFilterForm">
+              <div class="form-group">
+                <div class="form-group">
+                  <p>Filter Name</p>
+                  <input formControlName="filterName" type="text" class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <p>Quotation Owner</p>
+                  <ng-container *ngIf="(salesPerson | async) as teamMemxberList; else loadingOwner">
+                    <ngx-select-dropdown formControlName="quotationOwner" [options]="teamMemxberList" [config]="config">
+                    </ngx-select-dropdown>
+                  </ng-container>
+                  <ng-template #loadingOwner>
+                    <p>Loading Salespersons</p>
+                  </ng-template>
+                </div>
+                <div class="form-group" data-role="rangeslider">
+                  <p>Quotation Value</p>
+                  <label for="price-min">From:</label>
+                  <input id="price-min" formControlName="quotationValueFrom" class="form-control-sm form-control"
+                    type="number">
+                  <label for="price-max">To:</label>
+                  <input formControlName="quotationValueTo" class="form-control-sm form-control" type="number">
+                </div>
+                <div class="form-group">
+                  <p>Client</p>
+                  <div class="form-group">
+                    <label>Client Type</label>
+                    <select formControlName="clientType" (change)="fetchCreateClient()"
+                      class="form-control form-control-sm">
+                      <option value="">Select Client Type</option>
+                      <option value="Contact">Contact</option>
+                      <option value="Company">Company</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Client</label>
+                    <ngx-select-dropdown [config]="config" [options]="createClientList" [multiple]="false"
+                      style="width: 100% !important" formControlName="clientName">
+                    </ngx-select-dropdown>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+                </div>
+              </div>
+            </form>
+
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Filter -->
+    <div class="card">
+      <div class="card-header" id="heading22">
+        <h2 class="mb-0">
+          <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse22"
+            aria-expanded="false" aria-controls="collapse22">
+            Create Filter
+          </button>
+        </h2>
+      </div>
+      <div id="collapse22" class="collapse" aria-labelledby="heading22" data-parent="#accordionExample">
+        <div class="card-body create-filter">
+          <form (ngSubmit)="createUpdateFilter('create')" [formGroup]="createFilterForm">
+            <div class="form-group">
+              <div class="form-group">
+                <p>Filter Name</p>
+                <input formControlName="filterName" type="text" class="form-control form-control-sm">
+              </div>
+              <div class="form-group">
+                <p>Quotation Owner</p>
+                <ng-container *ngIf="(salesPerson | async) as teamMemxberList; else loadingOwner">
+                  <ngx-select-dropdown formControlName="quotationOwner" [options]="teamMemxberList" [config]="config">
+                  </ngx-select-dropdown>
+                </ng-container>
+                <ng-template #loadingOwner>
+                  <p>Loading Salespersons</p>
+                </ng-template>
+              </div>
+              <div class="form-group" data-role="rangeslider">
+                <p>Quotation Value</p>
+                <label for="price-min">From:</label>
+                <input id="price-min" formControlName="quotationValueFrom" class="form-control-sm form-control"
+                  type="number">
+                <label for="price-max">To:</label>
+                <input formControlName="quotationValueTo" class="form-control-sm form-control" type="number">
+              </div>
+              <div class="form-group">
+                <p>Client</p>
+                <div class="form-group">
+                  <label>Client Type</label>
+                  <select formControlName="clientType" (change)="fetchCreateClient()"
+                    class="form-control form-control-sm">
+                    <option value="">Select Client Type</option>
+                    <option value="Contact">Contact</option>
+                    <option value="Company">Company</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Client</label>
+                  <ngx-select-dropdown [config]="config" [options]="createClientList" [multiple]="false"
+                    style="width: 100% !important" formControlName="clientName">
+                  </ngx-select-dropdown>
+                </div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-filter">Submit</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

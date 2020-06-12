@@ -1,0 +1,160 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar></app-settings-sidebar>
+        </div>
+
+        <!-- Loader -->
+        <loading-spinner [spinnerStyle]="spinnerStyle" [spinnerType]="spinnerType" (reloadSpinner)="retry($event)"
+          *ngIf="showSpinner">
+        </loading-spinner>
+
+        <!-- Main -->
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10" *ngIf="!showSpinner">
+          <div class="settings-header">
+            <h1>Ticket Inbound Communications</h1>
+            <p>Enable General Inbound Communications</p>
+          </div>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="email-tab" data-toggle="tab" href="#email" role="tab" aria-controls="email" aria-selected="true">Email</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="whatsapp-tab" data-toggle="tab" href="#whatsapp" role="tab" aria-controls="whatsapp" aria-selected="false">Whatsapp</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="website-tab" data-toggle="tab" href="#website" role="tab" aria-controls="website" aria-selected="false">Website</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="sms-tab" data-toggle="tab" href="#sms" role="tab" aria-controls="sms" aria-selected="false">SMS</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="email" role="tabpanel" aria-labelledby="email-tab">
+              <div class="row">
+                <div class="col-sm-12 col-xl-4 col-lg-6 pb-2">
+                  <h6>General inbound email</h6>                <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" formControlName="inboundEmail"
+                      class="custom-control-input text-center checkbox-all" id="inboundEmail">
+                    <label class="custom-control-label" for="inboundEmail">Enable general inbound email</label>
+                    <br>
+                  </div> -->
+                  <p class="mb-0">Foward all your mails to <strong>{{orgEmail}}</strong></p>
+                  <p *ngIf="inBoundComms.email">Email Saved <i class="fa fa-check-circle text-success"></i> </p>
+                  <button *ngIf="!inBoundComms.email" [disabled]="loadingInbound" (click)="saveInboundComms()" class="fin-pry-btn mt-2">
+                    Save Email <span *ngIf="loadingInbound"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="whatsapp" role="tabpanel" aria-labelledby="whatsapp-tab">
+              <div class="row">
+                <br>
+                <div class="col-sm-12 col-xl-7 col-lg-8 pb-2">
+                  <h6>General inbound Whatsapp</h6>
+                  <ul class="mt-2">
+                    <b> <p>Twilio Whatsapp Integration</p></b>
+                    <li>- Register an account on <a href="https://www.twilio.com/try-twilio" target="_blank" rel="noopener noreferrer">Twilio</a></li>
+                    <li>- Activate your account for whatsapp message <a href="https://www.twilio.com/console/sms/whatsapp/learn" target="_blank" rel="noopener noreferrer">Click here</a> </li>
+                    <li>- Integrate Whatsapp opt-in on <a href="https://www.twilio.com/docs/sms/whatsapp/api#enabling-whatapp-with-a-twilio-number" target="_blank" rel="noopener noreferrer">Twilio</a></li>
+                    <li>- Sandbox configuration put this link => <i class="text-info">{{whatsappIncomingAPI}}</i> on  <br> 
+                      <b>&nbsp; &nbsp;when a message comes in</b> field <a href="https://www.twilio.com/console/sms/whatsapp/sandbox" target="_blank" rel="noopener noreferrer">Click here</a></li>
+                    <li>- Connect twilio number to your whatsapp business profile <a href="https://www.twilio.com/docs/sms/whatsapp/tutorial/connect-number-business-profile" target="_blank" rel="noopener noreferrer">Click here</a> </li>
+                    <li>- Get <b>Account SID</b> and <b>Auth Token</b> from <a href="https://www.twilio.com/console/sms/dashboard" target="_blank" rel="noopener noreferrer">Dashboard</a> </li>
+                    <li>- Get <b>Twilio Whatsapp Number</b  ><a href="https://www.twilio.com/console/sms/whatsapp/sandbox" target="_blank" rel="noopener noreferrer"> Click here</a> </li>
+                  </ul>
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" formControlName="inboundWhatsApp"
+                      class="custom-control-input text-center checkbox-all" id="inboundWhatsApp">
+                    <label class="custom-control-label" for="inboundWhatsApp">Enable general inbound Whatsapp</label>
+                  </div> -->
+                  <button *ngIf="!showWhatsappForm" (click)="toggleWhatspp()" class="fin-sec-btn mt-2">Integrate WhatsApp</button>
+                  <form *ngIf="showWhatsappForm" class="mt-3" (ngSubmit)="saveInboundComms()">
+                    <div class="form-group">
+                      <label for="twilloSdi">Twillo SID</label>
+                      <input #sid="ngModel" [(ngModel)]="inBoundComms.twilloSid" name="twilloSid" type="text" class="form-control" id="twilloSdi" 
+                         aria-describedby="emailHelp" placeholder="Enter Value" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="twilloToekn">Twillo Token</label>
+                      <input #token="ngModel" [(ngModel)]="inBoundComms.twilloToken" name="twilloToken" type="text" class="form-control" id="twilloToekn" 
+                        aria-describedby="emailHelp" placeholder="Enter Value" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="twilloNo">Twillo Whatsapp Number</label>
+                      <input #whatsappNo="ngModel" [(ngModel)]="inBoundComms.twilloWhatsAppNo" name="twilloWhatsAppNo" type="text" class="form-control" id="twilloNo" 
+                        aria-describedby="emailHelp" placeholder="Enter Value" required>
+                    </div>
+                    <button  [disabled]="(sid.invalid || token.invalid || whatsappNo.invalid) || loadingInbound" type="submit" class="fin-pry-btn mr-3">
+                      Submit <span *ngIf="loadingInbound"><i class="fa fa-spinner fa-spin"></i></span>
+                    </button> 
+                    <button (click)="toggleWhatspp()" type="submit" class="btn btn-danger">Close</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="website" role="tabpanel" aria-labelledby="website-tab">
+              <div class="row">
+                <br>
+                <div class="col-sm-12 col-xl-4 col-lg-6 pb-2 ">
+                  <h6>General Inbound Website Chat</h6>
+                  <button *ngIf="!showWebScript" (click)="toggleWebScript()" class="fin-sec-btn mt-2">Show Script</button>
+
+                  <div *ngIf="showWebScript">
+                    <textarea readonly class="form-control" [value]="getWebScript" cols="10" rows="5"></textarea>
+                    <button (click)="toggleWebScript()" type="submit" class="btn btn-danger">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="sms" role="tabpanel" aria-labelledby="sms-tab">
+                   
+              <div class="row">
+                <br>
+                <div class="col-sm-12 col-xl-4 col-lg-6 pb-2 ">
+                  <h6>General inbound SMS</h6>
+                  <!-- <div class="custom-control custom-checkbox">
+                    <input type="checkbox" formControlName="inboundSMS"
+                      class="custom-control-input text-center checkbox-all" id="inboundSMS">
+                    <label class="custom-control-label" for="inboundSMS">Enable general inbound SMS</label>
+                  </div> -->
+                  <p class="m-0">Downlaod the two-way SMS app below</p>
+                  <div class="pt-2">
+                    <a href=""><img src="assets/img/appstore.svg" class="w-22 left" alt=""></a>
+                    <a href=""><img src="assets/img/playstore.svg" class="w-22 ml-2" alt=""></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="settings-label pt-3">
+            <form [formGroup]="ticketInboundForm">
+       
+      
+         
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <button type="button" (click)="onSubmit()" class="fin-pry-btn"
+                    [disabled]="(ticketInboundForm.invalid || isLoading)" [ladda]="isLoading"
+                    data-style="slide-right">Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div> -->
+          <div class="inbound-comm-img right"><img src="assets/img/comms.svg" alt=""></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="ai-blockquote" style="display: none;">
+  <blockquote>
+    <div class="arrow-left"></div>
+  </blockquote>
+</div>

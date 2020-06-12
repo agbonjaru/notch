@@ -1,0 +1,111 @@
+<div class="content settings-content">
+  <div class="row" style="width: 100%; margin: 0;">
+    <div class="col-md-12 settings-wrapper">
+      <app-settings-header></app-settings-header>
+      <div class="row">
+        <div class="left-settings col-sm-4 col-md-4 col-lg-3 col-xl-2">
+          <app-settings-sidebar> </app-settings-sidebar>
+        </div>
+
+        <div class="right-settings col-sm-8 col-md-8 col-lg-9 col-xl-10">
+          <div class="settings-header">
+            <h1>Roles Creation</h1>
+          </div>
+          <div class="settings-label">
+            <div *ngIf="allRoles;" class="row">
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-5" style="padding-top: 20px;">
+                <label>Roles</label>
+
+                <div class="list-card">
+
+                  <table  class="table">
+                    <tbody *ngFor="let allRoles of allRoles">
+
+                      <tr style="position: relative;">
+                        <th scope="row" style="border-top: none;">
+                          <a *ngIf="allRoles.name=='Super Admin'; else notAdminRole">{{allRoles.name}}</a>
+                          <ng-template #notAdminRole>
+                          <a [routerLink]="['/settings/Roles', allRoles.name, allRoles.id]">{{allRoles.name}}</a>
+                          </ng-template>
+                        </th>
+                        <td style="font-weight: bold !important; border-top: none; cursor: pointer;" *ngIf="allRoles.name!=='Super Admin'"
+                          id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                          <span>.</span>
+                          <span>.</span>
+                          <span>.</span>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                            <a class="dropdown-item edit-role" (click)="editRoles(allRoles)">Edit</a>
+                            <!-- <a class="dropdown-item" (click)="deleteRolesConfirm(allRoles.name)">Delete</a> -->
+                          </div>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <button *ngIf="gs.isAuthorized('ADMIN_USER_ACTIONS')" type="button" class="fin-pry-btn mt-3 right" data-toggle="modal" data-target="#ModalCenter2"
+                  style="margin-top: -13px;">
+                  Add Role
+                </button>
+
+                <!-- Add Role Modal -->
+                <div class="modal fade" id="ModalCenter2" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenterTitle">Add Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+
+                      <form [formGroup]="roleForm">
+
+                        <div class="modal-body">
+                          <div class="form-group">
+                            <label for="target-value" class="col-form-label">
+                              Enter Role Name
+                            </label>
+                            <input type="text" formControlName="roleName" class="form-control" id="target-value" />
+                          </div>
+                        </div>
+
+                        <div class="modal-footer">
+
+                          <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+                          </button>
+
+                          <button type="submit" (click)="addRoles()" [disabled]="roleForm.invalid || disableBtn"
+                            class="fin-pry-btn">
+                            Add <span *ngIf="disableBtn"><i class="fa fa-spinner fa-spin"></i></span>
+                          </button>
+
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Add Role Modal End-->
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-lg-6 col-xl-6 role-creation-tab" style="padding-top: 20px;">
+              </div>
+            </div>
+            <div class="row" *ngIf="!allRoles">
+              <div class="col-12">
+                  <loading-spinner [spinnerType]="'notch-loader'" ></loading-spinner>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 

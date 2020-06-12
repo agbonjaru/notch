@@ -1,0 +1,79 @@
+<!-- Copy to Client -->
+<div class="modal fade" id="ModalCenter4" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle4"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalCenterTitle4">Copy To Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="name">Select Client</label>
+            <br>
+            <ngx-select-dropdown class="styleFool" [config]="config" [options]="dropdownOptions | async"
+              [multiple]="false" name="clientName" [(ngModel)]="selectedClientName" (change)="handleClientSelection()">
+            </ngx-select-dropdown>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="fin-sec-btn" data-dismiss="modal">Close
+        </button>
+        <button type="button" [disabled]="!copyInvoiceDetails.clientName" (click)="handleCopy()"
+          class="fin-pry-btn">Copy To
+          Client</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Copy to Client -->
+
+<div class="row mt-3 mb-2">
+  <div class="col-md-6">
+    <h4 class=" m-auto fs-15">
+      <span class="fin-green">INVOICES : </span>
+      <a [ngClass]="{'fin-blue' : ViewSwitch !== 'All'}" (click)="handleRecurringView('All')">All</a> |
+      <a [ngClass]="{'fin-blue' : ViewSwitch !== 'Non-Recurring'}"
+        (click)="handleRecurringView('Non-Recurring')">Non-Recurring</a> |
+      <a [ngClass]="{'fin-blue' : ViewSwitch !== 'Recurring'}" (click)="handleRecurringView('Recurring')">Recurring</a>
+
+    </h4>
+
+  </div>
+</div>
+
+<div class="row mt-1 mb-2">
+  <div class="col-md-6 text-left filter-actions-top">
+    <span style="width: 35%">
+      <ng-container *ngIf="arrayTeams ; else loadingOwner">
+        <select (change)="handleFilterBySupervisor()" [(ngModel)]="selectedTeamId"
+          class="gen-input browser-default form-control content-list-search">
+          <option value="" disabled="" selected="">Select Team</option>
+          <option *ngFor="let team of arrayTeams" [value]="team.teamID">
+            {{team.teamName}}
+          </option>
+        </select>
+      </ng-container>
+      <ng-template #loadingOwner>
+        <small class="text-danger"><i>...fetching Teams </i>
+          <i class="fa fa-spinner fa-spin"></i>
+        </small>
+      </ng-template>
+    </span>
+  </div>
+</div>
+
+
+<app-datatable [dataChanged]="dataTable.dataChangedObs" [options]="dataTable.options" [heads]="dataTable.heads"
+  (feedback)="dataFeedBackObsListener($event)" [bodyrows]="dataSource"></app-datatable>
+
+
+<span style="visibility: hidden;">
+  <a class="dropdown-item" data-toggle="modal" data-target="#ModalCenter4">Copy
+    To</a>
+</span>
