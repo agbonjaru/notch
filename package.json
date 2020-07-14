@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm i && ng build --prod --aot=false --output-hashing=all && node server.js",
+    "start": "npm i && ng build --prod --aot=false --output-hashing=all",
     "build": "ng build",
     "build-prod": "ng build --prod --aot --output-hashing=all",
     "node-build-prod": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod --output-hashing=all --build-optimizer",
