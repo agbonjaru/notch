@@ -33,3 +33,4 @@ EXPOSE 8081:8081
 
 #CMD [ "node", "server.js" ]
 CMD [ "npm", "start" ]
+CMD [ "node", "server.js" ]
