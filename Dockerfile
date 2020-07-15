@@ -21,7 +21,7 @@ COPY . /src/notch-angular/
 
 RUN npm install
 
-RUN npm start
+RUN ng build 
 # Bundle app source
 #COPY . /src/app/
 
