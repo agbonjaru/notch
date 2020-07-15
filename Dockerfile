@@ -21,7 +21,7 @@ COPY . /src/notch-angular/
 
 RUN npm install
 
-RUN ng build 
+#RUN ng build 
 # Bundle app source
 #COPY . /src/app/
 
@@ -31,4 +31,5 @@ EXPOSE 8081:8081
 
 #RUN node server.js
 
-CMD [ "node", "server.js" ]
+#CMD [ "node", "server.js" ]
+CMD [ "npm", "start" ]
