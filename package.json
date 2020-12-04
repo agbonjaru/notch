@@ -49,7 +49,7 @@
     "file-system": "^2.2.2",
     "filesize": "^6.1.0",
     "fs": "0.0.1-security",
-    "highlight.js": "^9.18.1",
+    "highlight.js": "^10.4.1",
     "highlightjs": "^9.16.2",
     "jquery": "^3.4.1",
     "json": "^9.0.6",
